@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rasenschach — Auswertung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=1" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">2. Bundesliga Saison 26/27</p>
+          <h1>Rasenschach — Auswertung</h1>
+        </div>
+        <div class="page-header-actions">
+          <img src="csm_2_bl_logo_RGB_pos_8b8a7d5210.png" alt="2. Bundesliga" style="height:34px" />
+        </div>
+      </header>
+
+      <nav class="tabbar">
+        <button class="tab-button active" data-tab="spieltage">Spieltage</button>
+        <button class="tab-button" data-tab="tabelle">Tabelle</button>
+        <button class="tab-button" data-tab="figuren">Figuren-Leaderboard</button>
+      </nav>
+
+      <!-- SPIELTAGE -->
+      <section class="tab-panel active" id="panel-spieltage">
+        <div class="panel-card">
+          <h2>Spieltag wählen</h2>
+          <div class="matchday-picker" id="matchdayPicker"></div>
+        </div>
+        <div id="boardsContainer"></div>
+      </section>
+
+      <!-- TABELLE -->
+      <section class="tab-panel" id="panel-tabelle">
+        <div class="panel-card">
+          <h2>Tabelle</h2>
+          <p class="hint">3-Punkte-System: Sieg = 3 Punkte, Unentschieden = 1 Punkt, Niederlage = 0 Punkte.</p>
+          <div style="overflow-x:auto">
+            <table class="league-table" id="tableEl">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th class="team-cell">Team</th>
+                  <th>Sp.</th>
+                  <th>S</th>
+                  <th>U</th>
+                  <th>N</th>
+                  <th>Tore</th>
+                  <th>Diff.</th>
+                  <th>Pkt.</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- FIGUREN-LEADERBOARD -->
+      <section class="tab-panel" id="panel-figuren">
+        <div class="panel-card">
+          <h2>Figuren-Leaderboard</h2>
+          <p class="hint">Wer holt saisonweit mit welcher Figur die meisten Punkte?</p>
+          <div class="figure-leaderboard-grid" id="figureLeaderboard"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="shared.js"></script>
+    <script src="app-public.js"></script>
+  </body>
+</html>
