@@ -18,6 +18,7 @@
       </div>
       <div class="actions">
         <button id="reloadBtn" class="btn-secondary">🔄 Aktualisieren</button>
+        <button id="exportBtn" class="btn-primary">💾 JSON exportieren</button>
         <span id="lastUpdate" class="update-info"></span>
       </div>
     </header>
@@ -49,6 +50,30 @@
 
     <div class="status-msg" id="statusMsg">Daten werden geladen …</div>
   </div>
+
+  <!-- ===== MODAL FÜR BRETTER ===== -->
+  <dialog class="board-modal" id="boardModal">
+    <div class="modal-shell">
+      <header class="modal-head">
+        <div>
+          <p class="eyebrow" id="modalMatchLabel">Heim vs. Auswärts</p>
+          <h2 id="modalMatchTitle">Brett-Auswertung</h2>
+        </div>
+        <button class="close-button" id="closeModalBtn" type="button">×</button>
+      </header>
+
+      <div class="board-container" id="boardContainer">
+        <!-- Hier wird das Rasenschach-Brett gerendert -->
+      </div>
+
+      <footer class="modal-footer">
+        <button id="evaluateBoardBtn" class="btn-primary">⚡ Auswerten & Ergebnis übernehmen</button>
+        <button id="resetBoardBtn" class="btn-secondary">⟲ Zurücksetzen</button>
+        <span id="boardStatus" class="board-status"></span>
+      </footer>
+    </div>
+  </dialog>
+
   <script src="app.js"></script>
 </body>
 </html>
