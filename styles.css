@@ -117,7 +117,9 @@ button:hover { background: rgba(255,255,255,0.15); }
   gap: 24px;
   margin-top: 8px;
 }
-@media (max-width: 800px) { .grid-3-3 { grid-template-columns: 1fr; } }
+@media (max-width: 800px) {
+  .grid-3-3 { grid-template-columns: 1fr; }
+}
 
 section h2 {
   font-family: var(--headline-font);
@@ -209,7 +211,7 @@ section h2 {
 /* ============================================================
    MODAL & RASENSCHACH-BRETT
    ============================================================ */
-.board-modal {
+.board-modal, .admin-login-dialog {
   width: min(920px, calc(100% - 20px));
   max-height: min(800px, calc(100vh - 40px));
   max-height: min(800px, calc(100dvh - 40px));
@@ -219,7 +221,7 @@ section h2 {
   padding: 0;
   overflow: hidden;
 }
-.board-modal::backdrop { background: rgba(0,0,0,0.85); }
+.board-modal::backdrop, .admin-login-dialog::backdrop { background: rgba(0,0,0,0.85); }
 .modal-shell {
   display: flex;
   flex-direction: column;
@@ -277,10 +279,12 @@ section h2 {
   color: var(--muted);
   font-size: 0.8rem;
   font-weight: 600;
-  margin-left: auto;
+  margin-right: auto;
 }
+#adminBoardActions { display: none; }
+#adminBoardActions.visible { display: flex; }
 
-/* ===== RASENSCHACH-BRETT (kopiert & angepasst) ===== */
+/* ===== RASENSCHACH-BRETT (wie gehabt) ===== */
 .board-wrapper {
   display: flex;
   flex-direction: column;
@@ -323,7 +327,7 @@ section h2 {
   background: #181818;
   color: #fff;
   font-weight: 800;
-  cursor: pointer;
+  cursor: default;
   transition: background 0.15s;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
 }
@@ -422,18 +426,16 @@ section h2 {
   border-radius: 4px;
   background: rgba(255,255,255,0.92);
   color: #0a0a0a;
-  cursor: grab;
+  cursor: default;
   font-size: clamp(0.4rem, 0.55vw, 0.55rem);
   font-weight: 700;
   line-height: 1.05;
   overflow-wrap: anywhere;
   padding: 12px 4px 4px;
   text-align: center;
-  pointer-events: auto;
+  pointer-events: none;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: transform 0.1s;
 }
-.placed-chip:hover { transform: scale(1.02); z-index: 3; }
 .chip-field-badge {
   position: absolute;
   top: 3px;
@@ -488,18 +490,11 @@ section h2 {
   background: rgba(255,255,255,0.05);
   color: #fff;
   padding: 8px 4px;
-  cursor: grab;
   font-weight: 700;
   font-size: 0.65rem;
   text-align: center;
-  user-select: none;
-  touch-action: none;
-  transition: 0.15s;
   min-height: 44px;
-}
-.thesis-card:hover {
-  border-color: var(--bundesliga-red);
-  background: rgba(255,255,255,0.1);
+  cursor: default;
 }
 .thesis-card .thesis-title { font-size: 0.65rem; line-height: 1.2; }
 
@@ -537,12 +532,10 @@ section h2 {
   background: rgba(255,255,255,0.05);
   color: var(--muted);
   font-weight: 700;
-  cursor: pointer;
+  cursor: default;
   font-size: 0.6rem;
   padding: 0 4px;
-  transition: 0.1s;
 }
-.eval-card button:hover { background: rgba(255,255,255,0.15); }
 .eval-card .neutral-btn.active {
   background: var(--bundesliga-gold);
   color: #000;
@@ -558,6 +551,15 @@ section h2 {
   color: #fff;
   border-color: var(--bundesliga-red);
 }
+
+/* Im Admin-Modus werden die Buttons klickbar */
+.admin-mode .eval-card button { cursor: pointer; }
+.admin-mode .eval-card button:hover { background: rgba(255,255,255,0.15); }
+.admin-mode .placed-chip { cursor: grab; pointer-events: auto; }
+.admin-mode .thesis-card { cursor: grab; pointer-events: auto; }
+.admin-mode .thesis-card:hover { border-color: var(--bundesliga-red); background: rgba(255,255,255,0.1); }
+.admin-mode .piece-cell { cursor: pointer; }
+.admin-mode .piece-cell:hover { background: #2a2a2a; transform: scale(1.01); }
 
 .drag-ghost {
   position: fixed;
@@ -577,8 +579,10 @@ section h2 {
   transform: translate(-50%, -50%);
   box-shadow: 0 0 30px rgba(211,1,12,0.3);
 }
-.board-status .success { color: var(--bundesliga-gold); }
-.board-status .error { color: var(--bundesliga-red); }
+
+/* Admin Login Dialog */
+.admin-login-dialog .modal-shell { max-height: 300px; }
+.admin-login-dialog input { background: #1a1a1a; border-color: var(--line); color: #fff; }
 
 @media (max-width: 600px) {
   .board-modal { width: calc(100% - 8px); max-height: calc(100vh - 8px); }

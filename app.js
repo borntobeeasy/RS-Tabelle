@@ -2,6 +2,8 @@
 //  KONFIGURATION
 // ============================================================
 const DATA_URL = 'data.json';
+const ADMIN_PASSWORD = 'rasenschach2026'; // ändern!
+
 const PIECES = [
   { id: 'rook', name: 'Turm', value: '3', base: 3 },
   { id: 'bishop', name: 'Läufer', value: '1', base: 1 },
@@ -26,11 +28,12 @@ const PIECE_SVG_URLS = {
 // ============================================================
 //  ZUSTAND
 // ============================================================
-let currentData = null;
+let currentData = null;       // gesamte Liga-Daten (aus data.json)
 let currentDay = 1;
 let teams = [];
-let currentMatchIndex = -1;   // für das geöffnete Brett
-let boardState = null;        // aktueller Board-Zustand im Modal
+let isAdmin = false;         // true nach erfolgreichem Login
+let currentMatchIndex = -1;  // für das geöffnete Brett
+let boardState = null;       // aktueller Board-Zustand im Modal
 let pointerDrag = null;
 
 // ============================================================
@@ -40,23 +43,26 @@ function getTeamName(id) {
   const t = teams.find(t => t.id === id);
   return t ? t.name : `Team ${id}`;
 }
-
 function getPieceById(id) { return PIECES.find(p => p.id === id); }
-
 function getSideLabel(side) { return side === 'white' ? 'Weiß' : 'Schwarz'; }
-
-function formatNumber(num) { return num > 0 ? `+${num}` : String(num); }
-
+function formatNumber(n) { return n > 0 ? `+${n}` : String(n); }
 function cloneData(obj) { return JSON.parse(JSON.stringify(obj)); }
-
 function getScoreTone(value) {
   if (value > 0) return 'positive';
   if (value < 0) return 'negative';
   return 'zero';
 }
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 // ============================================================
-//  TABELLENBERECHNUNG (wie gehabt)
+//  TABELLENBERECHNUNG
 // ============================================================
 function calculateStandings(matchdays) {
   const standings = teams.map(t => ({
@@ -97,8 +103,8 @@ function renderMatchday(dayId) {
     const away = getTeamName(m.away);
     const hasResult = (m.goalsHome !== null && m.goalsAway !== null);
     const score = hasResult ? `${m.goalsHome} : ${m.goalsAway}` : '– : –';
-    const boardStatus = m.board ? '🟢' : '⚪';
-    const btnLabel = m.board ? 'Brett bearbeiten' : 'Brett anlegen';
+    const boardStatus = m.board ? (m.board.evaluated ? '✅' : '⚪') : '⚪';
+    const btnLabel = m.board ? 'Brett anzeigen' : 'Brett anlegen';
     html += `
       <div class="match-card" data-match-index="${idx}">
         <span class="team">${home}</span>
@@ -112,7 +118,6 @@ function renderMatchday(dayId) {
   });
   container.innerHTML = html;
 
-  // Event-Listener für Brett-Buttons
   container.querySelectorAll('.board-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = Number(btn.dataset.matchIndex);
@@ -165,14 +170,15 @@ function renderAll() {
   renderMatchday(currentDay);
   renderStandings();
   updateStatus();
-  document.getElementById('statusMsg').textContent = `Spieltag ${currentDay} – Klick auf "Brett" zur Auswertung.`;
+  const msg = isAdmin ? '🔐 Admin-Modus aktiv – Bretter können bearbeitet werden.' : 'Klick auf "Brett" zur Ansicht.';
+  document.getElementById('statusMsg').textContent = msg;
 }
 
 // ============================================================
 //  BOARD-LOGIK (RASENSCHACH)
 // ============================================================
 function getDefaultBoard() {
-  const assignments = Array.from({ length: THESIS_COUNT }, (_, i) => ({
+  const positions = Array.from({ length: THESIS_COUNT }, (_, i) => ({
     id: i + 1,
     side: null,
     piece: null,
@@ -184,7 +190,7 @@ function getDefaultBoard() {
     black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
   };
   const questionValue = QUESTION_VALUES[Math.floor(Math.random() * QUESTION_VALUES.length)];
-  return { assignments, results, questionValue };
+  return { positions, results, questionValue, evaluated: false };
 }
 
 function getAssignmentScore(assignment) {
@@ -192,11 +198,16 @@ function getAssignmentScore(assignment) {
   const piece = getPieceById(assignment.piece);
   const sign = assignment.polarity === 'positive' ? 1 : -1;
   switch (assignment.piece) {
-    case 'knight': return (assignment.polarity === 'positive') ? (boardState.questionValue ?? assignment.knightSwing) : 0;
-    case 'bishop': return (assignment.polarity === 'positive') ? -piece.base : 0;
-    case 'queen':  return (assignment.polarity === 'positive') ? piece.base : 0;
-    case 'rook':   return piece.base * sign * -1;
-    default:       return piece.base * sign;
+    case 'knight':
+      return (assignment.polarity === 'positive') ? (boardState.questionValue ?? assignment.knightSwing) : 0;
+    case 'bishop':
+      return (assignment.polarity === 'positive') ? -piece.base : 0;
+    case 'queen':
+      return (assignment.polarity === 'positive') ? piece.base : 0;
+    case 'rook':
+      return piece.base * sign * -1;
+    default:
+      return piece.base * sign;
   }
 }
 
@@ -207,7 +218,7 @@ function getPlayerScore(side, pieceId) {
 function getSideTotal(side) {
   let total = 0;
   PIECES.forEach(p => total += getPlayerScore(side, p.id));
-  boardState.assignments.forEach(a => {
+  boardState.positions.forEach(a => {
     if (a.side === side) total += getAssignmentScore(a);
   });
   return total;
@@ -229,7 +240,6 @@ function renderBoard() {
   const match = currentData.matchdays.find(d => d.id === currentDay)?.matches[currentMatchIndex];
   if (!match) { container.innerHTML = '<p>Spiel nicht gefunden.</p>'; return; }
 
-  // Sicherstellen, dass Board existiert
   if (!match.board) {
     match.board = getDefaultBoard();
   }
@@ -238,7 +248,17 @@ function renderBoard() {
   const home = getTeamName(match.home);
   const away = getTeamName(match.away);
   document.getElementById('modalMatchLabel').textContent = `${home} (Weiß) vs. ${away} (Schwarz)`;
-  document.getElementById('modalMatchTitle').textContent = `Brett-Auswertung – Spieltag ${currentDay}`;
+  document.getElementById('modalMatchTitle').textContent = `Brett – Spieltag ${currentDay}`;
+
+  // Admin-Actions ein-/ausblenden
+  const actions = document.getElementById('adminBoardActions');
+  if (isAdmin) {
+    actions.classList.add('visible');
+    document.querySelector('.board-modal').classList.add('admin-mode');
+  } else {
+    actions.classList.remove('visible');
+    document.querySelector('.board-modal').classList.remove('admin-mode');
+  }
 
   let html = `<div class="board-wrapper">`;
   html += `<div class="board-meta"><span class="white-label">⬜ ${home}</span><span class="black-label">⬛ ${away}</span></div>`;
@@ -265,7 +285,7 @@ function renderBoard() {
       } else {
         // Drop-Feld
         let thesisTotal = 0;
-        boardState.assignments.forEach(a => {
+        boardState.positions.forEach(a => {
           if (a.side === side && a.piece === piece.id) thesisTotal += getAssignmentScore(a);
         });
         const figureValue = (piece.id === 'knight' && boardState.questionValue !== null)
@@ -276,15 +296,15 @@ function renderBoard() {
         html += `<div class="drop-value">${figureValue}</div>`;
         if (hasTheses) html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`;
         html += `<div class="placed-list" data-slot="${slot}">`;
-        // Chips einfügen
-        boardState.assignments.forEach(a => {
+        boardState.positions.forEach(a => {
           if (a.side === side && a.piece === piece.id) {
             const p = getPieceById(a.piece);
             const fieldLabel = (a.piece === 'knight' && boardState.questionValue !== null)
               ? formatNumber(boardState.questionValue)
               : p.value;
             const score = getAssignmentScore(a);
-            html += `<span class="placed-chip" data-id="${a.id}" draggable="true">`;
+            const draggable = isAdmin ? 'draggable="true"' : '';
+            html += `<span class="placed-chip" data-id="${a.id}" ${draggable}>`;
             html += `<span class="chip-field-badge">${fieldLabel}</span>`;
             html += `<strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong>`;
             html += `<span class="fit-text">These ${a.id}</span>`;
@@ -297,25 +317,27 @@ function renderBoard() {
   });
   html += `</div>`;
 
-  // Thesen-Liste (Drag-Quelle)
-  html += `<div class="thesis-section"><h3>📌 Thesen (ziehbar)</h3><div class="thesis-list" id="boardThesisList">`;
-  boardState.assignments.forEach(a => {
-    if (a.side && a.piece) return; // bereits platziert
-    html += `<div class="thesis-card" draggable="true" data-id="${a.id}"><span class="thesis-title">These ${a.id}</span></div>`;
+  // Thesen-Liste
+  html += `<div class="thesis-section"><h3>📌 Thesen</h3><div class="thesis-list" id="boardThesisList">`;
+  boardState.positions.forEach(a => {
+    if (a.side && a.piece) return;
+    const draggable = isAdmin ? 'draggable="true"' : '';
+    html += `<div class="thesis-card" data-id="${a.id}" ${draggable}><span class="thesis-title">These ${a.id}</span></div>`;
   });
   html += `</div></div>`;
 
-  // Bewertung (Polarity)
-  html += `<div class="evaluation-section"><h3>⚖️ Bewertung (+ / − / neutral)</h3><div class="evaluation-list" id="boardEvalList">`;
-  boardState.assignments.forEach(a => {
+  // Bewertung
+  html += `<div class="evaluation-section"><h3>⚖️ Bewertung</h3><div class="evaluation-list" id="boardEvalList">`;
+  boardState.positions.forEach(a => {
     const neutral = !a.polarity ? 'active' : '';
     const pos = a.polarity === 'positive' ? 'active' : '';
     const neg = a.polarity === 'negative' ? 'active' : '';
+    const clickable = isAdmin ? '' : 'disabled';
     html += `<div class="eval-card" data-id="${a.id}">`;
     html += `<strong>${a.id}</strong>`;
-    html += `<button class="neutral-btn ${neutral}" data-id="${a.id}" data-polarity="">○</button>`;
-    html += `<button class="pos-btn ${pos}" data-id="${a.id}" data-polarity="positive">+</button>`;
-    html += `<button class="neg-btn ${neg}" data-id="${a.id}" data-polarity="negative">−</button>`;
+    html += `<button class="neutral-btn ${neutral}" data-id="${a.id}" data-polarity="" ${clickable}>○</button>`;
+    html += `<button class="pos-btn ${pos}" data-id="${a.id}" data-polarity="positive" ${clickable}>+</button>`;
+    html += `<button class="neg-btn ${neg}" data-id="${a.id}" data-polarity="negative" ${clickable}>−</button>`;
     html += `</div>`;
   });
   html += `</div></div>`;
@@ -323,11 +345,13 @@ function renderBoard() {
   html += `</div>`;
   container.innerHTML = html;
 
-  // Event-Bindings für Drag & Drop (wie in Rasenschach)
-  bindBoardEvents();
+  // Event-Bindings (nur im Admin-Modus)
+  if (isAdmin) {
+    bindAdminBoardEvents();
+  }
 }
 
-function bindBoardEvents() {
+function bindAdminBoardEvents() {
   // Drop-Ziele
   document.querySelectorAll('.drop-cell').forEach(cell => {
     cell.addEventListener('dragover', (e) => { e.preventDefault(); cell.classList.add('drag-over'); });
@@ -336,7 +360,7 @@ function bindBoardEvents() {
       e.preventDefault();
       cell.classList.remove('drag-over');
       const id = Number(e.dataTransfer.getData('text/plain'));
-      const assignment = boardState.assignments.find(a => a.id === id);
+      const assignment = boardState.positions.find(a => a.id === id);
       if (!assignment) return;
       const oldSide = assignment.side;
       const oldPiece = assignment.piece;
@@ -346,7 +370,7 @@ function bindBoardEvents() {
     });
   });
 
-  // Drag-Quellen (Thesen)
+  // Drag-Quellen
   document.querySelectorAll('.thesis-card, .placed-chip').forEach(el => {
     el.addEventListener('dragstart', (e) => {
       const id = Number(el.dataset.id);
@@ -358,8 +382,9 @@ function bindBoardEvents() {
   // Bewertungs-Buttons
   document.querySelectorAll('.eval-card button[data-polarity]').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (!isAdmin) return;
       const id = Number(btn.dataset.id);
-      const assignment = boardState.assignments.find(a => a.id === id);
+      const assignment = boardState.positions.find(a => a.id === id);
       if (!assignment) return;
       const val = btn.dataset.polarity || null;
       assignment.polarity = val;
@@ -367,8 +392,19 @@ function bindBoardEvents() {
     });
   });
 
-  // Pointer-Drag für Touch (vereinfacht: Fallback auf Klick-Zuweisung)
-  // (Für Touch-Geräte bleibt es bei Klick auf Bewertung)
+  // Randomizer-Button (wird im Footer platziert)
+  const existingRandomBtn = document.querySelector('.modal-footer .randomizer-btn');
+  if (!existingRandomBtn) {
+    const randBtn = document.createElement('button');
+    randBtn.className = 'btn-secondary randomizer-btn';
+    randBtn.textContent = '🎲 Randomizer neu würfeln';
+    randBtn.addEventListener('click', () => {
+      if (!isAdmin) return;
+      boardState.questionValue = QUESTION_VALUES[Math.floor(Math.random() * QUESTION_VALUES.length)];
+      renderBoard();
+    });
+    document.querySelector('.modal-footer').appendChild(randBtn);
+  }
 }
 
 // ============================================================
@@ -380,28 +416,28 @@ function openBoard(dayId, matchIdx) {
   const modal = document.getElementById('boardModal');
   renderBoard();
   modal.showModal();
-  document.getElementById('boardStatus').textContent = 'Ziehe Thesen auf die Felder und bewerte sie.';
+  document.getElementById('boardStatus').textContent = isAdmin ? 'Admin: Ziehe Thesen, bewerte, würfle, und klicke "Auswerten".' : 'Ansichtsmodus – keine Bearbeitung möglich.';
 }
 
 function closeBoard() {
   document.getElementById('boardModal').close();
   currentMatchIndex = -1;
   boardState = null;
-  renderAll(); // Tabelle und Spieltag aktualisieren
+  renderAll();
 }
 
 // ============================================================
-//  AUSWERTEN & ERGEBNIS ÜBERNEHMEN
+//  AUSWERTEN & ERGEBNIS ÜBERNEHMEN (nur Admin)
 // ============================================================
 function evaluateBoard() {
-  if (!boardState) return;
+  if (!isAdmin || !boardState) return;
   const totals = calculateBoardTotals();
   const match = currentData.matchdays.find(d => d.id === currentDay)?.matches[currentMatchIndex];
   if (!match) return;
 
   // Prüfen, ob alle Thesen platziert und bewertet sind
-  const allPlaced = boardState.assignments.every(a => a.side && a.piece);
-  const allEvaluated = boardState.assignments.every(a => a.polarity !== null);
+  const allPlaced = boardState.positions.every(a => a.side && a.piece);
+  const allEvaluated = boardState.positions.every(a => a.polarity !== null);
   if (!allPlaced) {
     document.getElementById('boardStatus').textContent = '⚠️ Bitte platziere alle Thesen auf dem Brett.';
     return;
@@ -411,9 +447,9 @@ function evaluateBoard() {
     return;
   }
 
-  // Ergebnis setzen
   match.goalsHome = Math.round(totals.white);
   match.goalsAway = Math.round(totals.black);
+  boardState.evaluated = true;
   document.getElementById('boardStatus').textContent =
     `✅ Ausgewertet! ${getTeamName(match.home)} ${totals.white} : ${totals.black} ${getTeamName(match.away)}`;
   document.getElementById('boardStatus').style.color = 'var(--bundesliga-gold)';
@@ -425,6 +461,7 @@ function evaluateBoard() {
 }
 
 function resetBoard() {
+  if (!isAdmin) return;
   const match = currentData.matchdays.find(d => d.id === currentDay)?.matches[currentMatchIndex];
   if (!match) return;
   match.board = getDefaultBoard();
@@ -435,27 +472,9 @@ function resetBoard() {
 }
 
 // ============================================================
-//  DATEN LADEN & EXPORT
+//  EXPORT DER GESAMTEN JSON (Admin)
 // ============================================================
-async function loadData() {
-  try {
-    const resp = await fetch(DATA_URL);
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    if (data.app !== 'liga-beobachter') throw new Error('Ungültiges Dateiformat');
-    currentData = data;
-    teams = data.teams || [];
-    if (!teams.length) throw new Error('Keine Teams definiert');
-    currentDay = 1;
-    renderAll();
-    document.getElementById('statusMsg').textContent = '✅ Daten geladen. Klicke auf "Brett" zur Auswertung.';
-  } catch (err) {
-    document.getElementById('statusMsg').textContent = `❌ Fehler beim Laden: ${err.message}`;
-    document.getElementById('statusBadge').textContent = '⚠️ Datenfehler';
-  }
-}
-
-function exportData() {
+function exportFullData() {
   if (!currentData) return;
   const payload = {
     app: 'liga-beobachter',
@@ -473,7 +492,65 @@ function exportData() {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-  document.getElementById('statusMsg').textContent = '✅ Export erfolgreich!';
+  document.getElementById('statusMsg').textContent = '✅ Export erfolgreich! Lade die Datei jetzt auf GitHub hoch.';
+}
+
+// ============================================================
+//  DATEN LADEN
+// ============================================================
+async function loadData() {
+  try {
+    const resp = await fetch(DATA_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (data.app !== 'liga-beobachter') throw new Error('Ungültiges Dateiformat');
+    currentData = data;
+    teams = data.teams || [];
+    if (!teams.length) throw new Error('Keine Teams definiert');
+    currentDay = 1;
+    renderAll();
+    document.getElementById('statusMsg').textContent = '✅ Daten geladen.';
+  } catch (err) {
+    document.getElementById('statusMsg').textContent = `❌ Fehler beim Laden: ${err.message}`;
+    document.getElementById('statusBadge').textContent = '⚠️ Datenfehler';
+  }
+}
+
+// ============================================================
+//  ADMIN LOGIN / LOGOUT
+// ============================================================
+function showLoginDialog() {
+  document.getElementById('adminLoginDialog').showModal();
+  document.getElementById('loginErrorMsg').textContent = '';
+  document.getElementById('adminPasswordInput').value = '';
+  document.getElementById('adminPasswordInput').focus();
+}
+
+function login() {
+  const password = document.getElementById('adminPasswordInput').value;
+  if (password === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('adminLoginDialog').close();
+    document.getElementById('adminToggleBtn').textContent = '🔓 Admin (aktiv)';
+    document.getElementById('adminToggleBtn').style.borderColor = 'var(--bundesliga-gold)';
+    // Aktuelles Brett neu rendern (falls offen)
+    if (document.getElementById('boardModal').open) {
+      renderBoard();
+    }
+    renderAll();
+  } else {
+    document.getElementById('loginErrorMsg').textContent = '❌ Falsches Passwort.';
+  }
+}
+
+function logout() {
+  isAdmin = false;
+  document.getElementById('adminToggleBtn').textContent = '🔐 Admin';
+  document.getElementById('adminToggleBtn').style.borderColor = '';
+  if (document.getElementById('boardModal').open) {
+    renderBoard();
+  }
+  renderAll();
 }
 
 // ============================================================
@@ -488,7 +565,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentDay < currentData?.matchdays?.length) { currentDay++; renderAll(); }
   });
   document.getElementById('reloadBtn').addEventListener('click', loadData);
-  document.getElementById('exportBtn').addEventListener('click', exportData);
+
+  // Admin
+  document.getElementById('adminToggleBtn').addEventListener('click', () => {
+    if (isAdmin) {
+      if (confirm('Admin-Modus beenden?')) logout();
+    } else {
+      showLoginDialog();
+    }
+  });
+  document.getElementById('adminLoginBtn').addEventListener('click', login);
+  document.getElementById('closeLoginBtn').addEventListener('click', () => {
+    document.getElementById('adminLoginDialog').close();
+  });
+  document.getElementById('adminLoginDialog').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') login();
+    if (e.key === 'Escape') document.getElementById('adminLoginDialog').close();
+  });
 
   // Modal
   document.getElementById('closeModalBtn').addEventListener('click', closeBoard);
@@ -497,6 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('evaluateBoardBtn').addEventListener('click', evaluateBoard);
   document.getElementById('resetBoardBtn').addEventListener('click', resetBoard);
+  document.getElementById('exportBoardBtn').addEventListener('click', exportFullData);
 
   // Tastatur
   document.addEventListener('keydown', (e) => {
