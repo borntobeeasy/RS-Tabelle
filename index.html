@@ -1,98 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2. Bundesliga · Saison 26/27</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. Bundesliga Tabellenrechner 2026/27</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-shell" id="app">
-    <header class="topbar">
-      <div>
-        <h1>⚽ Liga-Beobachter</h1>
-        <p class="subtitle">2. Bundesliga · Saison 2026/27</p>
-      </div>
-      <div class="actions">
-        <button id="reloadBtn" class="btn-secondary">🔄 Aktualisieren</button>
-        <span id="lastUpdate" class="update-info"></span>
-        <button id="adminToggleBtn" class="btn-secondary">🔐 Admin</button>
-      </div>
+    <header>
+        <h1>2. Bundesliga 2026/27</h1>
+        <div id="adminPanel">
+            <button id="adminToggle">🔐 Admin-Modus</button>
+            <span id="adminStatus"></span>
+        </div>
     </header>
 
-    <nav class="matchday-nav">
-      <button id="prevDay">◀</button>
-      <select id="daySelect"></select>
-      <button id="nextDay">▶</button>
-      <span id="statusBadge">⏳ lädt …</span>
-    </nav>
+    <main>
+        <section id="controls">
+            <label for="spieltagSelect">Spieltag:</label>
+            <select id="spieltagSelect"></select>
+            <button id="saveResults">💾 Ergebnisse speichern</button>
+            <button id="exportBtn">📥 Export (JSON)</button>
+            <button id="importBtn">📤 Import (JSON)</button>
+            <input type="file" id="importFile" accept=".json" style="display:none">
+        </section>
 
-    <div class="grid-3-3">
-      <section>
-        <h2>📋 Spieltag</h2>
-        <div id="matchesContainer"></div>
-      </section>
-      <section>
-        <h2>🏆 Tabelle</h2>
-        <div class="table-wrapper">
-          <table class="standings-table" id="standingsTable">
-            <thead>
-              <tr><th>#</th><th>Team</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff</th><th>Pkt</th></tr>
-            </thead>
-            <tbody id="standingsBody"></tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <section id="spieleContainer">
+            <h2>Spiele des Spieltags</h2>
+            <div id="spieleListe"></div>
+        </section>
 
-    <div class="status-msg" id="statusMsg">Daten werden geladen …</div>
-  </div>
+        <section id="tabelleContainer">
+            <h2>Tabelle</h2>
+            <div id="tabelle"></div>
+        </section>
+    </main>
 
-  <!-- ===== ADMIN-LOGIN DIALOG ===== -->
-  <dialog class="admin-login-dialog" id="adminLoginDialog">
-    <div class="modal-shell">
-      <header class="modal-head">
-        <h2>🔐 Admin-Zugang</h2>
-        <button class="close-button" id="closeLoginBtn" type="button">×</button>
-      </header>
-      <div style="padding:16px;">
-        <label style="display:block; margin-bottom:8px; font-weight:800;">Passwort</label>
-        <input type="password" id="adminPasswordInput" style="width:100%; min-height:40px; border-radius:4px; border:1px solid var(--line); background:rgba(255,255,255,0.06); color:#fff; padding:0 12px; font-size:1rem;" />
-        <button id="adminLoginBtn" style="margin-top:12px; width:100%; min-height:40px; border-radius:4px; border:none; background:var(--bundesliga-red); color:#fff; font-weight:800; font-size:1rem; cursor:pointer;">Anmelden</button>
-        <p id="loginErrorMsg" style="color:#f87171; font-size:0.85rem; margin-top:8px; min-height:1.2em;"></p>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- ===== BRETT-MODAL ===== -->
-  <dialog class="board-modal" id="boardModal">
-    <div class="modal-shell">
-      <header class="modal-head">
-        <div>
-          <p class="eyebrow" id="modalMatchLabel">Heim vs. Auswärts</p>
-          <h2 id="modalMatchTitle">Brett-Auswertung</h2>
-        </div>
-        <button class="close-button" id="closeModalBtn" type="button">×</button>
-      </header>
-
-      <div class="board-container" id="boardContainer">
-        <!-- Hier wird das Rasenschach-Brett gerendert -->
-      </div>
-
-      <footer class="modal-footer" id="modalFooter">
-        <span id="boardStatus" class="board-status"></span>
-        <div id="adminBoardActions" style="display:none; gap:8px; flex-wrap:wrap;">
-          <button id="evaluateBoardBtn" class="btn-primary">⚡ Auswerten & Ergebnis übernehmen</button>
-          <button id="resetBoardBtn" class="btn-secondary">⟲ Zurücksetzen</button>
-          <button id="exportBoardBtn" class="btn-secondary">💾 JSON exportieren</button>
-        </div>
-      </footer>
-    </div>
-  </dialog>
-
-  <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
