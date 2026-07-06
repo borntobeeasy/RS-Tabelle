@@ -1,0 +1,56 @@
+{
+  "spielplan": [
+    [
+      { "heim": "Hamburger SV", "auswaerts": "1. FC Köln" },
+      { "heim": "1. FC Magdeburg", "auswaerts": "Fortuna Düsseldorf" },
+      { "heim": "Hannover 96", "auswaerts": "Karlsruher SC" },
+      { "heim": "1. FC Nürnberg", "auswaerts": "SC Paderborn 07" },
+      { "heim": "FC St. Pauli", "auswaerts": "Holstein Kiel" },
+      { "heim": "Greuther Fürth", "auswaerts": "SV Darmstadt 98" },
+      { "heim": "Eintracht Braunschweig", "auswaerts": "SV Wehen Wiesbaden" },
+      { "heim": "VfL Osnabrück", "auswaerts": "1. FC Kaiserslautern" },
+      { "heim": "Schalke 04", "auswaerts": "Hertha BSC" }
+    ]
+    // … hier folgen alle 34 Spieltage – der Code generiert sie automatisch,
+    // aber für die JSON-Datei muss der komplette Spielplan enthalten sein.
+    // Du kannst die `spielplan`-Struktur aus der Konsole exportieren oder
+    // den generierten Spielplan in die Datei kopieren.
+  ],
+  "ergebnisse": {
+    "spieltage": [
+      [
+        {
+          "heim": "Hamburger SV",
+          "auswaerts": "1. FC Köln",
+          "toreHeim": null,
+          "toreAuswaerts": null,
+          "rasenschach": {
+            "white": {
+              "assignments": [
+                { "id": 1, "piece": "rook", "polarity": null },
+                { "id": 2, "piece": "bishop", "polarity": null },
+                { "id": 3, "piece": "knight", "polarity": null },
+                { "id": 4, "piece": "queen", "polarity": null },
+                { "id": 5, "piece": "king", "polarity": null }
+              ],
+              "results": { "rook": 0, "bishop": 0, "knight": 0, "queen": 0, "king": 0 }
+            },
+            "black": {
+              "assignments": [
+                { "id": 6, "piece": "rook", "polarity": null },
+                { "id": 7, "piece": "bishop", "polarity": null },
+                { "id": 8, "piece": "knight", "polarity": null },
+                { "id": 9, "piece": "queen", "polarity": null },
+                { "id": 10, "piece": "king", "polarity": null }
+              ],
+              "results": { "rook": 0, "bishop": 0, "knight": 0, "queen": 0, "king": 0 }
+            },
+            "questionValue": null
+          }
+        }
+        // … für jedes Spiel des 1. Spieltags
+      ]
+      // … für jeden Spieltag
+    ]
+  }
+}
