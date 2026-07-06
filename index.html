@@ -18,14 +18,13 @@
     </div>
   </header>
 
+  <p id="ladeStatus" class="lade-status"></p>
+
   <main>
     <section id="controls">
       <label for="spieltagSelect">Spieltag:</label>
       <select id="spieltagSelect"></select>
-      <button id="saveResults">💾 Ergebnisse speichern</button>
-      <button id="exportBtn">📥 Export (JSON)</button>
-      <button id="importBtn">📤 Import (JSON)</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" />
+      <button id="refreshButton">🔄 Aktualisieren</button>
     </section>
 
     <section id="spieleContainer">
@@ -37,8 +36,15 @@
       <h2>Tabelle</h2>
       <div id="tabelle"></div>
     </section>
+
+    <section id="figurenContainer">
+      <h2>Figuren-Leaderboard</h2>
+      <p class="figuren-hint">Wer holt saisonweit mit welcher Figur die meisten Punkte?</p>
+      <div id="figurenLeaderboard" class="figuren-grid"></div>
+    </section>
   </main>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

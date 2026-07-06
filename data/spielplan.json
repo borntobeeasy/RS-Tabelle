@@ -1,0 +1,1318 @@
+{
+  "saison": "2026/27",
+  "liga": "2. Bundesliga",
+  "teams": [
+    "1. FC Heidenheim 1846",
+    "1. FC Kaiserslautern",
+    "1. FC Magdeburg",
+    "1. FC Nürnberg",
+    "Arminia Bielefeld",
+    "Dynamo Dresden",
+    "Eintracht Braunschweig",
+    "Energie Cottbus",
+    "FC St. Pauli",
+    "Hannover 96",
+    "Hertha BSC",
+    "Holstein Kiel",
+    "Karlsruher SC",
+    "SpVgg Greuther Fürth",
+    "SV Darmstadt 98",
+    "VfL Bochum",
+    "VfL Osnabrück",
+    "VfL Wolfsburg"
+  ],
+  "spieltage": [
+    [
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Hannover 96"
+      }
+    ],
+    [
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "1. FC Magdeburg"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "SpVgg Greuther Fürth"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Eintracht Braunschweig"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Hertha BSC"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "FC St. Pauli"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Dynamo Dresden"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "1. FC Nürnberg"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "SpVgg Greuther Fürth"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "VfL Bochum"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "1. FC Kaiserslautern"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Hertha BSC"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Hannover 96"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "VfL Osnabrück"
+      }
+    ],
+    [
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "FC St. Pauli"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Holstein Kiel"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "SV Darmstadt 98"
+      }
+    ],
+    [
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "1. FC Heidenheim 1846"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Arminia Bielefeld"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "VfL Bochum"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "VfL Wolfsburg"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Karlsruher SC"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Holstein Kiel"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "SV Darmstadt 98"
+      }
+    ],
+    [
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Arminia Bielefeld"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "1. FC Heidenheim 1846"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "VfL Wolfsburg"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Eintracht Braunschweig"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Karlsruher SC"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "1. FC Magdeburg"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "1. FC Nürnberg"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "1. FC Kaiserslautern"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "Energie Cottbus"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "Dynamo Dresden"
+      }
+    ],
+    [
+      {
+        "heim": "1. FC Kaiserslautern",
+        "auswaerts": "Hannover 96"
+      },
+      {
+        "heim": "Hertha BSC",
+        "auswaerts": "FC St. Pauli"
+      },
+      {
+        "heim": "Dynamo Dresden",
+        "auswaerts": "Karlsruher SC"
+      },
+      {
+        "heim": "Holstein Kiel",
+        "auswaerts": "Energie Cottbus"
+      },
+      {
+        "heim": "Arminia Bielefeld",
+        "auswaerts": "VfL Wolfsburg"
+      },
+      {
+        "heim": "1. FC Magdeburg",
+        "auswaerts": "VfL Bochum"
+      },
+      {
+        "heim": "Eintracht Braunschweig",
+        "auswaerts": "1. FC Heidenheim 1846"
+      },
+      {
+        "heim": "SpVgg Greuther Fürth",
+        "auswaerts": "SV Darmstadt 98"
+      },
+      {
+        "heim": "VfL Osnabrück",
+        "auswaerts": "1. FC Nürnberg"
+      }
+    ],
+    [
+      {
+        "heim": "VfL Wolfsburg",
+        "auswaerts": "Dynamo Dresden"
+      },
+      {
+        "heim": "FC St. Pauli",
+        "auswaerts": "Eintracht Braunschweig"
+      },
+      {
+        "heim": "1. FC Heidenheim 1846",
+        "auswaerts": "1. FC Magdeburg"
+      },
+      {
+        "heim": "Hannover 96",
+        "auswaerts": "Arminia Bielefeld"
+      },
+      {
+        "heim": "SV Darmstadt 98",
+        "auswaerts": "VfL Osnabrück"
+      },
+      {
+        "heim": "1. FC Nürnberg",
+        "auswaerts": "Hertha BSC"
+      },
+      {
+        "heim": "VfL Bochum",
+        "auswaerts": "Holstein Kiel"
+      },
+      {
+        "heim": "Karlsruher SC",
+        "auswaerts": "SpVgg Greuther Fürth"
+      },
+      {
+        "heim": "Energie Cottbus",
+        "auswaerts": "1. FC Kaiserslautern"
+      }
+    ]
+  ]
+}
