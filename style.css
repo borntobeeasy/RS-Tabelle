@@ -166,77 +166,103 @@ main {
   background: rgba(0,0,0,0.3);
   border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.08);
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
 }
-.rasenschach-container.open { display: grid; }
+.rasenschach-container.open { display: block; }
 
-.rasenschach-board {
-  background: rgba(255,255,255,0.03);
+/* ===== SCHACHBRETT-Raster (wie Referenzseite) ===== */
+.chess-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(60px, 100px));
+  grid-template-rows: repeat(4, minmax(60px, 100px));
+  gap: 0;
+  border: 2px solid var(--bundesliga-red);
   border-radius: 6px;
-  padding: 10px;
-}
-.rasenschach-board h4 {
-  color: var(--bundesliga-gold);
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.rasenschach-thesis {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  font-size: 0.8rem;
-  flex-wrap: wrap;
-}
-.rasenschach-thesis .polarity-buttons {
-  display: flex;
-  gap: 2px;
-}
-.rasenschach-thesis .polarity-buttons button {
-  min-width: 28px;
-  padding: 2px 4px;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 3px;
-  background: transparent;
-  color: #aaa;
-  font-weight: 700;
-  font-size: 0.8rem;
-  cursor: default;
-  transition: all 0.15s;
-}
-.rasenschach-thesis .polarity-buttons button.active-positive {
-  background: var(--green);
-  border-color: var(--green);
-  color: white;
-}
-.rasenschach-thesis .polarity-buttons button.active-negative {
-  background: var(--bundesliga-red);
-  border-color: var(--bundesliga-red);
-  color: white;
-}
-.rasenschach-thesis .polarity-buttons button.active-neutral {
-  background: var(--bundesliga-gold);
-  border-color: var(--bundesliga-gold);
-  color: #1a1a1a;
-}
-.rasenschach-thesis .punkte {
-  font-weight: 800;
-  margin-left: auto;
-  min-width: 30px;
-  text-align: right;
+  background: #1a1a1a;
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 100%;
+  justify-content: center;
 }
 
-.rasenschach-total {
-  margin-top: 10px;
+.grid-cell {
+  position: relative;
+  border: none;
+  padding: 4px;
+  overflow: hidden;
+  background: #1f1f1f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Figuren-Felder */
+.piece-cell {
+  background: #181818;
+  color: white;
   font-weight: 800;
-  font-size: 1.2rem;
-  text-align: right;
-  border-top: 2px solid var(--bundesliga-red);
-  padding-top: 6px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+  min-height: 60px;
+}
+.piece-cell.light {
+  background: #242424;
+}
+
+.field-watermark {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+.field-watermark.positive {
+  color: var(--green);
+}
+.field-watermark.negative {
+  color: var(--bundesliga-red);
+}
+.field-watermark.neutral {
+  color: var(--muted);
+}
+
+.piece-label {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+}
+
+/* Drop-Felder */
+.drop-cell {
+  background: #1a1a1a;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.drop-cell[data-side="white"] {
+  border-top: 2px solid rgba(255,255,255,0.08);
+}
+.drop-cell[data-side="black"] {
+  border-bottom: 2px solid rgba(0,0,0,0.3);
+}
+
+.drop-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.placed-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-top: 2px;
+  justify-content: center;
+}
+
+.thesis-chip {
+  background: rgba(245,197,24,0.15);
+  color: var(--bundesliga-gold);
+  font-size: 0.5rem;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid rgba(245,197,24,0.2);
+  white-space: nowrap;
 }
 
 /* ===== Tabelle ===== */
@@ -298,5 +324,11 @@ main {
   #controls { flex-direction: column; align-items: stretch; }
   .spiel-header { flex-direction: column; align-items: stretch; gap: 6px; }
   .spiel-header .team { text-align: center !important; }
-  .rasenschach-container { grid-template-columns: 1fr; }
+  .chess-grid {
+    grid-template-columns: repeat(5, minmax(40px, 60px));
+    grid-template-rows: repeat(4, minmax(40px, 60px));
+  }
+  .field-watermark { font-size: 1rem; }
+  .piece-label { font-size: 0.4rem; }
+  .drop-value { font-size: 0.8rem; }
 }

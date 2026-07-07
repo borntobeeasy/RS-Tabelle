@@ -172,7 +172,7 @@ async function loadAllPlayedGames() {
 }
 
 // ============================================================
-//  RENDER-FUNKTIONEN (unverändert)
+//  RENDER-FUNKTIONEN
 // ============================================================
 async function renderSpieltag(nr) {
   const container = document.getElementById('spieleListe');
@@ -223,40 +223,105 @@ function renderSpielCard(spieltagNr, fx, game) {
   return div;
 }
 
+// ============================================================
+//  RENDER: SCHACHBRETT (wie Referenzseite https://borntobeeasy.github.io/BuliRS/)
+// ============================================================
 function renderRasenschachBoard(rasenschach, fx) {
-  return `
-    <div class="rasenschach-board">
-      <h4>${escapeHtml(fx.heim)}</h4>
-      ${renderSeite('white', rasenschach.white, rasenschach.questionValue)}
-    </div>
-    <div class="rasenschach-board">
-      <h4>${escapeHtml(fx.auswaerts)}</h4>
-      ${renderSeite('black', rasenschach.black, rasenschach.questionValue)}
-    </div>
-  `;
-}
+  const qv = rasenschach.questionValue;
 
-function renderSeite(side, sideData, questionValue) {
-  let html = '';
-  let total = 0;
-  PIECES.forEach(p => {
-    const a = (sideData.assignments || []).find(x => x.piece === p.id);
-    const basisWert = Number(sideData.results?.[p.id]) || 0;
-    const thesisScore = a ? berechneEinzelPunkt(a, questionValue) : 0;
-    const score = basisWert + thesisScore;
-    total += score;
-    const polClass = a?.polarity === 'positive' ? 'active-positive' : a?.polarity === 'negative' ? 'active-negative' : 'active-neutral';
+  // Hilfsfunktion: Punktzahl für eine Figur berechnen
+  function getScore(sideData, pieceId) {
+    const a = (sideData.assignments || []).find(x => x.piece === pieceId);
+    const basisWert = Number(sideData.results?.[pieceId]) || 0;
+    const thesisScore = a ? berechneEinzelPunkt(a, qv) : 0;
+    return basisWert + thesisScore;
+  }
+
+  // Hilfsfunktion: Polarity‑Klasse für eine Figur
+  function getPolarityClass(sideData, pieceId) {
+    const a = (sideData.assignments || []).find(x => x.piece === pieceId);
+    if (!a) return 'neutral';
+    return a.polarity === 'positive' ? 'positive' : a.polarity === 'negative' ? 'negative' : 'neutral';
+  }
+
+  // Hilfsfunktion: Angezeigter Polaritäts‑Text (wird nicht im Raster verwendet, aber für später)
+  function getPolarityLabel(sideData, pieceId) {
+    const a = (sideData.assignments || []).find(x => x.piece === pieceId);
+    if (!a) return '•';
+    return a.polarity === 'positive' ? '+' : a.polarity === 'negative' ? '−' : '•';
+  }
+
+  // Hilfsfunktion: Thesen‑Text für eine Figur (falls zugewiesen)
+  function getThesisText(sideData, pieceId) {
+    const a = (sideData.assignments || []).find(x => x.piece === pieceId);
+    if (!a) return '';
+    // Wenn die Rohdaten eine thesisId haben, nutze sie, sonst "These"
+    return a.thesisId ? `These ${a.thesisId}` : 'These';
+  }
+
+  // Figuren‑Konfiguration (Reihenfolge von links nach rechts)
+  const pieces = [
+    { id: 'rook',   label: 'Turm',   base: '-/+3' },
+    { id: 'bishop', label: 'Läufer', base: '-1' },
+    { id: 'knight', label: 'Springer', base: '?' },
+    { id: 'queen',  label: 'Dame',   base: '+1' },
+    { id: 'king',   label: 'König',  base: '+/-3' },
+  ];
+
+  // HTML für das Raster aufbauen
+  let html = `<div class="chess-grid">`;
+
+  // === REIHE 1: Weiße Figuren (oben) ===
+  pieces.forEach(p => {
+    const score = getScore(rasenschach.white, p.id);
+    const polClass = getPolarityClass(rasenschach.white, p.id);
     html += `
-      <div class="rasenschach-thesis">
-        <strong>${p.name}</strong>
-        <span class="polarity-buttons">
-          <button class="${polClass}" disabled>${a?.polarity === 'positive' ? '+' : a?.polarity === 'negative' ? '−' : '•'}</button>
-        </span>
-        <span class="punkte">${score}</span>
+      <div class="grid-cell piece-cell" data-side="white" data-piece="${p.id}">
+        <strong class="field-watermark ${polClass}">${score}</strong>
+        <span class="piece-label">${p.label}</span>
       </div>
     `;
   });
-  html += `<div class="rasenschach-total">Summe: ${total}</div>`;
+
+  // === REIHE 2: Weiße Drop‑Felder (Basiswerte + Thesen) ===
+  pieces.forEach(p => {
+    const thesis = getThesisText(rasenschach.white, p.id);
+    html += `
+      <div class="grid-cell drop-cell" data-side="white" data-piece="${p.id}">
+        <div class="drop-value">${p.base}</div>
+        <div class="placed-list" data-slot="white-${p.id}">
+          ${thesis ? `<span class="thesis-chip">${thesis}</span>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  // === REIHE 3: Schwarze Drop‑Felder (Basiswerte + Thesen) ===
+  pieces.forEach(p => {
+    const thesis = getThesisText(rasenschach.black, p.id);
+    html += `
+      <div class="grid-cell drop-cell" data-side="black" data-piece="${p.id}">
+        <div class="drop-value">${p.base}</div>
+        <div class="placed-list" data-slot="black-${p.id}">
+          ${thesis ? `<span class="thesis-chip">${thesis}</span>` : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  // === REIHE 4: Schwarze Figuren (unten) ===
+  pieces.forEach(p => {
+    const score = getScore(rasenschach.black, p.id);
+    const polClass = getPolarityClass(rasenschach.black, p.id);
+    html += `
+      <div class="grid-cell piece-cell" data-side="black" data-piece="${p.id}">
+        <strong class="field-watermark ${polClass}">${score}</strong>
+        <span class="piece-label">${p.label}</span>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
   return html;
 }
 
