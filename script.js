@@ -1,5 +1,5 @@
 // ============================================================
-//  RASENSCHACH — 2. Bundesliga (nur Anzeige, kein Admin)
+//  RASENSCHACH — 2. Bundesliga (NUR FESTE DATEINAMEN)
 // ============================================================
 const CFG = window.RS_CONFIG;
 
@@ -13,12 +13,10 @@ const PIECES = [
 const PIECE_BASE = { rook: 3, bishop: 1, knight: 1, queen: 1, king: 1 };
 
 let spielplan = null;
-let fileIndex = {};
-let gameCache = {};
 let aktuellerSpieltag = 1;
 
 // ============================================================
-//  RASENSCHACH-PUNKTE
+//  RASENSCHACH-PUNKTE (unverändert)
 // ============================================================
 function berechneEinzelPunkt(a, questionValue) {
   if (!a.polarity) return 0;
@@ -55,34 +53,8 @@ function berechneGesamtPunkte(rasenschach) {
   return { white, black };
 }
 
-function leereRasenschach() {
-  return {
-    white: {
-      assignments: [
-        { id: 1, piece: 'rook', polarity: null },
-        { id: 2, piece: 'bishop', polarity: null },
-        { id: 3, piece: 'knight', polarity: null },
-        { id: 4, piece: 'queen', polarity: null },
-        { id: 5, piece: 'king', polarity: null },
-      ],
-      results: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-    },
-    black: {
-      assignments: [
-        { id: 6, piece: 'rook', polarity: null },
-        { id: 7, piece: 'bishop', polarity: null },
-        { id: 8, piece: 'knight', polarity: null },
-        { id: 9, piece: 'queen', polarity: null },
-        { id: 10, piece: 'king', polarity: null },
-      ],
-      results: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-    },
-    questionValue: null,
-  };
-}
-
 // ============================================================
-//  DATEN LADEN
+//  DATEN LADEN (OHNE API!)
 // ============================================================
 function norm(name) { return (name || '').trim().toLowerCase(); }
 function fixtureKey(heim, auswaerts) { return `${norm(heim)}||${norm(auswaerts)}`; }
@@ -93,62 +65,30 @@ async function loadSpielplan() {
   spielplan = await res.json();
 }
 
-async function loadFileIndex(force) {
-  const cacheKey = `rs_tree_${CFG.owner}_${CFG.repo}_${CFG.branch}`;
-  if (!force) {
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) {
-      try { fileIndex = JSON.parse(cached); return; } catch {}
+// Lädt eine einzelne Datei anhand des Spieltags und der Nummer (1-9)
+async function loadGameFile(spieltagNr, nummer) {
+  const path = `data/spieltag-${String(spieltagNr).padStart(2, '0')}/${nummer}.json`;
+  try {
+    const res = await fetch(path);
+    if (!res.ok) {
+      if (res.status === 404) return null; // Datei existiert noch nicht
+      throw new Error(`Fehler beim Laden von ${path}: ${res.status}`);
     }
+    return await res.json();
+  } catch (e) {
+    console.warn(`Konnte ${path} nicht laden:`, e.message);
+    return null;
   }
-  const url = `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/git/trees/${CFG.branch}?recursive=1`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`GitHub-API-Fehler (${res.status}). Stimmen owner/repo/branch in config.js?`);
-  const data = await res.json();
-  const idx = {};
-  (data.tree || []).forEach(entry => {
-    const m = entry.path.match(/^data\/spieltag-(\d+)\/(.+\.json)$/i);
-    if (!m) return;
-    const nr = Number(m[1]);
-    if (!idx[nr]) idx[nr] = [];
-    idx[nr].push({ path: entry.path, name: m[2] });
-  });
-  fileIndex = idx;
-  sessionStorage.setItem(cacheKey, JSON.stringify(idx));
-}
-
-async function loadGameFile(path) {
-  if (gameCache[path]) return gameCache[path];
-  const url = `https://raw.githubusercontent.com/${CFG.owner}/${CFG.repo}/${CFG.branch}/${path}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Konnte ${path} nicht laden`);
-  const data = await res.json();
-  gameCache[path] = data;
-  return data;
-}
-
-async function findUploadedGame(spieltagNr, heim, auswaerts) {
-  const files = fileIndex[spieltagNr] || [];
-  const wantKey = fixtureKey(heim, auswaerts);
-  for (const f of files) {
-    try {
-      const data = await loadGameFile(f.path);
-      if (fixtureKey(data.heim, data.auswaerts) === wantKey) {
-        return { ...data, _path: f.path, _name: f.name };
-      }
-    } catch (e) {
-      console.warn(e.message);
-    }
-  }
-  return null;
 }
 
 async function loadAllPlayedGames() {
   const alle = [];
   for (let nr = 1; nr <= 34; nr++) {
     const fixtures = spielplan.spieltage[nr - 1] || [];
-    for (const fx of fixtures) {
-      const game = await findUploadedGame(nr, fx.heim, fx.auswaerts);
+    for (let i = 0; i < fixtures.length; i++) {
+      const fx = fixtures[i];
+      // Versuche die Datei mit der Nummer i+1 zu laden
+      const game = await loadGameFile(nr, i + 1);
       if (game && game.rasenschach) {
         const punkte = berechneGesamtPunkte(game.rasenschach);
         alle.push({ spieltag: nr, heim: fx.heim, auswaerts: fx.auswaerts, toreHeim: punkte.white, toreAuswaerts: punkte.black });
@@ -158,21 +98,32 @@ async function loadAllPlayedGames() {
   return alle;
 }
 
+// Für den aktuellen Spieltag laden wir alle 9 Dateien parallel
+async function loadSpieltagFiles(spieltagNr) {
+  const fixtures = spielplan.spieltage[spieltagNr - 1] || [];
+  const results = await Promise.all(
+    fixtures.map((fx, index) => loadGameFile(spieltagNr, index + 1))
+  );
+  // Ergebnisse mit den Fixtures verknüpfen
+  return fixtures.map((fx, index) => ({
+    fixture: fx,
+    game: results[index]
+  }));
+}
+
 // ============================================================
 //  RENDER: SPIELTAG
 // ============================================================
 async function renderSpieltag(nr) {
   const container = document.getElementById('spieleListe');
   container.innerHTML = '<p class="lade-hinweis">Lade Spiele…</p>';
-  const fixtures = spielplan.spieltage[nr - 1] || [];
-
-  const cards = [];
-  for (const fx of fixtures) {
-    const game = await findUploadedGame(nr, fx.heim, fx.auswaerts);
-    cards.push(renderSpielCard(nr, fx, game));
-  }
+  
+  const spiele = await loadSpieltagFiles(nr);
+  
   container.innerHTML = '';
-  cards.forEach(c => container.appendChild(c));
+  spiele.forEach(({ fixture: fx, game }) => {
+    container.appendChild(renderSpielCard(nr, fx, game));
+  });
 }
 
 function renderSpielCard(spieltagNr, fx, game) {
@@ -320,8 +271,9 @@ async function renderFigurenLeaderboard() {
 
   for (let nr = 1; nr <= 34; nr++) {
     const fixtures = spielplan.spieltage[nr - 1] || [];
-    for (const fx of fixtures) {
-      const game = await findUploadedGame(nr, fx.heim, fx.auswaerts);
+    for (let i = 0; i < fixtures.length; i++) {
+      const fx = fixtures[i];
+      const game = await loadGameFile(nr, i + 1);
       if (!game || !game.rasenschach) continue;
       [['white', fx.heim], ['black', fx.auswaerts]].forEach(([side, teamName]) => {
         const sideData = game.rasenschach[side];
@@ -373,8 +325,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     statusEl.textContent = 'Lade Spielplan…';
     await loadSpielplan();
-    statusEl.textContent = 'Prüfe hochgeladene Bretter…';
-    await loadFileIndex(false);
+    statusEl.textContent = 'Lade Spiele…';
+    
+    // Aktuellen Spieltag laden
+    await renderSpieltag(1);
+    await renderTabelle();
+    await renderFigurenLeaderboard();
     statusEl.textContent = '';
   } catch (err) {
     statusEl.textContent = 'Fehler beim Laden: ' + err.message;
@@ -397,15 +353,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('refreshButton').addEventListener('click', async () => {
     statusEl.textContent = 'Aktualisiere…';
-    gameCache = {};
-    await loadFileIndex(true);
-    statusEl.textContent = '';
     await renderSpieltag(aktuellerSpieltag);
     await renderTabelle();
     await renderFigurenLeaderboard();
+    statusEl.textContent = '';
   });
-
-  await renderSpieltag(1);
-  await renderTabelle();
-  await renderFigurenLeaderboard();
 });
