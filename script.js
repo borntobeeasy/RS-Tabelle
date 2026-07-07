@@ -14,7 +14,46 @@ const PIECE_BASE = { rook: 3, bishop: 1, knight: 1, queen: 1, king: 1 };
 
 let spielplan = null;
 let aktuellerSpieltag = 1;
-let gameCache = {}; // Cache für geladene Dateien
+let gameCache = {};
+
+// ============================================================
+//  FORMAT-KONVERTIERUNG (für Export-Dateien mit "data"-Wrapper)
+// ============================================================
+function normalizeGameData(raw) {
+  // Bereits im alten Format (rasenschach direkt vorhanden)
+  if (raw && raw.rasenschach) return raw;
+
+  // Neues Format mit "data"-Wrapper
+  if (raw && raw.data && raw.data.names && raw.data.results) {
+    const d = raw.data;
+    const whiteAssignments = (d.positions || [])
+      .filter(p => p.side === 'white')
+      .map(p => ({ piece: p.piece, polarity: p.polarity }));
+
+    const blackAssignments = (d.positions || [])
+      .filter(p => p.side === 'black')
+      .map(p => ({ piece: p.piece, polarity: p.polarity }));
+
+    return {
+      rasenschach: {
+        questionValue: d.questionValue !== undefined ? d.questionValue : null,
+        white: {
+          name: d.names.white || '',
+          results: d.results.white || { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
+          assignments: whiteAssignments
+        },
+        black: {
+          name: d.names.black || '',
+          results: d.results.black || { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
+          assignments: blackAssignments
+        }
+      }
+    };
+  }
+
+  // Fallback: unverändert zurückgeben
+  return raw;
+}
 
 // ============================================================
 //  RASENSCHACH-PUNKTE
@@ -55,7 +94,7 @@ function berechneGesamtPunkte(rasenschach) {
 }
 
 // ============================================================
-//  DATEN LADEN
+//  DATEN LADEN (mit Konvertierung)
 // ============================================================
 function norm(name) { return (name || '').trim().toLowerCase(); }
 function fixtureKey(heim, auswaerts) { return `${norm(heim)}||${norm(auswaerts)}`; }
@@ -79,15 +118,16 @@ async function loadGameFile(spieltagNr, nummer) {
   const path = `data/spieltag-${String(spieltagNr).padStart(2, '0')}/${nummer}.json`;
   const cacheKey = path;
   if (gameCache[cacheKey]) return gameCache[cacheKey];
-  
+
   try {
     const exists = await fileExists(path);
     if (!exists) return null;
     const res = await fetch(path);
     if (!res.ok) return null;
-    const data = await res.json();
-    gameCache[cacheKey] = data;
-    return data;
+    const raw = await res.json();
+    const normalized = normalizeGameData(raw);
+    gameCache[cacheKey] = normalized;
+    return normalized;
   } catch (e) {
     console.warn(`Konnte ${path} nicht laden:`, e.message);
     return null;
@@ -110,21 +150,20 @@ async function loadAllPlayedGames() {
   for (let nr = 1; nr <= 34; nr++) {
     const fixtures = spielplan.spieltage[nr - 1] || [];
     const folder = `data/spieltag-${String(nr).padStart(2, '0')}/`;
-    
-    // Schnellprüfung: Existiert überhaupt eine Datei?
+
     const anyExists = await fileExists(`${folder}1.json`);
     if (!anyExists) continue;
-    
+
     for (let i = 0; i < fixtures.length; i++) {
       const game = await loadGameFile(nr, i + 1);
       if (game && game.rasenschach) {
         const punkte = berechneGesamtPunkte(game.rasenschach);
-        alle.push({ 
-          spieltag: nr, 
-          heim: fixtures[i].heim, 
-          auswaerts: fixtures[i].auswaerts, 
-          toreHeim: punkte.white, 
-          toreAuswaerts: punkte.black 
+        alle.push({
+          spieltag: nr,
+          heim: fixtures[i].heim,
+          auswaerts: fixtures[i].auswaerts,
+          toreHeim: punkte.white,
+          toreAuswaerts: punkte.black
         });
       }
     }
@@ -138,9 +177,9 @@ async function loadAllPlayedGames() {
 async function renderSpieltag(nr) {
   const container = document.getElementById('spieleListe');
   container.innerHTML = '<p class="lade-hinweis">Lade Spiele…</p>';
-  
+
   const spiele = await loadSpieltagFiles(nr);
-  
+
   container.innerHTML = '';
   spiele.forEach(({ fixture: fx, game }) => {
     container.appendChild(renderSpielCard(nr, fx, game));
@@ -295,7 +334,7 @@ async function renderFigurenLeaderboard() {
     const folder = `data/spieltag-${String(nr).padStart(2, '0')}/`;
     const anyExists = await fileExists(`${folder}1.json`);
     if (!anyExists) continue;
-    
+
     for (let i = 0; i < fixtures.length; i++) {
       const fx = fixtures[i];
       const game = await loadGameFile(nr, i + 1);
@@ -351,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     statusEl.textContent = 'Lade Spielplan…';
     await loadSpielplan();
     statusEl.textContent = 'Lade Spiele…';
-    
+
     await renderSpieltag(1);
     await renderTabelle();
     await renderFigurenLeaderboard();
@@ -377,7 +416,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('refreshButton').addEventListener('click', async () => {
     statusEl.textContent = 'Aktualisiere…';
-    gameCache = {}; // Cache leeren
+    gameCache = {};
     await renderSpieltag(aktuellerSpieltag);
     await renderTabelle();
     await renderFigurenLeaderboard();
