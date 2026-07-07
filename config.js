@@ -8,5 +8,4 @@ window.RS_CONFIG = {
   owner: "borntobeeasy",
   repo: "RS-Tabelle",
   branch: "main",
-  adminPassword: "admin123", // Bitte vor Veröffentlichung ändern!
 };
