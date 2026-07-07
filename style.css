@@ -41,22 +41,6 @@ header h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-#adminPanel {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-#adminToggle {
-  background: var(--bundesliga-red);
-  border: none;
-  padding: 6px 18px;
-  border-radius: 4px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#adminToggle:hover { background: var(--bundesliga-red-dark); }
 #adminStatus {
   color: var(--muted);
   font-size: 0.85rem;
@@ -65,6 +49,19 @@ header h1 {
 main {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.lade-status {
+  max-width: 1400px;
+  margin: 0 auto 12px;
+  color: var(--bundesliga-gold);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+.lade-hinweis {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 10px 0;
 }
 
 #controls {
@@ -89,18 +86,19 @@ main {
   cursor: pointer;
 }
 #controls button:hover { background: rgba(255,255,255,0.15); }
-#controls #saveResults { background: var(--bundesliga-gold); color: #1a1a1a; border-color: var(--bundesliga-gold); }
-#controls #exportBtn { background: var(--green); }
-#controls #importBtn { background: #1e90ff; }
+#refreshButton {
+  background: transparent;
+  border: 1px solid var(--line);
+}
 
-#spieleContainer, #tabelleContainer {
+#spieleContainer, #tabelleContainer, #figurenContainer {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px 20px;
   margin-bottom: 24px;
 }
-#spieleContainer h2, #tabelleContainer h2 {
+#spieleContainer h2, #tabelleContainer h2, #figurenContainer h2 {
   font-family: var(--headline-font);
   font-size: 1.3rem;
   margin-bottom: 12px;
@@ -136,21 +134,16 @@ main {
   font-weight: 800;
   font-size: 1.3rem;
 }
-.spiel-header .ergebnis input {
-  width: 50px;
-  padding: 4px 6px;
-  text-align: center;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: rgba(255,255,255,0.06);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 700;
+.ausstehend {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.95rem;
 }
-.spiel-header .ergebnis input:disabled {
-  opacity: 0.6;
-  background: rgba(255,255,255,0.02);
+.ergebnis-fest {
+  font-family: var(--headline-font);
+  font-size: 1.3rem;
 }
+
 .spiel-header .toggle-rasenschach {
   background: transparent;
   border: 1px solid var(--bundesliga-gold);
@@ -215,9 +208,6 @@ main {
   cursor: default;
   transition: all 0.15s;
 }
-.admin-mode .rasenschach-thesis .polarity-buttons button {
-  cursor: pointer;
-}
 .rasenschach-thesis .polarity-buttons button.active-positive {
   background: var(--green);
   border-color: var(--green);
@@ -270,136 +260,7 @@ main {
 #tabelle tr:nth-child(even) { background: rgba(255,255,255,0.03); }
 #tabelle .platz { font-weight: 800; }
 
-@media (max-width: 700px) {
-  header { flex-direction: column; align-items: stretch; gap: 8px; }
-  #controls { flex-direction: column; align-items: stretch; }
-  .spiel-header { flex-direction: column; align-items: stretch; gap: 6px; }
-  .spiel-header .team { text-align: center !important; }
-  .rasenschach-container { grid-template-columns: 1fr; }
-}
-/* ============================================================
-   NEU: statische GitHub-Version — Ladezustand, ausstehende Spiele,
-   Admin-Editor, Figuren-Leaderboard
-   ============================================================ */
-
-.lade-status {
-  max-width: 1400px;
-  margin: 0 auto 12px;
-  color: var(--bundesliga-gold);
-  font-size: 0.85rem;
-  min-height: 1.2em;
-}
-.lade-hinweis {
-  color: var(--muted);
-  font-size: 0.85rem;
-  padding: 10px 0;
-}
-
-.ausstehend {
-  color: var(--muted);
-  font-style: italic;
-  font-size: 0.95rem;
-}
-.ergebnis-fest {
-  font-family: var(--headline-font);
-  font-size: 1.3rem;
-}
-
-#refreshButton {
-  background: transparent;
-  border: 1px solid var(--line);
-}
-
-/* --- Admin-Editor pro Spiel --- */
-.edit-button {
-  background: var(--bundesliga-gold) !important;
-  color: #1a1a1a !important;
-  border-color: var(--bundesliga-gold) !important;
-}
-
-.admin-editor { display: none; margin-top: 12px; }
-.admin-editor.open { display: block; }
-.admin-editor-inner {
-  background: rgba(0,0,0,0.35);
-  border: 1px solid var(--bundesliga-gold);
-  border-radius: 6px;
-  padding: 14px;
-}
-.admin-editor-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 12px;
-}
-.admin-side h4 {
-  color: var(--bundesliga-gold);
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.admin-piece-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-.admin-piece-row .piece-name { flex: 1; font-size: 0.85rem; }
-.admin-piece-row input[type="number"] {
-  width: 55px;
-  padding: 4px 6px;
-  text-align: center;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: rgba(255,255,255,0.06);
-  color: white;
-}
-.admin-piece-row .polarity-buttons button { cursor: pointer; }
-
-.admin-randomizer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.85rem;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.admin-randomizer button {
-  background: var(--bundesliga-red);
-  border: none;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 700;
-}
-.admin-total {
-  font-weight: 800;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-}
-.admin-export-row { margin-bottom: 8px; }
-.export-button {
-  background: var(--green);
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 700;
-}
-.admin-hint {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-.admin-hint code {
-  background: rgba(255,255,255,0.08);
-  padding: 1px 5px;
-  border-radius: 3px;
-}
-
-/* --- Figuren-Leaderboard --- */
+/* ===== Figuren-Leaderboard ===== */
 .figuren-hint { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
 .figuren-grid {
   display: grid;
@@ -433,5 +294,9 @@ main {
 .figur-lb-row:first-child .lb-punkte { color: var(--bundesliga-gold); }
 
 @media (max-width: 700px) {
-  .admin-editor-grid { grid-template-columns: 1fr; }
+  header { flex-direction: column; align-items: stretch; gap: 8px; }
+  #controls { flex-direction: column; align-items: stretch; }
+  .spiel-header { flex-direction: column; align-items: stretch; gap: 6px; }
+  .spiel-header .team { text-align: center !important; }
+  .rasenschach-container { grid-template-columns: 1fr; }
 }

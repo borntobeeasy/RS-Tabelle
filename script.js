@@ -1,5 +1,5 @@
 // ============================================================
-//  RASENSCHACH — 2. Bundesliga (statische GitHub-Pages-Version)
+//  RASENSCHACH — 2. Bundesliga (nur Anzeige, kein Admin)
 // ============================================================
 const CFG = window.RS_CONFIG;
 
@@ -10,21 +10,15 @@ const PIECES = [
   { id: 'queen',  name: 'Dame',     wert: '+1' },
   { id: 'king',   name: 'König',    wert: '+/-3' },
 ];
-const PIECE_BASE = { rook: 3, bishop: 1, knight: 1, queen: 1, king: 3 };
+const PIECE_BASE = { rook: 3, bishop: 1, knight: 1, queen: 1, king: 1 };
 
-// ============================================================
-//  STATE
-// ============================================================
-let spielplan = null;          // aus data/spielplan.json
-let fileIndex = {};             // { spieltagNr: [ {path, name} ] }  — aus dem GitHub-Baum
-let gameCache = {};              // { path: geparste JSON-Daten }
+let spielplan = null;
+let fileIndex = {};
+let gameCache = {};
 let aktuellerSpieltag = 1;
-let isAdmin = false;
-let editingFixtureKey = null;   // "heim||auswaerts" des Spiels, das gerade im Admin-Modus bearbeitet wird
-let editingData = null;         // Arbeitskopie der rasenschach-Daten während der Bearbeitung
 
 // ============================================================
-//  RASENSCHACH-PUNKTE (identische Formel wie im Spielsystem)
+//  RASENSCHACH-PUNKTE
 // ============================================================
 function berechneEinzelPunkt(a, questionValue) {
   if (!a.polarity) return 0;
@@ -99,8 +93,6 @@ async function loadSpielplan() {
   spielplan = await res.json();
 }
 
-// Ein einziger Aufruf des GitHub-API-Baums verrät uns ALLE hochgeladenen
-// Dateien in ALLEN Spieltag-Ordnern auf einmal (schont das API-Rate-Limit).
 async function loadFileIndex(force) {
   const cacheKey = `rs_tree_${CFG.owner}_${CFG.repo}_${CFG.branch}`;
   if (!force) {
@@ -135,7 +127,6 @@ async function loadGameFile(path) {
   return data;
 }
 
-// Zu einem Spieltag + Fixture (heim/auswaerts) die passende hochgeladene Datei finden
 async function findUploadedGame(spieltagNr, heim, auswaerts) {
   const files = fileIndex[spieltagNr] || [];
   const wantKey = fixtureKey(heim, auswaerts);
@@ -152,7 +143,6 @@ async function findUploadedGame(spieltagNr, heim, auswaerts) {
   return null;
 }
 
-// Alle Spiele der ganzen Saison laden (für Tabelle & Figuren-Leaderboard)
 async function loadAllPlayedGames() {
   const alle = [];
   for (let nr = 1; nr <= 34; nr++) {
@@ -203,13 +193,11 @@ function renderSpielCard(spieltagNr, fx, game) {
       <span class="team heim">${escapeHtml(fx.heim)}</span>
       <span class="ergebnis">${ergebnisHtml}</span>
       <span class="team auswaerts">${escapeHtml(fx.auswaerts)}</span>
-      ${game && game.rasenschach ? `<button class="toggle-rasenschach" data-key="${key}">Brett anzeigen</button>` : ''}
-      ${isAdmin ? `<button class="edit-button" data-heim="${escapeHtml(fx.heim)}" data-auswaerts="${escapeHtml(fx.auswaerts)}" data-spieltag="${spieltagNr}">✏️ Bewerten</button>` : ''}
+      ${game && game.rasenschach ? `<button class="toggle-rasenschach" data-key="${key}">♟️ Brett anzeigen</button>` : ''}
     </div>
     <div class="rasenschach-container" data-container="${key}">
       ${game && game.rasenschach ? renderRasenschachBoard(game.rasenschach, fx) : ''}
     </div>
-    <div class="admin-editor" data-editor="${key}"></div>
   `;
 
   const toggleBtn = div.querySelector('.toggle-rasenschach');
@@ -217,12 +205,8 @@ function renderSpielCard(spieltagNr, fx, game) {
     toggleBtn.addEventListener('click', () => {
       const cont = div.querySelector(`[data-container="${key}"]`);
       cont.classList.toggle('open');
-      toggleBtn.textContent = cont.classList.contains('open') ? 'Brett ausblenden' : 'Brett anzeigen';
+      toggleBtn.textContent = cont.classList.contains('open') ? '♟️ Brett ausblenden' : '♟️ Brett anzeigen';
     });
-  }
-  const editBtn = div.querySelector('.edit-button');
-  if (editBtn) {
-    editBtn.addEventListener('click', () => openAdminEditor(div, spieltagNr, fx, game));
   }
 
   return div;
@@ -255,7 +239,7 @@ function renderSeite(side, sideData, questionValue) {
       <div class="rasenschach-thesis">
         <strong>${p.name}</strong>
         <span class="polarity-buttons">
-          <button class="${a?.polarity ? polClass : ''}" disabled>${a?.polarity === 'positive' ? '+' : a?.polarity === 'negative' ? '−' : '•'}</button>
+          <button class="${polClass}" disabled>${a?.polarity === 'positive' ? '+' : a?.polarity === 'negative' ? '−' : '•'}</button>
         </span>
         <span class="punkte">${score}</span>
       </div>
@@ -373,148 +357,6 @@ async function renderFigurenLeaderboard() {
 }
 
 // ============================================================
-//  ADMIN: BEWERTUNGS-EDITOR (rein lokal, mit JSON-Export)
-// ============================================================
-function toggleAdmin() {
-  if (isAdmin) {
-    isAdmin = false;
-    document.getElementById('adminStatus').textContent = '(Beobachter)';
-    document.getElementById('adminToggle').textContent = '🔐 Admin-Modus';
-    document.body.classList.remove('admin-mode');
-    renderSpieltag(aktuellerSpieltag);
-    return;
-  }
-  const pwd = prompt('Admin-Passwort:');
-  if (pwd === CFG.adminPassword) {
-    isAdmin = true;
-    document.getElementById('adminStatus').textContent = '(Admin — nur lokal, Änderungen musst du selbst als Datei hochladen)';
-    document.getElementById('adminToggle').textContent = '🔓 Beobachter-Modus';
-    document.body.classList.add('admin-mode');
-    renderSpieltag(aktuellerSpieltag);
-  } else if (pwd !== null) {
-    alert('Falsches Passwort!');
-  }
-}
-
-function openAdminEditor(cardEl, spieltagNr, fx, existingGame) {
-  const key = fixtureKey(fx.heim, fx.auswaerts);
-  const editorEl = cardEl.querySelector(`[data-editor="${key}"]`);
-
-  if (editingFixtureKey === key) {
-    // schon offen -> schließen
-    editingFixtureKey = null;
-    editingData = null;
-    editorEl.innerHTML = '';
-    editorEl.classList.remove('open');
-    return;
-  }
-
-  editingFixtureKey = key;
-  editingData = existingGame?.rasenschach
-    ? JSON.parse(JSON.stringify(existingGame.rasenschach))
-    : leereRasenschach();
-
-  editorEl.classList.add('open');
-  renderAdminEditorContent(editorEl, spieltagNr, fx);
-}
-
-function renderAdminEditorContent(editorEl, spieltagNr, fx) {
-  const punkte = berechneGesamtPunkte(editingData);
-  editorEl.innerHTML = `
-    <div class="admin-editor-inner">
-      <div class="admin-editor-grid">
-        ${renderAdminSeite('white', fx.heim, editingData.white)}
-        ${renderAdminSeite('black', fx.auswaerts, editingData.black)}
-      </div>
-      <div class="admin-randomizer">
-        <span>? Feld (Springer positiv): <strong>${editingData.questionValue === null ? 'nicht gewürfelt' : (editingData.questionValue > 0 ? '+' : '') + editingData.questionValue}</strong></span>
-        <button data-action="wuerfeln">🎲 -3 bis +3 würfeln</button>
-      </div>
-      <div class="admin-total">Aktueller Stand: ${punkte.white} : ${punkte.black}</div>
-      <div class="admin-export-row">
-        <button data-action="export" class="export-button">📥 JSON exportieren (zum Hochladen bei GitHub)</button>
-      </div>
-      <p class="admin-hint">
-        Nach dem Export: Datei in den Ordner <code>data/spieltag-${String(spieltagNr).padStart(2, '0')}/</code>
-        deines GitHub-Repos hochladen (z.B. als „${dateiname(spieltagNr, fx)}“).
-      </p>
-    </div>
-  `;
-
-  editorEl.querySelectorAll('[data-polarity]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const side = btn.dataset.side;
-      const pieceId = btn.dataset.piece;
-      const value = btn.dataset.polarity === '' ? null : btn.dataset.polarity;
-      const a = editingData[side].assignments.find(x => x.piece === pieceId);
-      if (a) a.polarity = value;
-      renderAdminEditorContent(editorEl, spieltagNr, fx);
-    });
-  });
-  editorEl.querySelectorAll('[data-result]').forEach(input => {
-    input.addEventListener('input', () => {
-      const side = input.dataset.side;
-      const pieceId = input.dataset.piece;
-      editingData[side].results[pieceId] = Number(input.value) || 0;
-      renderAdminEditorContent(editorEl, spieltagNr, fx);
-    });
-  });
-  const wuerfelBtn = editorEl.querySelector('[data-action="wuerfeln"]');
-  if (wuerfelBtn) {
-    wuerfelBtn.addEventListener('click', () => {
-      const werte = [-3, -2, -1, 1, 2, 3];
-      editingData.questionValue = werte[Math.floor(Math.random() * werte.length)];
-      renderAdminEditorContent(editorEl, spieltagNr, fx);
-    });
-  }
-  const exportBtn = editorEl.querySelector('[data-action="export"]');
-  if (exportBtn) {
-    exportBtn.addEventListener('click', () => exportSpielJSON(spieltagNr, fx));
-  }
-}
-
-function renderAdminSeite(side, teamName, sideData) {
-  let rows = '';
-  PIECES.forEach(p => {
-    const a = sideData.assignments.find(x => x.piece === p.id);
-    rows += `
-      <div class="admin-piece-row">
-        <span class="piece-name">${p.name}</span>
-        <input type="number" data-result data-side="${side}" data-piece="${p.id}" value="${sideData.results[p.id]}" />
-        <span class="polarity-buttons">
-          <button class="${a.polarity === 'positive' ? 'active-positive' : ''}" data-polarity="positive" data-side="${side}" data-piece="${p.id}">+</button>
-          <button class="${!a.polarity ? 'active-neutral' : ''}" data-polarity="" data-side="${side}" data-piece="${p.id}">•</button>
-          <button class="${a.polarity === 'negative' ? 'active-negative' : ''}" data-polarity="negative" data-side="${side}" data-piece="${p.id}">−</button>
-        </span>
-      </div>
-    `;
-  });
-  return `<div class="admin-side"><h4>${escapeHtml(teamName)}</h4>${rows}</div>`;
-}
-
-function dateiname(spieltagNr, fx) {
-  const safe = s => s.replace(/[\\/:*?"<>|]/g, '');
-  return `Spieltag-${spieltagNr}-${safe(fx.heim)}-vs-${safe(fx.auswaerts)}.json`;
-}
-
-function exportSpielJSON(spieltagNr, fx) {
-  const payload = {
-    heim: fx.heim,
-    auswaerts: fx.auswaerts,
-    rasenschach: editingData,
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = dateiname(spieltagNr, fx);
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-
-// ============================================================
 //  HELFER
 // ============================================================
 function escapeHtml(str) {
@@ -553,7 +395,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderSpieltag(aktuellerSpieltag);
   });
 
-  document.getElementById('adminToggle').addEventListener('click', toggleAdmin);
   document.getElementById('refreshButton').addEventListener('click', async () => {
     statusEl.textContent = 'Aktualisiere…';
     gameCache = {};
