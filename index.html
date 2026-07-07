@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasenschach - Spiel Übersicht</title>
+    <title>2. Bundesliga 2026/27 – Rasenschach</title>
     <style>
         * {
             margin: 0;
@@ -13,9 +13,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
         }
 
         .container {
@@ -23,34 +24,25 @@
             margin: 0 auto;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            padding: 30px;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 2.5em;
-        }
-
-        .controls {
-            margin-bottom: 30px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .file-input-wrapper {
-            position: relative;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
             overflow: hidden;
-            display: inline-block;
         }
 
-        .file-input-wrapper input[type=file] {
-            position: absolute;
-            left: -9999px;
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        #adminPanel {
+            margin-top: 15px;
+            text-align: center;
         }
 
         .btn {
@@ -58,164 +50,129 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.95em;
             transition: all 0.3s;
             font-weight: bold;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #2a5298;
             color: white;
+            border: 2px solid white;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: white;
+            color: #2a5298;
         }
 
-        .btn-secondary {
-            background: #764ba2;
-            color: white;
+        main {
+            padding: 30px 20px;
         }
 
-        .btn-secondary:hover {
-            background: #653d8a;
+        #controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
         }
 
-        .status {
-            padding: 10px 15px;
-            border-radius: 5px;
+        #controls label {
             font-weight: bold;
+            color: #1e3c72;
         }
 
-        .status.success {
-            background: #d4edda;
-            color: #155724;
+        #controls select {
+            padding: 8px 15px;
+            border: 2px solid #2a5298;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
         }
 
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .status.info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-
-        /* Tabelle */
-        .table-wrapper {
-            overflow-x: auto;
+        section {
             margin-bottom: 40px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        h2 {
+            color: #1e3c72;
             margin-bottom: 20px;
-        }
-
-        th {
-            background: #667eea;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tr:hover {
-            background: #f5f5f5;
-        }
-
-        .game-name {
-            font-weight: bold;
-            color: #667eea;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        .score {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .team {
-            background: #f9f9f9;
-            padding: 5px 10px;
-            border-radius: 3px;
-            display: inline-block;
-        }
-
-        /* Spieldetails */
-        .game-details {
-            background: #f9f9f9;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            padding: 30px;
-            margin-top: 30px;
-        }
-
-        .game-details h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            text-align: center;
             font-size: 1.8em;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 10px;
         }
 
-        .game-info {
+        .spiele-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
 
-        .info-block {
+        .spiel-card {
             background: white;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #667eea;
-        }
-
-        .info-label {
-            font-weight: bold;
-            color: #667eea;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .info-value {
-            font-size: 1.1em;
-            color: #333;
-        }
-
-        /* Schachbrett */
-        .board-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .board-wrapper {
-            background: white;
-            padding: 20px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .board-title {
-            font-weight: bold;
-            text-align: center;
+        .spiel-card:hover {
+            border-color: #2a5298;
+            box-shadow: 0 5px 20px rgba(42, 82, 152, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .spiel-card.open {
+            border-color: #2a5298;
+            background: #f0f5ff;
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
+        }
+
+        .team-name {
+            flex: 1;
+            font-weight: bold;
             color: #333;
+        }
+
+        .team-heim {
+            text-align: left;
+            color: #2a5298;
+        }
+
+        .team-auswaerts {
+            text-align: right;
+            color: #666;
+        }
+
+        .match-score {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1e3c72;
+            min-width: 80px;
+        }
+
+        .match-score.no-result {
+            color: #999;
+        }
+
+        .brett-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
         }
 
         .chess-board {
@@ -224,7 +181,9 @@
             gap: 0;
             aspect-ratio: 1;
             background: #999;
-            border: 2px solid #333;
+            border: 3px solid #333;
+            margin-bottom: 15px;
+            max-width: 300px;
         }
 
         .square {
@@ -232,10 +191,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: 2em;
             font-weight: bold;
             position: relative;
-            cursor: default;
         }
 
         .square.light {
@@ -251,319 +209,331 @@
             filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
         }
 
-        .score-display {
-            text-align: center;
-            margin-top: 15px;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .score-display .white {
-            color: #666;
-        }
-
-        .score-display .black {
-            color: #333;
-        }
-
-        /* Thesen */
-        .theses-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
-            border: 1px solid #ddd;
-        }
-
-        .theses-section h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-        }
-
-        .thesis {
-            background: #f9f9f9;
-            padding: 10px;
-            margin: 8px 0;
-            border-left: 3px solid #667eea;
-            border-radius: 3px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .empty-state p {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .board-container {
-                grid-template-columns: 1fr;
-            }
-
-            .square {
-                font-size: 2em;
-            }
-        }
-
-        .piece-legend {
+        .theses {
             background: #f9f9f9;
             padding: 15px;
             border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 0.9em;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-left: 4px solid #2a5298;
         }
 
-        .piece-legend strong {
-            display: block;
-            margin-bottom: 10px;
-            color: #667eea;
+        .thesis {
+            font-size: 0.85em;
+            color: #555;
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .legend-row {
+        .thesis:last-child {
+            border-bottom: none;
+        }
+
+        .tabelle-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: #1e3c72;
+            color: white;
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        tr.head-team td:first-child {
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .figuren-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .figur-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .figur-name {
+            font-weight: bold;
+            color: #2a5298;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .figur-leaderboard {
             margin-top: 10px;
         }
 
-        .legend-item {
+        .figur-entry {
             display: flex;
-            gap: 5px;
-            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .figur-entry:last-child {
+            border-bottom: none;
+        }
+
+        .figur-rank {
+            color: #2a5298;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .figuren-hint {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .admin-status {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            #controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #controls select {
+                width: 100%;
+            }
+
+            .spiele-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chess-board {
+                max-width: 100%;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>♟ Rasenschach - Spiel Übersicht</h1>
-
-        <div class="controls">
-            <div class="file-input-wrapper">
-                <input type="file" id="fileInput" accept=".json" multiple>
-                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
-                    📁 Dateien hochladen
-                </button>
+        <header>
+            <h1>⚽ 2. Bundesliga 2026/27 – Rasenschach</h1>
+            <div id="adminPanel">
+                <button class="btn btn-primary" id="adminToggle">🔐 Admin-Modus</button>
+                <span class="admin-status" id="adminStatus">(Beobachter)</span>
             </div>
-            <button class="btn btn-secondary" onclick="loadFromLocalStorage()">
-                💾 Gespeicherte Spiele laden
-            </button>
-            <button class="btn btn-secondary" onclick="clearAllData()">
-                🗑️ Alle Daten löschen
-            </button>
-            <div id="status"></div>
-        </div>
+        </header>
 
-        <div class="table-wrapper">
-            <table id="gamesTable">
-                <thead>
-                    <tr>
-                        <th>Spiel</th>
-                        <th>Weiß</th>
-                        <th>Schwarz</th>
-                        <th>Ergebnis</th>
-                        <th>Aktion</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
-        </div>
+        <main>
+            <section id="controls">
+                <label for="spieltagSelect">Spieltag:</label>
+                <select id="spieltagSelect"></select>
+                <button class="btn btn-primary" id="refreshButton">🔄 Aktualisieren</button>
+            </section>
 
-        <div id="gameDetails"></div>
+            <section id="spieleContainer">
+                <h2>Spiele des Spieltags</h2>
+                <div id="spieleListe" class="spiele-grid"></div>
+            </section>
+
+            <section id="tabelleContainer">
+                <h2>Tabelle</h2>
+                <div id="tabelle" class="tabelle-container"></div>
+            </section>
+
+            <section id="figurenContainer">
+                <h2>Figuren-Leaderboard</h2>
+                <p class="figuren-hint">Wer holt saisonweit mit welcher Figur die meisten Punkte?</p>
+                <div id="figurenLeaderboard" class="figuren-grid"></div>
+            </section>
+        </main>
     </div>
 
     <script>
-        let gamesData = [];
+        // GitHub API Configuration
+        const GITHUB_OWNER = 'borntobeeasy';
+        const GITHUB_REPO = 'RS-Tabelle';
+        const GITHUB_BRANCH = 'main';
+        const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents`;
 
-        document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+        let spielplan = null;
+        let alleSpiele = {};
+        let currentSpielTag = 1;
 
-        function handleFileUpload(e) {
-            const files = Array.from(e.target.files);
-            let loaded = 0;
-            let errors = 0;
-
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const data = JSON.parse(event.target.result);
-                        if (validateGameData(data)) {
-                            gamesData.push(data);
-                            loaded++;
-                            localStorage.setItem('rasenschach_games', JSON.stringify(gamesData));
-                            updateTable();
-                            showStatus(`✅ "${file.name}" erfolgreich geladen!`, 'success');
-                        } else {
-                            errors++;
-                            showStatus(`⚠️ "${file.name}" hat ungültiges Format!`, 'error');
-                        }
-                    } catch (err) {
-                        errors++;
-                        showStatus(`❌ Fehler beim Laden von "${file.name}": ${err.message}`, 'error');
-                    }
-                };
-                reader.readAsText(file);
-            });
-
-            e.target.value = '';
-        }
-
-        function validateGameData(data) {
-            return data.app === 'rasenschach' && 
-                   data.data && 
-                   data.data.positions && 
-                   data.data.names;
-        }
-
-        function updateTable() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-
-            if (gamesData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 40px; color: #999;">Keine Spiele geladen. Bitte Dateien hochladen.</td></tr>';
-                return;
+        async function loadSpielplan() {
+            try {
+                const response = await fetch(`${API_BASE}/data/spielplan.json?ref=${GITHUB_BRANCH}`);
+                const data = await response.json();
+                const content = atob(data.content);
+                spielplan = JSON.parse(content);
+                initializeUI();
+                await loadAllGames();
+                updateDisplay();
+            } catch (error) {
+                console.error('Fehler beim Laden des Spielplans:', error);
+                document.getElementById('spieleListe').innerHTML = '<div class="loading">Fehler beim Laden der Daten</div>';
             }
+        }
 
-            gamesData.forEach((game, index) => {
-                const names = game.data.names;
-                const results = game.data.results;
-                
-                const whitePieces = results.white;
-                const blackPieces = results.black;
-                
-                const whiteScore = Object.values(whitePieces).reduce((a, b) => a + b, 0);
-                const blackScore = Object.values(blackPieces).reduce((a, b) => a + b, 0);
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><span class="game-name" onclick="showGameDetails(${index})">Spiel ${index + 1}</span></td>
-                    <td><span class="team">${names.white}</span></td>
-                    <td><span class="team">${names.black}</span></td>
-                    <td class="score">${whiteScore} - ${blackScore}</td>
-                    <td><button class="btn btn-primary" onclick="showGameDetails(${index})" style="padding: 5px 10px; font-size: 0.9em;">Anzeigen</button></td>
-                `;
-                tbody.appendChild(row);
+        function initializeUI() {
+            const select = document.getElementById('spieltagSelect');
+            for (let i = 1; i <= spielplan.spieltage.length; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Spieltag ${i}`;
+                select.appendChild(option);
+            }
+            select.addEventListener('change', (e) => {
+                currentSpielTag = parseInt(e.target.value);
+                updateDisplay();
             });
         }
 
-        function showGameDetails(index) {
-            const game = gamesData[index];
-            if (!game) return;
-
-            const names = game.data.names;
-            const positions = game.data.positions;
-            const results = game.data.results;
-            const theses = game.data.theses || [];
-
-            const whitePieces = results.white;
-            const blackPieces = results.black;
-            
-            const whiteScore = Object.values(whitePieces).reduce((a, b) => a + b, 0);
-            const blackScore = Object.values(blackPieces).reduce((a, b) => a + b, 0);
-
-            let html = `
-                <div class="game-details">
-                    <h2>Spiel ${index + 1}: ${names.white} vs ${names.black}</h2>
-                    
-                    <div class="game-info">
-                        <div class="info-block">
-                            <div class="info-label">Weiße Team</div>
-                            <div class="info-value">${names.white}</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info-label">Schwarze Team</div>
-                            <div class="info-value">${names.black}</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info-label">Gesamtstand</div>
-                            <div class="info-value" style="font-size: 1.5em; text-align: center;">
-                                <span class="white">${whiteScore}</span> - <span class="black">${blackScore}</span>
-                            </div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info-label">Figuren (Weiß)</div>
-                            <div class="info-value">${formatPieces(whitePieces)}</div>
-                        </div>
-                        <div class="info-block">
-                            <div class="info-label">Figuren (Schwarz)</div>
-                            <div class="info-value">${formatPieces(blackPieces)}</div>
-                        </div>
-                    </div>
-
-                    <div class="piece-legend">
-                        <strong>Schachbrett-Legende:</strong>
-                        <div class="legend-row">
-                            <div class="legend-item"><span>♔♚</span> König</div>
-                            <div class="legend-item"><span>♕♛</span> Dame</div>
-                            <div class="legend-item"><span>♖♜</span> Turm</div>
-                            <div class="legend-item"><span>♗♝</span> Läufer</div>
-                            <div class="legend-item"><span>♘♞</span> Springer</div>
-                            <div class="legend-item"><span>♙♟</span> Bauer</div>
-                        </div>
-                    </div>
-
-                    <div class="board-container">
-                        <div class="board-wrapper">
-                            <div class="board-title">Brett Position</div>
-                            ${renderBoard(positions)}
-                        </div>
-                    </div>
-
-                    ${theses.length > 0 ? `
-                        <div class="theses-section">
-                            <h3>Thesen des Spiels</h3>
-                            ${theses.map(thesis => `<div class="thesis">${thesis}</div>`).join('')}
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-
-            document.getElementById('gameDetails').innerHTML = html;
-            document.querySelector('html').scrollIntoView({ behavior: 'smooth' });
+        async function loadAllGames() {
+            alleSpiele = {};
+            for (let st = 1; st <= spielplan.spieltage.length; st++) {
+                const spieltag = spielplan.spieltage[st - 1];
+                for (const spiel of spieltag) {
+                    const fileName = generateFileName(spiel.heim, spiel.auswaerts);
+                    try {
+                        const response = await fetch(`${API_BASE}/data/spieltag-${String(st).padStart(2, '0')}/${fileName}.json?ref=${GITHUB_BRANCH}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const content = atob(data.content);
+                            alleSpiele[`${st}-${spiel.heim}-${spiel.auswaerts}`] = JSON.parse(content);
+                        }
+                    } catch (error) {
+                        console.log(`Spiel nicht gefunden: ${fileName}`);
+                    }
+                }
+            }
         }
 
-        function renderBoard(positions) {
-            let board = '<div class="chess-board">';
+        function generateFileName(heim, auswaerts) {
+            const sanitize = (name) => name.toLowerCase()
+                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')
+                .replace(/[^a-z0-9]/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+            return `${sanitize(heim)}-vs-${sanitize(auswaerts)}`;
+        }
+
+        function updateDisplay() {
+            updateSpiele();
+            updateTabelle();
+            updateFiguren();
+        }
+
+        function updateSpiele() {
+            const spieleListe = document.getElementById('spieleListe');
+            const spieltag = spielplan.spieltage[currentSpielTag - 1];
             
+            spieleListe.innerHTML = '';
+            spieltag.forEach((spiel) => {
+                const gameKey = `${currentSpielTag}-${spiel.heim}-${spiel.auswaerts}`;
+                const gameData = alleSpiele[gameKey];
+                
+                const card = document.createElement('div');
+                card.className = 'spiel-card' + (gameData ? ' open' : '');
+                
+                let scoreHtml = '';
+                if (gameData) {
+                    const whiteScore = Object.values(gameData.data.results.white).reduce((a, b) => a + b, 0);
+                    const blackScore = Object.values(gameData.data.results.black).reduce((a, b) => a + b, 0);
+                    scoreHtml = `<div class="match-score">${whiteScore} : ${blackScore}</div>`;
+                } else {
+                    scoreHtml = `<div class="match-score no-result">-:-</div>`;
+                }
+                
+                let boardHtml = '';
+                if (gameData) {
+                    boardHtml = `
+                        <div class="brett-container">
+                            <div class="chess-board">
+                                ${renderBoardHTML(gameData.data.positions)}
+                            </div>
+                            ${renderThesesHTML(gameData.data.theses)}
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    <div class="match-header">
+                        <div class="team-name team-heim">${spiel.heim}</div>
+                        ${scoreHtml}
+                        <div class="team-name team-auswaerts">${spiel.auswaerts}</div>
+                    </div>
+                    ${boardHtml}
+                `;
+                
+                spieleListe.appendChild(card);
+            });
+        }
+
+        function renderBoardHTML(positions) {
+            let html = '';
             for (let row = 8; row >= 1; row--) {
                 for (let col = 1; col <= 8; col++) {
                     const isLight = (row + col) % 2 === 0;
                     const squareClass = isLight ? 'light' : 'dark';
                     
-                    const position = positions.find(p => 
-                        p.id === (row - 1) * 8 + col
-                    );
-                    
+                    const position = positions.find(p => p.id === (row - 1) * 8 + col);
                     let pieceHtml = '';
                     if (position && position.piece) {
                         const symbol = getPieceSymbol(position.piece, position.side);
                         pieceHtml = `<span class="piece">${symbol}</span>`;
                     }
                     
-                    board += `<div class="square ${squareClass}">${pieceHtml}</div>`;
+                    html += `<div class="square ${squareClass}">${pieceHtml}</div>`;
                 }
             }
-            
-            board += '</div>';
-            
-            const whiteScore = positions.filter(p => p.side === 'white' && p.piece).length;
-            const blackScore = positions.filter(p => p.side === 'black' && p.piece).length;
-            
-            board += `<div class="score-display"><span class="white">♙ ${whiteScore}</span> | <span class="black">♟ ${blackScore}</span></div>`;
-            
-            return board;
+            return html;
         }
 
         function getPieceSymbol(piece, side) {
@@ -578,47 +548,173 @@
             return pieceMap[piece] ? pieceMap[piece][side] : '?';
         }
 
-        function formatPieces(pieces) {
-            return Object.entries(pieces)
-                .filter(([key, val]) => val > 0)
-                .map(([key, val]) => `${key}: ${val}`)
-                .join(', ') || 'Keine';
+        function renderThesesHTML(theses) {
+            const whiteTheses = theses.filter(t => t.team === 'white').slice(0, 5);
+            const blackTheses = theses.filter(t => t.team === 'black').slice(0, 5);
+            
+            return `
+                <div class="theses">
+                    <strong style="color: #2a5298;">Weiß:</strong>
+                    ${whiteTheses.map(t => `<div class="thesis">✓ ${t.text.substring(0, 50)}...</div>`).join('')}
+                    <strong style="color: #666; margin-top: 10px; display: block;">Schwarz:</strong>
+                    ${blackTheses.map(t => `<div class="thesis">✓ ${t.text.substring(0, 50)}...</div>`).join('')}
+                </div>
+            `;
         }
 
-        function showStatus(message, type) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
-            setTimeout(() => {
-                statusDiv.innerHTML = '';
-            }, 4000);
-        }
+        function updateTabelle() {
+            const tabelle = document.getElementById('tabelle');
+            
+            // Calculate standings
+            const standings = {};
+            spielplan.teams.forEach(team => {
+                standings[team] = {
+                    team: team,
+                    spiele: 0,
+                    siege: 0,
+                    unentschieden: 0,
+                    niederlagen: 0,
+                    tore: 0,
+                    gegentore: 0,
+                    punkte: 0
+                };
+            });
 
-        function loadFromLocalStorage() {
-            const stored = localStorage.getItem('rasenschach_games');
-            if (stored) {
-                try {
-                    gamesData = JSON.parse(stored);
-                    updateTable();
-                    showStatus(`✅ ${gamesData.length} Spiel(e) aus Speicher geladen!`, 'success');
-                } catch (err) {
-                    showStatus('❌ Fehler beim Laden aus Speicher!', 'error');
-                }
-            } else {
-                showStatus('ℹ️ Keine gespeicherten Spiele vorhanden!', 'info');
+            // Iterate through all played games up to current matchday
+            for (let st = 1; st <= currentSpielTag; st++) {
+                const spieltag = spielplan.spieltage[st - 1];
+                spieltag.forEach((spiel) => {
+                    const gameKey = `${st}-${spiel.heim}-${spiel.auswaerts}`;
+                    const gameData = alleSpiele[gameKey];
+                    
+                    if (gameData) {
+                        const heimScore = Object.values(gameData.data.results.white).reduce((a, b) => a + b, 0);
+                        const auswScore = Object.values(gameData.data.results.black).reduce((a, b) => a + b, 0);
+                        
+                        standings[spiel.heim].spiele++;
+                        standings[spiel.auswaerts].spiele++;
+                        standings[spiel.heim].tore += heimScore;
+                        standings[spiel.heim].gegentore += auswScore;
+                        standings[spiel.auswaerts].tore += auswScore;
+                        standings[spiel.auswaerts].gegentore += heimScore;
+                        
+                        if (heimScore > auswScore) {
+                            standings[spiel.heim].siege++;
+                            standings[spiel.heim].punkte += 3;
+                            standings[spiel.auswaerts].niederlagen++;
+                        } else if (heimScore < auswScore) {
+                            standings[spiel.auswaerts].siege++;
+                            standings[spiel.auswaerts].punkte += 3;
+                            standings[spiel.heim].niederlagen++;
+                        } else {
+                            standings[spiel.heim].unentschieden++;
+                            standings[spiel.auswaerts].unentschieden++;
+                            standings[spiel.heim].punkte += 1;
+                            standings[spiel.auswaerts].punkte += 1;
+                        }
+                    }
+                });
             }
+
+            // Sort standings
+            const sorted = Object.values(standings).sort((a, b) => {
+                if (b.punkte !== a.punkte) return b.punkte - a.punkte;
+                return (b.tore - b.gegentore) - (a.tore - a.gegentore);
+            });
+
+            // Generate table HTML
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">#</th>
+                            <th>Team</th>
+                            <th style="text-align: center;">S</th>
+                            <th style="text-align: center;">U</th>
+                            <th style="text-align: center;">N</th>
+                            <th style="text-align: center;">Tore</th>
+                            <th style="text-align: center;">Diff.</th>
+                            <th style="text-align: center; font-weight: bold;">Punkte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            sorted.forEach((team, index) => {
+                const diff = team.tore - team.gegentore;
+                const diffClass = diff > 0 ? 'style="color: green;"' : diff < 0 ? 'style="color: red;"' : '';
+                html += `
+                    <tr class="head-team">
+                        <td style="text-align: center; font-weight: bold;">${index + 1}</td>
+                        <td>${team.team}</td>
+                        <td style="text-align: center;">${team.siege}</td>
+                        <td style="text-align: center;">${team.unentschieden}</td>
+                        <td style="text-align: center;">${team.niederlagen}</td>
+                        <td style="text-align: center;">${team.tore}:${team.gegentore}</td>
+                        <td style="text-align: center;" ${diffClass}>${diff > 0 ? '+' : ''}${diff}</td>
+                        <td style="text-align: center; font-weight: bold; color: #2a5298;">${team.punkte}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            tabelle.innerHTML = html;
         }
 
-        function clearAllData() {
-            if (confirm('Sollen wirklich alle Daten gelöscht werden?')) {
-                gamesData = [];
-                localStorage.removeItem('rasenschach_games');
-                document.getElementById('gameDetails').innerHTML = '';
-                updateTable();
-                showStatus('✅ Alle Daten wurden gelöscht!', 'success');
-            }
+        function updateFiguren() {
+            const figurenLeaderboard = document.getElementById('figurenLeaderboard');
+            const figurenStats = {
+                'king': [], 'queen': [], 'rook': [], 'bishop': [], 'knight': [], 'pawn': []
+            };
+
+            // Collect stats from all games
+            Object.values(alleSpiele).forEach((game) => {
+                game.data.results.white && Object.entries(game.data.results.white).forEach(([fig, count]) => {
+                    if (figurenStats[fig]) {
+                        figurenStats[fig].push({ team: game.data.names.white, punkte: count });
+                    }
+                });
+                game.data.results.black && Object.entries(game.data.results.black).forEach(([fig, count]) => {
+                    if (figurenStats[fig]) {
+                        figurenStats[fig].push({ team: game.data.names.black, punkte: count });
+                    }
+                });
+            });
+
+            // Render figure cards
+            figurenLeaderboard.innerHTML = '';
+            Object.entries(figurenStats).forEach(([figName, data]) => {
+                const sorted = data.sort((a, b) => b.punkte - a.punkte).slice(0, 5);
+                const card = document.createElement('div');
+                card.className = 'figur-card';
+                card.innerHTML = `
+                    <div class="figur-name">${getPieceSymbol(figName, 'white')} ${figName.toUpperCase()}</div>
+                    <div class="figur-leaderboard">
+                        ${sorted.map((entry, idx) => `
+                            <div class="figur-entry">
+                                <span class="figur-rank">#${idx + 1}</span>
+                                <span>${entry.team}</span>
+                                <span style="color: #2a5298; font-weight: bold;">${entry.punkte}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                figurenLeaderboard.appendChild(card);
+            });
         }
 
-        loadFromLocalStorage();
+        document.getElementById('refreshButton').addEventListener('click', async () => {
+            document.getElementById('spieleListe').innerHTML = '<div class="loading">Aktualisiere...</div>';
+            await loadAllGames();
+            updateDisplay();
+        });
+
+        document.getElementById('adminToggle').addEventListener('click', () => {
+            alert('Admin-Modus ist für diese Version deaktiviert. Änderungen nur via GitHub möglich.');
+        });
+
+        // Initialize on load
+        loadSpielplan();
     </script>
 </body>
 </html>
