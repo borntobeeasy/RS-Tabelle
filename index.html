@@ -219,11 +219,11 @@
     }
 
     /* ============================
-       SPIELTAG-CARDS
+       SPIELTAG-CARDS mit Logo & Ergebnis
        ============================ */
     .spieltag-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
     }
     .spiel-card {
@@ -249,10 +249,40 @@
       font-weight: 700;
       font-size: 0.9rem;
     }
-    .spiel-card .teams .vs {
-      color: var(--muted);
-      font-size: 0.6rem;
-      font-weight: 400;
+    .spiel-card .team-block {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+    .spiel-card .team-block.heim { justify-content: flex-start; }
+    .spiel-card .team-block.auswaerts { justify-content: flex-end; }
+    .spiel-card .team-logo-small {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+    .spiel-card .team-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.8rem;
+    }
+    .spiel-card .score-display {
+      font-family: var(--headline-font);
+      font-size: 1.2rem;
+      font-weight: 900;
+      background: var(--bundesliga-red);
+      padding: 2px 12px;
+      border-radius: 6px;
+      color: white;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .spiel-card .meta {
       display: flex;
@@ -276,7 +306,7 @@
     }
 
     /* ============================
-       MODAL (BRETT – rein lesend)
+       MODAL (Brett – rein lesend)
        ============================ */
     .modal-overlay {
       display: none;
@@ -331,7 +361,7 @@
     }
 
     /* ============================
-       BRETT-STYLES (nur Anzeige, keine Interaktion)
+       BRETT-STYLES (wie gehabt)
        ============================ */
     .board-panel {
       position: relative;
@@ -806,6 +836,7 @@
       .team-name { font-size: clamp(0.7rem, 1.8vw, 1.1rem); max-width: 22vw; }
       .score-core { padding: 3px 12px; }
       .score-core span { font-size: clamp(1rem, 2vw, 1.5rem); }
+      .spieltag-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
     }
     @media (max-width: 600px) {
       .liga-header { flex-direction: column; align-items: flex-start; }
@@ -813,6 +844,8 @@
       .thesis-list { grid-template-columns: repeat(2, minmax(0,1fr)); }
       .results-grid { grid-template-columns: 1fr; }
       .chess-grid { --cell-size: clamp(44px, calc((100vw - 40px)/5), 64px); }
+      .spiel-card .team-logo-small { width: 22px; height: 22px; }
+      .spiel-card .score-display { font-size: 1rem; padding: 2px 8px; }
     }
     @media (max-width: 480px) {
       .scoreline { padding: 4px 8px; gap: 4px; }
@@ -820,6 +853,7 @@
       .score-core { padding: 2px 8px; }
       .score-core span { font-size: clamp(0.75rem, 3.5vw, 1rem); }
       .chess-grid { --cell-size: clamp(32px, calc((100vw - 24px)/5), 48px); }
+      .spiel-card .team-name { font-size: 0.7rem; }
     }
   </style>
 </head>
@@ -880,13 +914,43 @@
     let teams = [];
     let aktuellerSpieltag = 0;
     let gameDataCache = {}; // key: "st-spiel" -> geladene JSON-Daten
+    let allGameData = {};   // key: "st-spiel" -> state
 
     // ============================
     //  HILFSFUNKTIONEN
     // ============================
+    const PIECES = [
+      { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
+      { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
+      { id: 'knight', name: 'Springer',value: '?',    base: 1 },
+      { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
+      { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
+    ];
+    const PIECE_IDS = PIECES.map(p => p.id);
+    const SIDES = ['white', 'black'];
+
+    const PIECE_SVG_URLS = {
+      rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+      bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+      knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+      queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+      king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+    };
+
+    function formatNumber(num) {
+      return num > 0 ? `+${num}` : String(num);
+    }
+    function getScoreTone(value, evaluated) {
+      if (value > 0) return 'positive';
+      if (value < 0) return 'negative';
+      if (value === 0 && evaluated) return 'zero';
+      return 'neutral';
+    }
+    function getPieceById(id) { return PIECES.find(p => p.id === id); }
+
     function getAssignmentScore(assignment, state) {
       if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
-      const piece = PIECES.find(p => p.id === assignment.piece);
+      const piece = getPieceById(assignment.piece);
       const sign = assignment.polarity === 'positive' ? 1 : -1;
       switch (assignment.piece) {
         case 'knight':
@@ -903,7 +967,6 @@
     }
 
     function isGameComplete(state) {
-      // Ein Spiel gilt als gespielt, wenn alle 10 Thesen platziert sind
       const placed = state.assignments.filter(a => a.side && a.piece).length;
       return placed >= 10;
     }
@@ -924,9 +987,8 @@
     // ============================
     //  LIGA-TABELLE
     // ============================
-    function buildTable(gameData) {
+    function buildTable() {
       if (!spielplan || !teams.length) return;
-      // gameData: Map mit "st-spiel" -> state
       const stats = {};
       teams.forEach(t => {
         stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
@@ -935,9 +997,9 @@
       spielplan.spieltage.forEach((spieltag, stIdx) => {
         spieltag.forEach((spiel, spIdx) => {
           const key = `${stIdx}-${spIdx}`;
-          const state = gameData[key];
+          const state = allGameData[key];
           if (!state) return;
-          if (!isGameComplete(state)) return; // nur gespielte Partien zählen
+          if (!isGameComplete(state)) return; // nur fertige Spiele
 
           const score = getGameScore(state);
           const home = spiel.heim;
@@ -996,35 +1058,6 @@
     // ============================
     //  BRETT-RENDERER (rein lesend)
     // ============================
-    const PIECES = [
-      { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
-      { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
-      { id: 'knight', name: 'Springer',value: '?',    base: 1 },
-      { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
-      { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
-    ];
-    const PIECE_IDS = PIECES.map(p => p.id);
-    const SIDES = ['white', 'black'];
-
-    const PIECE_SVG_URLS = {
-      rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
-      bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
-      knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
-      queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
-      king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
-    };
-
-    function formatNumber(num) {
-      return num > 0 ? `+${num}` : String(num);
-    }
-    function getScoreTone(value, evaluated) {
-      if (value > 0) return 'positive';
-      if (value < 0) return 'negative';
-      if (value === 0 && evaluated) return 'zero';
-      return 'neutral';
-    }
-    function getPieceById(id) { return PIECES.find(p => p.id === id); }
-
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
       board.className = 'board-panel';
@@ -1220,7 +1253,7 @@
     // ============================
     //  SPIELTAG-ANSICHT
     // ============================
-    function renderSpieltag(index, gameData) {
+    function renderSpieltag(index) {
       aktuellerSpieltag = index;
       const container = document.getElementById('spieleContainer');
       container.innerHTML = '';
@@ -1229,7 +1262,7 @@
 
       spiele.forEach((spiel, idx) => {
         const key = `${index}-${idx}`;
-        const state = gameData[key];
+        const state = allGameData[key];
         const card = document.createElement('div');
         card.className = 'spiel-card';
         if (!state) {
@@ -1247,14 +1280,26 @@
           container.appendChild(card);
           return;
         }
+
+        const score = getGameScore(state);
         const placed = state.assignments.filter(a => a.side && a.piece).length;
         const complete = placed >= 10;
-        const status = complete ? 'fertig' : 'offen';
+
+        // Team-Logos aus state.teamLogos (Base64)
+        const homeLogo = state.teamLogos?.white || null;
+        const awayLogo = state.teamLogos?.black || null;
+
         card.innerHTML = `
           <div class="teams">
-            <span>${spiel.heim}</span>
-            <span class="vs">vs</span>
-            <span>${spiel.auswaerts}</span>
+            <div class="team-block heim">
+              ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
+              <span class="team-name">${spiel.heim}</span>
+            </div>
+            <span class="score-display">${score.white} : ${score.black}</span>
+            <div class="team-block auswaerts">
+              <span class="team-name">${spiel.auswaerts}</span>
+              ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
+            </div>
           </div>
           <div class="meta">
             <span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span>
@@ -1304,19 +1349,14 @@
     // ============================
     async function loadAllGameData() {
       const gameData = {};
-      const totalSpiele = spielplan.spieltage.reduce((acc, st) => acc + st.length, 0);
-      let geladen = 0;
-
       for (let stIdx = 0; stIdx < spielplan.spieltage.length; stIdx++) {
         const spieltag = spielplan.spieltage[stIdx];
         for (let spIdx = 0; spIdx < spieltag.length; spIdx++) {
-          const spiel = spieltag[spIdx];
           const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
           try {
             const res = await fetch(filePath);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
-            // Datenstruktur aus 1.json: { app, version, exportedAt, data: { theses, positions, names, results, questionValue, figureImages, teamLogos } }
             const state = data.data;
             // Sicherstellen, dass assignments im erwarteten Format vorliegen
             if (state.positions) {
@@ -1329,7 +1369,6 @@
               }));
               delete state.positions;
             }
-            // results, theses, questionValue, figureImages sind bereits vorhanden
             if (!state.results) {
               state.results = {
                 white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
@@ -1339,13 +1378,12 @@
             if (!state.theses) {
               state.theses = Array.from({ length: 12 }, (_, i) => `These ${i + 1}`);
             }
+            if (!state.teamLogos) state.teamLogos = { white: null, black: null };
             gameData[`${stIdx}-${spIdx}`] = state;
           } catch (err) {
             console.warn(`Konnte ${filePath} nicht laden:`, err);
             // Spiel ohne Daten – wird als nicht gespielt behandelt
           }
-          geladen++;
-          // Fortschritt in der UI anzeigen (optional)
         }
       }
       return gameData;
@@ -1363,22 +1401,19 @@
         spielplan.spieltage.forEach((_, i) => {
           const btn = document.createElement('button');
           btn.textContent = `${i + 1}. Spieltag`;
-          btn.addEventListener('click', () => {
-            // Beim Wechsel des Spieltags neu rendern mit den bereits geladenen Daten
-            renderSpieltag(i, gameData);
-          });
+          btn.addEventListener('click', () => renderSpieltag(i));
           tabsContainer.appendChild(btn);
         });
 
         // Alle JSONs laden
-        const gameData = await loadAllGameData();
+        allGameData = await loadAllGameData();
 
         // Tabelle berechnen
-        buildTable(gameData);
+        buildTable();
 
         // Ersten Spieltag anzeigen
         if (spielplan.spieltage.length > 0) {
-          renderSpieltag(0, gameData);
+          renderSpieltag(0);
         }
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
@@ -1386,16 +1421,6 @@
           '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden. Bitte stelle sicher, dass spielplan.json im gleichen Verzeichnis liegt.</p>';
       }
     }
-
-    // Globale Variable für die geladenen Daten (für Tab-Wechsel)
-    let gameData = {};
-
-    // Überschreibe renderSpieltag, damit sie auf die globale gameData zugreift
-    const originalRender = renderSpieltag;
-    renderSpieltag = function(index, data) {
-      if (data) gameData = data;
-      originalRender(index, gameData);
-    };
 
     init();
   </script>
