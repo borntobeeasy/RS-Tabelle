@@ -723,7 +723,6 @@
     let teams = [];
     let aktuellerSpieltag = 0;
     let allGameData = {}; // key: "st-spiel" -> state
-    let vorhandeneSpieltage = []; // Indizes der tatsächlich vorhandenen Spieltage
 
     // ============================
     //  HILFSFUNKTIONEN
@@ -965,6 +964,75 @@
     }
 
     // ============================
+    //  OPTIMIERTES LADEN – PARALLEL, NUR VORHANDENE
+    // ============================
+    async function loadAllGameData() {
+      const gameData = {};
+      const totalSpieltage = spielplan.spieltage.length;
+
+      // Für jeden Spieltag: prüfen, welche Dateien existieren und parallel laden
+      const stPromises = [];
+      for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
+        const spiele = spielplan.spieltage[stIdx];
+        const spieleCount = spiele.length;
+
+        // Pro Spiel: fetch mit catch (404 ignorieren)
+        const spielPromises = [];
+        for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
+          const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
+          spielPromises.push(
+            fetch(filePath)
+              .then(res => {
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+              })
+              .then(data => ({ stIdx, spIdx, data }))
+              .catch(err => {
+                // 404 oder andere Fehler – ignorieren
+                return null;
+              })
+          );
+        }
+
+        // Alle Spiele dieses Spieltags parallel laden
+        stPromises.push(
+          Promise.all(spielPromises).then(results => {
+            const valid = results.filter(r => r !== null);
+            for (const { stIdx, spIdx, data } of valid) {
+              const state = data.data || data; // manche JSONs haben data als wrapper
+              if (!state) return;
+              if (state.positions) {
+                state.assignments = state.positions.map(p => ({
+                  id: p.id,
+                  side: p.side || null,
+                  piece: p.piece || null,
+                  polarity: p.polarity || null,
+                  knightSwing: p.knightSwing ?? 1,
+                }));
+                delete state.positions;
+              }
+              if (!state.results) {
+                state.results = {
+                  white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
+                  black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 }
+                };
+              }
+              if (!state.theses) {
+                state.theses = Array.from({ length: 12 }, (_, i) => `These ${i + 1}`);
+              }
+              if (!state.teamLogos) state.teamLogos = { white: null, black: null };
+              if (!state.figureImages) state.figureImages = {};
+              gameData[`${stIdx}-${spIdx}`] = state;
+            }
+          })
+        );
+      }
+
+      await Promise.all(stPromises);
+      return gameData;
+    }
+
+    // ============================
     //  SPIELTAG-ANSICHT
     // ============================
     function renderSpieltag(index) {
@@ -976,9 +1044,6 @@
         container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>';
         return;
       }
-
-      // Prüfen, ob Daten für diesen Spieltag geladen sind
-      const hasData = spiele.some((_, idx) => allGameData[`${index}-${idx}`]);
 
       spiele.forEach((spiel, idx) => {
         const key = `${index}-${idx}`;
@@ -1056,72 +1121,6 @@
     }
 
     // ============================
-    //  PRÜFT, WELCHE SPIELTAG-DATEIEN EXISTIEREN
-    // ============================
-    async function checkExistingSpieltage(total) {
-      const existing = [];
-      const checks = [];
-      for (let i = 0; i < total; i++) {
-        const filePath = `${DATA_BASE}Spieltag ${i + 1}.json`;
-        checks.push(
-          fetch(filePath, { method: 'HEAD' })
-            .then(res => res.ok ? i : null)
-            .catch(() => null)
-        );
-      }
-      const results = await Promise.all(checks);
-      return results.filter(idx => idx !== null);
-    }
-
-    // ============================
-    //  LADE NUR VORHANDENE SPIELTAGE
-    // ============================
-    async function loadExistingGameData(existingIndices) {
-      const gameData = {};
-      const loadPromises = existingIndices.map(async (stIdx) => {
-        const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}.json`;
-        try {
-          const res = await fetch(filePath);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          if (!Array.isArray(data)) {
-            console.warn(`Spieltag ${stIdx + 1}: erwartet Array, erhalten:`, typeof data);
-            return;
-          }
-          data.forEach((state, spIdx) => {
-            if (!state) return;
-            if (state.positions) {
-              state.assignments = state.positions.map(p => ({
-                id: p.id,
-                side: p.side || null,
-                piece: p.piece || null,
-                polarity: p.polarity || null,
-                knightSwing: p.knightSwing ?? 1,
-              }));
-              delete state.positions;
-            }
-            if (!state.results) {
-              state.results = {
-                white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-                black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 }
-              };
-            }
-            if (!state.theses) {
-              state.theses = Array.from({ length: 12 }, (_, i) => `These ${i + 1}`);
-            }
-            if (!state.teamLogos) state.teamLogos = { white: null, black: null };
-            if (!state.figureImages) state.figureImages = {};
-            gameData[`${stIdx}-${spIdx}`] = state;
-          });
-        } catch (err) {
-          console.warn(`Fehler beim Laden von ${filePath}:`, err);
-        }
-      });
-      await Promise.all(loadPromises);
-      return gameData;
-    }
-
-    // ============================
     //  INIT
     // ============================
     async function init() {
@@ -1133,43 +1132,25 @@
         teams = spielplan.teams;
         document.getElementById('ligaInfo').textContent = `${spielplan.spieltage.length} Spieltage · ${teams.length} Teams`;
 
-        // 2. Tabs erstellen (zunächst deaktiviert)
+        // 2. Tabs erstellen
         const tabsContainer = document.getElementById('spieltagTabs');
         spielplan.spieltage.forEach((_, i) => {
           const btn = document.createElement('button');
           btn.textContent = `${i + 1}. Spieltag`;
           btn.dataset.index = i;
-          btn.disabled = true;
           btn.addEventListener('click', () => renderSpieltag(i));
           tabsContainer.appendChild(btn);
         });
 
-        // 3. Prüfen, welche Spieltag-Dateien existieren
-        const existing = await checkExistingSpieltage(spielplan.spieltage.length);
-        vorhandeneSpieltage = existing;
+        // 3. Daten parallel laden (nur vorhandene Dateien)
+        allGameData = await loadAllGameData();
 
-        // 4. Tabs für vorhandene aktivieren
-        existing.forEach(idx => {
-          const btn = tabsContainer.querySelector(`button[data-index="${idx}"]`);
-          if (btn) btn.disabled = false;
-        });
-
-        if (existing.length === 0) {
-          document.getElementById('spieleContainer').innerHTML =
-            '<p style="color:var(--bundesliga-gold);">Keine Spieltag-Dateien gefunden. Bitte lege sie im Ordner <code>data/</code> an.</p>';
-          return;
-        }
-
-        // 5. Nur vorhandene laden
-        allGameData = await loadExistingGameData(existing);
-
-        // 6. Tabelle berechnen
+        // 4. Tabelle berechnen
         buildTable();
 
-        // 7. Ersten vorhandenen Spieltag anzeigen
-        const firstExisting = existing[0];
-        if (firstExisting !== undefined) {
-          renderSpieltag(firstExisting);
+        // 5. Ersten Spieltag anzeigen (auch wenn keine Daten – dann wird "nicht verfügbar" gezeigt)
+        if (spielplan.spieltage.length > 0) {
+          renderSpieltag(0);
         }
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
