@@ -657,7 +657,7 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN — korrigierte Aggregation pro Bild
+       STATISTIKEN
        ============================ */
     .stats-container {
       display: flex;
@@ -773,6 +773,30 @@
       font-size: 0.7rem;
       font-family: var(--mono-font);
       padding: 4px 8px;
+    }
+
+    /* ============================
+       ALLE SPIELE VIEW
+       ============================ */
+    .spieltag-group {
+      margin-bottom: 30px;
+    }
+    .spieltag-headline {
+      font-family: var(--headline-font);
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--line-strong);
+    }
+    .spieltag-headline small {
+      font-family: var(--mono-font);
+      font-size: 0.55rem;
+      color: var(--steel);
+      font-weight: 400;
+      margin-left: 8px;
     }
 
     /* ============================
@@ -897,14 +921,20 @@
   }
   function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
+  // ============================
+  //  KORRIGIERTE getAssignmentScore
+  // ============================
   function getAssignmentScore(assignment, state) {
     if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
     const piece = getPieceById(assignment.piece);
     if (!piece) return 0;
     const sign = assignment.polarity === 'positive' ? 1 : -1;
+    
     switch (assignment.piece) {
       case 'knight':
-        return (assignment.polarity === 'positive') ? (state.questionValue ?? assignment.knightSwing) : 0;
+        // Der Springer-Wert kommt aus questionValue
+        const knightVal = state.questionValue ?? 1;
+        return (assignment.polarity === 'positive') ? knightVal : 0;
       case 'bishop':
         return (assignment.polarity === 'positive') ? -piece.base : 0;
       case 'queen':
@@ -1201,17 +1231,18 @@
   }
 
   // ============================
-  //  STATISTIKEN — KORREKT: AGGREGATION PRO BILD (FOTO) FÜR JEDE FIGUR
+  //  STATISTIKEN — KORRIGIERT
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
     PIECES.forEach(p => {
-      pieceStats[p.id] = { players: {} }; // players: { bildUrl: { games, totalPoints, maxPoints, maxGameTeam } }
+      pieceStats[p.id] = { players: {} };
     });
 
     for (const [key, state] of Object.entries(allGameData)) {
       if (!state) continue;
-      if (!isGameComplete(state)) continue; // nur abgeschlossene Spiele
+      if (!isGameComplete(state)) continue;
+      
       const [stIdx, spIdx] = key.split('-').map(Number);
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
@@ -1223,6 +1254,7 @@
         const row = a.side === 'white' ? 'top' : 'bottom';
         const slot = `${row}-${a.piece}`;
         if (!slotPoints[slot]) slotPoints[slot] = 0;
+        // WICHTIG: Absoluten Wert nehmen, da es um die Stärke der These geht
         slotPoints[slot] += Math.abs(getAssignmentScore(a, state));
       });
 
@@ -1236,11 +1268,18 @@
 
         const playerData = pieceStats[piece].players;
         if (!playerData[image]) {
-          playerData[image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGameTeam: null };
+          playerData[image] = { 
+            games: 0, 
+            totalPoints: 0, 
+            maxPoints: -Infinity, 
+            maxGameTeam: null,
+            pointsPerGame: []
+          };
         }
         const p = playerData[image];
         p.games += 1;
         p.totalPoints += points;
+        p.pointsPerGame.push(points);
         if (points > p.maxPoints) {
           p.maxPoints = points;
           p.maxGameTeam = teamName;
@@ -1259,10 +1298,20 @@
         maxPoints: stats.maxPoints,
         avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
         team: stats.maxGameTeam,
+        pointsPerGame: stats.pointsPerGame || []
       }));
 
-      const bySingle = [...entries].sort((a, b) => b.maxPoints - a.maxPoints).slice(0, 5);
-      const byAvg = [...entries].filter(e => e.games >= 2).sort((a, b) => b.avg - a.avg).slice(0, 5);
+      // Sortiere nach maximaler Einzelpunktzahl (höchste zuerst)
+      const bySingle = [...entries]
+        .sort((a, b) => b.maxPoints - a.maxPoints)
+        .slice(0, 5);
+      
+      // Sortiere nach Durchschnitt (mind. 2 Spiele)
+      const byAvg = [...entries]
+        .filter(e => e.games >= 2)
+        .sort((a, b) => b.avg - a.avg)
+        .slice(0, 5);
+      
       result[piece] = { bySingle, byAvg };
     }
     return result;
@@ -1273,23 +1322,28 @@
     container.innerHTML = '';
     const stats = computePlayerStats();
 
+    // Debug: Logge die Statistiken
+    console.log('Statistiken:', stats);
+
     PIECES.forEach(p => {
       const card = document.createElement('div');
       card.className = 'stat-card';
 
       const title = document.createElement('h3');
-      title.textContent = p.name;
+      title.innerHTML = `${p.name} <span class="badge">${p.value}</span>`;
       card.appendChild(title);
 
       // Höchste Einzelpunktzahl
       const sectionSingle = document.createElement('div');
       sectionSingle.className = 'stat-section';
-      sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
+      sectionSingle.innerHTML = `<div class="section-title">🏆 Höchste Einzelpunktzahl</div>`;
       const listSingle = document.createElement('div');
-      if (stats[p.id].bySingle.length === 0) {
-        listSingle.innerHTML = '<div class="no-data">Keine Daten</div>';
+      
+      const singleData = stats[p.id]?.bySingle || [];
+      if (singleData.length === 0) {
+        listSingle.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
       } else {
-        stats[p.id].bySingle.forEach((entry, idx) => {
+        singleData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
           const div = document.createElement('div');
           div.className = 'stat-entry';
@@ -1309,15 +1363,17 @@
       sectionSingle.appendChild(listSingle);
       card.appendChild(sectionSingle);
 
-      // Bester Durchschnitt (mind. 2 Spiele)
+      // Bester Durchschnitt
       const sectionAvg = document.createElement('div');
       sectionAvg.className = 'stat-section';
-      sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (mindestens 2 Spiele)</div>`;
+      sectionAvg.innerHTML = `<div class="section-title">📊 Bester Durchschnitt (min. 2 Spiele)</div>`;
       const listAvg = document.createElement('div');
-      if (stats[p.id].byAvg.length === 0) {
+      
+      const avgData = stats[p.id]?.byAvg || [];
+      if (avgData.length === 0) {
         listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 2)</div>';
       } else {
-        stats[p.id].byAvg.forEach((entry, idx) => {
+        avgData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
           const div = document.createElement('div');
           div.className = 'stat-entry';
