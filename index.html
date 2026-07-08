@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================
-       TOKENS — Flutlicht-Taktiktafel
+       TOKENS
        ============================ */
     :root {
       color-scheme: dark;
@@ -18,32 +18,20 @@
       --red: #D3010C;
       --red-deep: #8B0000;
       --gold: #F5C518;
-      --gold-dim: #b8952f;
       --chalk: #FFFFFF;
       --steel: #a0a8b8;
       --line: rgba(255, 255, 255, 0.12);
       --line-strong: rgba(255, 255, 255, 0.2);
       --green: #00b050;
-      --green-dark: #00843d;
-      --loss: #ff1a1a;
       --zero: #a89fcc;
-
-      --ink: var(--chalk);
-      --muted: var(--steel);
-      --accent: var(--red);
-      --yellow: var(--gold);
-
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
       --shadow: 0 28px 75px rgba(0, 0, 0, 0.46);
       --event-font: "Sora", "Segoe UI", Arial, sans-serif;
       --headline-font: "Anton", "Arial Narrow", Impact, sans-serif;
       --mono-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     }
-
     * { box-sizing: border-box; }
-
     ::selection { background: var(--red); color: var(--chalk); }
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -51,21 +39,14 @@
       background-image:
         linear-gradient(145deg, rgba(211, 1, 12, 0.18) 0%, transparent 45%),
         linear-gradient(215deg, rgba(211, 1, 12, 0.08) 0%, transparent 35%),
-        repeating-linear-gradient(45deg,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 1px,
-          transparent 1px,
-          transparent 24px
-        ),
-        radial-gradient(ellipse at 10% 5%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
-        radial-gradient(ellipse at 90% 95%, rgba(211, 1, 12, 0.08) 0%, transparent 40%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 24px),
+        radial-gradient(ellipse at 10% 5%, rgba(255,255,255,0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 95%, rgba(211,1,12,0.08) 0%, transparent 40%),
         var(--night);
-      color: var(--ink);
+      color: var(--chalk);
       font-family: var(--event-font);
       padding: 22px;
     }
-
-    /* Wasserzeichen im Hintergrund */
     body::after {
       content: "2. BUNDESLIGA 26/27";
       position: fixed;
@@ -76,11 +57,11 @@
       font-size: min(28vw, 18rem);
       font-weight: 900;
       letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.025);
+      color: rgba(255,255,255,0.025);
       white-space: nowrap;
       pointer-events: none;
       transform: rotate(-8deg);
-      text-shadow: 0 0 60px rgba(211, 1, 12, 0.04);
+      text-shadow: 0 0 60px rgba(211,1,12,0.04);
     }
     body::before {
       content: "";
@@ -88,25 +69,12 @@
       inset: 0;
       z-index: -4;
       pointer-events: none;
-      background: repeating-linear-gradient(45deg,
-          transparent 0px,
-          transparent 120px,
-          rgba(255, 255, 255, 0.012) 120px,
-          rgba(255, 255, 255, 0.012) 121px,
-          transparent 121px,
-          transparent 180px
-        );
+      background: repeating-linear-gradient(45deg, transparent 0px, transparent 120px, rgba(255,255,255,0.012) 120px, rgba(255,255,255,0.012) 121px, transparent 121px, transparent 180px);
     }
-
-    .app-shell {
-      max-width: 1440px;
-      margin: 0 auto;
-      position: relative;
-      isolation: isolate;
-    }
+    .app-shell { max-width: 1440px; margin: 0 auto; position: relative; isolation: isolate; }
 
     /* ============================
-       KOPF — Anzeigetafel
+       KOPF
        ============================ */
     .liga-header {
       position: relative;
@@ -117,10 +85,7 @@
       gap: 16px;
       margin-bottom: 22px;
       padding: 22px 30px 22px 34px;
-      background:
-        linear-gradient(100deg, rgba(211, 1, 12, 0.22) 0%, transparent 38%),
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)),
-        var(--night-2);
+      background: linear-gradient(100deg, rgba(211,1,12,0.22) 0%, transparent 38%), linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), var(--night-2);
       border: 1px solid var(--line-strong);
       border-left: 4px solid var(--red);
       clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
@@ -145,7 +110,6 @@
       flex-wrap: wrap;
     }
     .liga-header h1 {
-      position: relative;
       font-family: var(--headline-font);
       font-size: clamp(1.6rem, 3.4vw, 2.9rem);
       font-weight: 400;
@@ -156,19 +120,15 @@
       text-shadow: 0 2px 0 var(--red-deep), 0 14px 30px rgba(211,1,12,0.2);
     }
     .liga-header .sub {
-      color: var(--muted);
+      color: var(--steel);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-top: 4px;
     }
-    .liga-header .sub strong {
-      color: var(--gold);
-      font-weight: 800;
-    }
+    .liga-header .sub strong { color: var(--gold); font-weight: 800; }
 
-    /* Header-Navigation */
     .header-nav {
       display: flex;
       gap: 6px;
@@ -183,7 +143,7 @@
       border-radius: 4px;
       border: none;
       background: transparent;
-      color: var(--muted);
+      color: var(--steel);
       font-family: var(--mono-font);
       font-size: 0.7rem;
       font-weight: 700;
@@ -192,28 +152,17 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .header-nav button:hover {
-      color: var(--chalk);
-      background: rgba(255,255,255,0.06);
-    }
-    .header-nav button.active {
-      background: var(--red);
-      color: var(--chalk);
-      box-shadow: 0 0 16px rgba(211,1,12,0.4);
-    }
+    .header-nav button:hover { color: var(--chalk); background: rgba(255,255,255,0.06); }
+    .header-nav button.active { background: var(--red); color: var(--chalk); box-shadow: 0 0 16px rgba(211,1,12,0.4); }
 
     /* ============================
        VIEWS
        ============================ */
-    .view {
-      display: none;
-    }
-    .view.active {
-      display: block;
-    }
+    .view { display: none; }
+    .view.active { display: block; }
 
     /* ============================
-       ZWEISPALTIGES LAYOUT (Home)
+       HOME-LAYOUT
        ============================ */
     .content-wrapper {
       display: flex;
@@ -226,24 +175,14 @@
       position: sticky;
       top: 20px;
     }
-    .content-wrapper .right-col {
-      flex: 1;
-      min-width: 0;
-    }
-
+    .content-wrapper .right-col { flex: 1; min-width: 0; }
     @media (max-width: 1100px) {
-      .content-wrapper {
-        flex-direction: column;
-      }
-      .content-wrapper .left-col {
-        flex: none;
-        width: 100%;
-        position: static;
-      }
+      .content-wrapper { flex-direction: column; }
+      .content-wrapper .left-col { flex: none; width: 100%; position: static; }
     }
 
     /* ============================
-       TABELLE — Anzeigetafel-Stil
+       TABELLE
        ============================ */
     .table-wrap {
       overflow-x: hidden;
@@ -254,10 +193,7 @@
       padding: 4px 0 6px;
       box-shadow: var(--shadow);
     }
-    .table-wrap.centered {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .table-wrap.centered { max-width: 900px; margin: 0 auto; }
     .liga-table {
       width: 100%;
       table-layout: fixed;
@@ -266,9 +202,7 @@
     }
     .liga-table th:nth-child(1) { width: 7%; }
     .liga-table th:nth-child(3) { width: 8%; }
-    .liga-table th:nth-child(4),
-    .liga-table th:nth-child(5),
-    .liga-table th:nth-child(6) { width: 7%; }
+    .liga-table th:nth-child(4), .liga-table th:nth-child(5), .liga-table th:nth-child(6) { width: 7%; }
     .liga-table th:nth-child(7) { width: 15%; }
     .liga-table th:nth-child(8) { width: 10%; }
     .liga-table th:nth-child(9) { width: 10%; }
@@ -279,7 +213,7 @@
       font-size: 0.55rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--muted);
+      color: var(--steel);
       border-bottom: 1px solid var(--line-strong);
       font-family: var(--mono-font);
     }
@@ -293,21 +227,13 @@
       text-overflow: ellipsis;
     }
     .liga-table td.team { font-family: var(--event-font); }
-    .liga-table tbody tr {
-      transition: background 0.15s;
-    }
-    .liga-table tbody tr:nth-child(even) td {
-      background: rgba(255,255,255,0.018);
-    }
-    .liga-table tr:hover td {
-      background: rgba(211, 1, 12, 0.08);
-    }
+    .liga-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.018); }
+    .liga-table tr:hover td { background: rgba(211,1,12,0.08); }
     .liga-table .pos {
       font-weight: 800;
-      color: var(--muted);
+      color: var(--steel);
       width: 30px;
       text-align: center;
-      position: relative;
     }
     .liga-table tbody tr:nth-child(-n+2) .pos {
       color: var(--night);
@@ -317,16 +243,10 @@
     }
     .liga-table tbody tr:nth-last-child(-n+2) .pos {
       color: var(--chalk);
-      background: rgba(211, 1, 12, 0.55);
+      background: rgba(211,1,12,0.55);
       border-radius: 3px;
     }
-    .liga-table .team {
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--chalk);
-    }
+    .liga-table .team { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--chalk); }
     .liga-table .pts {
       font-weight: 800;
       font-size: 0.95rem;
@@ -334,13 +254,10 @@
       text-align: center;
       background: rgba(211,1,12,0.10);
     }
-    .liga-table .num {
-      text-align: center;
-      color: var(--muted);
-    }
+    .liga-table .num { text-align: center; color: var(--steel); }
 
     /* ============================
-       SPIELTAG-NAVIGATION — 5 Positionen
+       SPIELTAG-NAVIGATION
        ============================ */
     .liga-tabs {
       display: flex;
@@ -349,7 +266,7 @@
       gap: 6px;
       margin-bottom: 22px;
       padding: 6px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0,0,0,0.35);
       border: 1px solid var(--line);
       border-radius: 8px;
     }
@@ -359,7 +276,7 @@
       border-radius: 5px;
       border: 1px solid transparent;
       background: transparent;
-      color: var(--muted);
+      color: var(--steel);
       font-weight: 700;
       font-size: 0.68rem;
       font-family: var(--mono-font);
@@ -369,29 +286,14 @@
       transition: all 0.15s;
       white-space: nowrap;
     }
-    .liga-tabs button:hover {
-      background: rgba(255,255,255,0.08);
-      color: var(--chalk);
-    }
-    .liga-tabs button.active {
-      background: var(--red);
-      color: var(--chalk);
-      box-shadow: 0 0 16px rgba(211,1,12,0.5);
-    }
-    .liga-tabs button:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
+    .liga-tabs button:hover { background: rgba(255,255,255,0.08); color: var(--chalk); }
+    .liga-tabs button.active { background: var(--red); color: var(--chalk); box-shadow: 0 0 16px rgba(211,1,12,0.5); }
+    .liga-tabs button:disabled { opacity: 0.3; cursor: not-allowed; }
 
     /* ============================
-       SPIELE — VERTIKALE LISTE
+       SPIELE
        ============================ */
-    .spiel-liste {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .spiel-liste { display: flex; flex-direction: column; gap: 10px; }
     .spiel-item {
       background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
       border: 1px solid var(--line);
@@ -400,11 +302,7 @@
       overflow: hidden;
       transition: border-color 0.2s, transform 0.15s;
     }
-    .spiel-item:hover {
-      border-left-color: var(--red);
-      transform: translateX(2px);
-    }
-
+    .spiel-item:hover { border-left-color: var(--red); transform: translateX(2px); }
     .spiel-header {
       display: flex;
       align-items: center;
@@ -470,35 +368,22 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    .spiel-header .toggle-btn:hover {
-      background: rgba(211,1,12,0.2);
-      border-color: var(--red);
-    }
-    .spiel-header .toggle-btn.open {
-      transform: rotate(180deg);
-      background: rgba(211,1,12,0.25);
-    }
-
+    .spiel-header .toggle-btn:hover { background: rgba(211,1,12,0.2); border-color: var(--red); }
+    .spiel-header .toggle-btn.open { transform: rotate(180deg); background: rgba(211,1,12,0.25); }
     .spiel-meta {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 0.58rem;
       font-family: var(--mono-font);
-      color: var(--muted);
+      color: var(--steel);
       padding: 5px 16px 8px;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    .spiel-meta .status {
-      color: var(--gold);
-      font-weight: 700;
-    }
-    .spiel-meta .status.done {
-      color: var(--green);
-    }
-
+    .spiel-meta .status { color: var(--gold); font-weight: 700; }
+    .spiel-meta .status.done { color: var(--green); }
     .spiel-board-container {
       display: grid;
       grid-template-rows: 0fr;
@@ -516,38 +401,13 @@
       padding: 12px 16px 16px;
     }
 
-    /* Spieltag-Gruppe in der "Spiele"-Ansicht */
-    .spieltag-group {
-      margin-bottom: 28px;
-    }
-    .spieltag-group .spieltag-headline {
-      font-family: var(--headline-font);
-      font-size: 1.2rem;
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin: 0 0 10px 0;
-      padding-bottom: 6px;
-      border-bottom: 2px solid var(--line-strong);
-    }
-    .spieltag-group .spieltag-headline small {
-      font-family: var(--mono-font);
-      font-size: 0.65rem;
-      color: var(--muted);
-      font-weight: 700;
-      margin-left: 12px;
-    }
-
     /* ============================
-       BRETT — TAKTIKTAFEL
+       BRETT
        ============================ */
     .board-panel {
       position: relative;
       overflow: hidden;
-      background:
-        radial-gradient(ellipse 500px 260px at 50% -20%, rgba(245,197,24,0.10) 0%, transparent 60%),
-        linear-gradient(160deg, rgba(20,20,20,0.55), rgba(6,9,10,0.9));
+      background: radial-gradient(ellipse 500px 260px at 50% -20%, rgba(245,197,24,0.10) 0%, transparent 60%), linear-gradient(160deg, rgba(20,20,20,0.55), rgba(6,9,10,0.9));
       border: 1px solid var(--line-strong);
       border-radius: 4px;
       padding: 12px;
@@ -580,7 +440,36 @@
       text-transform: uppercase;
       color: var(--chalk);
     }
-
+    .board-panel .scoreboard { display: flex; justify-content: center; width: 100%; margin-bottom: 8px; }
+    .board-panel .scoreboard > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #f4f2ee;
+      padding: 6px 16px;
+      border-radius: 999px;
+      max-width: 700px;
+      width: 100%;
+    }
+    .board-panel .team-logo-wrapper {
+      width: clamp(1.8rem, 2.6vw, 2.8rem);
+      height: clamp(1.8rem, 2.6vw, 2.8rem);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+    }
+    .board-panel .team-logo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
+    }
     .board-panel .chess-grid {
       display: grid;
       grid-template-columns: repeat(5, var(--cell-size));
@@ -626,19 +515,10 @@
       pointer-events: none;
       text-shadow: 0 0 8px rgba(0,0,0,0.9);
     }
-    .board-panel .piece-cell .field-watermark.positive {
-      color: #2be08a !important;
-    }
-    .board-panel .piece-cell .field-watermark.negative {
-      color: #ff4d4d !important;
-    }
-    .board-panel .piece-cell .field-watermark.zero {
-      color: #c3aeff !important;
-    }
-    .board-panel .piece-cell .field-watermark.neutral {
-      color: rgba(255,255,255,0.15);
-    }
-
+    .board-panel .piece-cell .field-watermark.positive { color: #2be08a !important; }
+    .board-panel .piece-cell .field-watermark.negative { color: #ff4d4d !important; }
+    .board-panel .piece-cell .field-watermark.zero { color: #c3aeff !important; }
+    .board-panel .piece-cell .field-watermark.neutral { color: rgba(255,255,255,0.15); }
     .board-panel .piece-cell .piece-svg {
       position: relative;
       z-index: 1;
@@ -680,7 +560,6 @@
     }
     .board-panel .piece-cell.has-player-image .piece-svg { display: none; }
     .board-panel .piece-cell.has-player-image .piece-corner { display: block; }
-
     .board-panel .drop-cell {
       display: flex;
       align-items: center;
@@ -716,7 +595,6 @@
       display: none;
     }
     .board-panel .drop-cell.has-theses .drop-total { display: block; }
-
     .board-panel .placed-list {
       position: absolute;
       inset: 0;
@@ -773,753 +651,777 @@
       opacity: 1 !important;
       pointer-events: none;
     }
-    .board-panel .placed-chip .chip-watermark.positive {
-      color: #0f9d5c !important;
-    }
-    .board-panel .placed-chip .chip-watermark.negative {
-      color: #d81e1e !important;
-    }
-    .board-panel .placed-chip .chip-watermark.zero {
-      color: #7a5cd6 !important;
-    }
-    .board-panel .placed-chip .chip-watermark.neutral {
-      color: rgba(6,9,10,0.15);
-    }
+    .board-panel .placed-chip .chip-watermark.positive { color: #0f9d5c !important; }
+    .board-panel .placed-chip .chip-watermark.negative { color: #d81e1e !important; }
+    .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6 !important; }
+    .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
-    /* Scoreboard-Logos im Brett (ohne weißen Kreis) */
-    .board-panel .team-logo-wrapper {
-      width: clamp(1.8rem, 2.6vw, 2.8rem);
-      height: clamp(1.8rem, 2.6vw, 2.8rem);
-      flex-shrink: 0;
+    /* ============================
+       STATISTIKEN — Spieler-Fotos
+       ============================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 20px;
+      margin-top: 12px;
+    }
+    .stat-card {
+      background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+    .stat-card h3 {
+      font-family: var(--headline-font);
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0 0 8px 0;
+      border-bottom: 1px solid var(--line-strong);
+      padding-bottom: 6px;
+    }
+    .stat-card .stat-team {
+      margin-top: 8px;
+    }
+    .stat-card .stat-team h4 {
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--steel);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 8px 0 4px 0;
+    }
+    .stat-player-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      overflow: visible;
+      gap: 10px;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .board-panel .team-logo-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
+    .stat-player-row .player-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      object-fit: cover;
+      background: rgba(0,0,0,0.3);
+      flex-shrink: 0;
+      border: 1px solid var(--line);
+    }
+    .stat-player-row .player-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+    }
+    .stat-player-row .player-info .stat-label {
+      color: var(--steel);
+      font-weight: 700;
+      min-width: 50px;
+      text-transform: uppercase;
+      font-size: 0.55rem;
+      letter-spacing: 0.04em;
+    }
+    .stat-player-row .player-info .stat-value {
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .stat-player-row .player-info .stat-value.best {
+      color: #2be08a;
+    }
+    .stat-player-row .player-info .stat-value.games {
+      color: var(--chalk);
+    }
+    .stat-player-row .player-info .slot-label {
+      font-size: 0.55rem;
+      color: var(--steel);
+      background: rgba(255,255,255,0.06);
+      padding: 1px 6px;
+      border-radius: 3px;
     }
 
     /* ============================
        RESPONSIVE
        ============================ */
     @media (max-width: 700px) {
-      .liga-header {
-        padding: 16px 20px 16px 22px;
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .liga-header .header-left {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
-      .header-nav {
-        justify-content: center;
-      }
-      .spiel-header {
-        flex-wrap: wrap;
-        gap: 6px;
-        padding: 8px 10px;
-      }
-      .spiel-header .team-name {
-        font-size: 0.7rem;
-      }
-      .spiel-header .score-display {
-        font-size: 0.95rem;
-        padding: 3px 10px;
-      }
-      .board-panel .chess-grid {
-        --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px);
-      }
-      .spiel-header .team-logo-small {
-        width: 26px;
-        height: 26px;
-      }
+      .liga-header { padding: 16px 20px 16px 22px; flex-direction: column; align-items: stretch; }
+      .liga-header .header-left { flex-direction: column; align-items: stretch; gap: 12px; }
+      .header-nav { justify-content: center; }
+      .spiel-header { flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
+      .spiel-header .team-name { font-size: 0.7rem; }
+      .spiel-header .score-display { font-size: 0.95rem; padding: 3px 10px; }
+      .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
+      .spiel-header .team-logo-small { width: 26px; height: 26px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-player-row .player-info { font-size: 0.6rem; flex-wrap: wrap; }
+      .stat-player-row .player-img { width: 28px; height: 28px; }
     }
     @media (max-width: 500px) {
-      .spiel-header .team-name {
-        font-size: 0.6rem;
-      }
-      .spiel-header .score-display {
-        font-size: 0.8rem;
-        padding: 2px 8px;
-      }
-      .board-panel .chess-grid {
-        --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px);
-      }
-      .spiel-header .team-logo-small {
-        width: 22px;
-        height: 22px;
-      }
+      .spiel-header .team-name { font-size: 0.6rem; }
+      .spiel-header .score-display { font-size: 0.8rem; padding: 2px 8px; }
+      .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px); }
+      .spiel-header .team-logo-small { width: 22px; height: 22px; }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; animation: none !important; }
-    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
-
 </head>
 <body>
-  <div class="app-shell" id="app">
-    <!-- Kopf mit Navigation -->
-    <header class="liga-header">
-      <div class="header-left">
-        <div>
-          <h1>2. Bundesliga</h1>
-          <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
-        </div>
-        <div class="header-nav" id="headerNav">
-          <button class="active" data-view="home">Home</button>
-          <button data-view="table">Tabelle</button>
-          <button data-view="games">Spiele</button>
-        </div>
+<div class="app-shell" id="app">
+  <!-- Kopf -->
+  <header class="liga-header">
+    <div class="header-left">
+      <div>
+        <h1>2. Bundesliga</h1>
+        <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
       </div>
-    </header>
-
-    <!-- VIEW: HOME (zweispaltig) -->
-    <div class="view active" id="homeView">
-      <div class="liga-tabs" id="spieltagTabs"></div>
-      <div class="content-wrapper">
-        <div class="left-col">
-          <div class="table-wrap" id="tableWrap">
-            <table class="liga-table" id="ligaTable">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Team</th>
-                  <th class="num">Sp</th>
-                  <th class="num">S</th>
-                  <th class="num">U</th>
-                  <th class="num">N</th>
-                  <th class="num">Tore</th>
-                  <th class="num">Diff</th>
-                  <th class="pts">Pkt</th>
-                </tr>
-              </thead>
-              <tbody id="tableBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="right-col">
-          <div class="spiel-liste" id="spieleContainer"></div>
-        </div>
+      <div class="header-nav" id="headerNav">
+        <button class="active" data-view="home">Home</button>
+        <button data-view="table">Tabelle</button>
+        <button data-view="games">Spiele</button>
+        <button data-view="stats">Statistiken</button>
       </div>
     </div>
+  </header>
 
-    <!-- VIEW: TABELLE (nur Tabelle) -->
-    <div class="view" id="tableView">
-      <div class="table-wrap centered">
-        <table class="liga-table" id="tableOnly">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th class="num">Sp</th>
-              <th class="num">S</th>
-              <th class="num">U</th>
-              <th class="num">N</th>
-              <th class="num">Tore</th>
-              <th class="num">Diff</th>
-              <th class="pts">Pkt</th>
-            </tr>
-          </thead>
-          <tbody id="tableOnlyBody"></tbody>
-        </table>
+  <!-- VIEW: HOME -->
+  <div class="view active" id="homeView">
+    <div class="liga-tabs" id="spieltagTabs"></div>
+    <div class="content-wrapper">
+      <div class="left-col">
+        <div class="table-wrap" id="tableWrap">
+          <table class="liga-table" id="ligaTable">
+            <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
       </div>
-    </div>
-
-    <!-- VIEW: SPIELE (alle Spieltage) -->
-    <div class="view" id="gamesView">
-      <div id="allGamesContainer"></div>
+      <div class="right-col"><div class="spiel-liste" id="spieleContainer"></div></div>
     </div>
   </div>
 
-  <script>
-    // ============================
-    //  KONFIGURATION
-    // ============================
-    const SPIELPLAN_URL = 'spielplan.json';
-    const DATA_BASE = 'data/';
+  <!-- VIEW: TABELLE -->
+  <div class="view" id="tableView">
+    <div class="table-wrap centered">
+      <table class="liga-table" id="tableOnly">
+        <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
+        <tbody id="tableOnlyBody"></tbody>
+      </table>
+    </div>
+  </div>
 
-    let spielplan = null;
-    let teams = [];
-    let allGameData = {}; // key: "st-spiel" -> state
-    let currentView = 'home';
-    let currentSpieltag = 0;
+  <!-- VIEW: SPIELE (alle) -->
+  <div class="view" id="gamesView">
+    <div id="allGamesContainer"></div>
+  </div>
 
-    // ============================
-    //  HILFSFUNKTIONEN
-    // ============================
-    const PIECES = [
-      { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
-      { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
-      { id: 'knight', name: 'Springer',value: '?',    base: 1 },
-      { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
-      { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
-    ];
-    const PIECE_IDS = PIECES.map(p => p.id);
-    const SIDES = ['white', 'black'];
+  <!-- VIEW: STATISTIKEN (Spieler-Fotos) -->
+  <div class="view" id="statsView">
+    <div id="statsContainer"></div>
+  </div>
+</div>
 
-    const PIECE_SVG_URLS = {
-      rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
-      bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
-      knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
-      queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
-      king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
-    };
+<script>
+  // ============================
+  //  KONFIGURATION
+  // ============================
+  const SPIELPLAN_URL = 'spielplan.json';
+  const DATA_BASE = 'data/';
 
-    function formatNumber(num) {
-      return num > 0 ? `+${num}` : String(num);
+  let spielplan = null;
+  let teams = [];
+  let allGameData = {}; // key: "st-spiel" -> state
+  let currentView = 'home';
+  let currentSpieltag = 0;
+
+  // ============================
+  //  HILFSFUNKTIONEN
+  // ============================
+  const PIECES = [
+    { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
+    { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
+    { id: 'knight', name: 'Springer',value: '?',    base: 1 },
+    { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
+    { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
+  ];
+  const PIECE_IDS = PIECES.map(p => p.id);
+  const SIDES = ['white', 'black'];
+  const SLOTS = SIDES.flatMap(s => PIECE_IDS.map(p => `${s}-${p}`));
+
+  const PIECE_SVG_URLS = {
+    rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+    bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+    knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+    queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+    king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+  };
+
+  function formatNumber(num) { return num > 0 ? `+${num}` : String(num); }
+  function getScoreTone(value) {
+    if (value > 0) return 'positive';
+    if (value < 0) return 'negative';
+    return 'zero';
+  }
+  function getPieceById(id) { return PIECES.find(p => p.id === id); }
+  function getSlotSide(slot) { return slot.split('-')[0]; }
+  function getSlotPiece(slot) { return slot.split('-')[1]; }
+
+  function getAssignmentScore(assignment, state) {
+    if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
+    const piece = getPieceById(assignment.piece);
+    const sign = assignment.polarity === 'positive' ? 1 : -1;
+    switch (assignment.piece) {
+      case 'knight':
+        return (assignment.polarity === 'positive') ? (state.questionValue ?? assignment.knightSwing) : 0;
+      case 'bishop':
+        return (assignment.polarity === 'positive') ? -piece.base : 0;
+      case 'queen':
+        return (assignment.polarity === 'positive') ? piece.base : 0;
+      case 'rook':
+        return piece.base * sign * -1;
+      default:
+        return piece.base * sign;
     }
-    function getScoreTone(value) {
-      if (value > 0) return 'positive';
-      if (value < 0) return 'negative';
-      return 'zero';
-    }
-    function getPieceById(id) { return PIECES.find(p => p.id === id); }
+  }
 
-    function getAssignmentScore(assignment, state) {
-      if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
-      const piece = getPieceById(assignment.piece);
-      const sign = assignment.polarity === 'positive' ? 1 : -1;
-      switch (assignment.piece) {
-        case 'knight':
-          return (assignment.polarity === 'positive') ? (state.questionValue ?? assignment.knightSwing) : 0;
-        case 'bishop':
-          return (assignment.polarity === 'positive') ? -piece.base : 0;
-        case 'queen':
-          return (assignment.polarity === 'positive') ? piece.base : 0;
-        case 'rook':
-          return piece.base * sign * -1;
-        default:
-          return piece.base * sign;
-      }
-    }
+  function isGameComplete(state) {
+    const placed = state.assignments.filter(a => a.side && a.piece).length;
+    return placed >= 10;
+  }
 
-    function isGameComplete(state) {
-      const placed = state.assignments.filter(a => a.side && a.piece).length;
-      return placed >= 10;
-    }
+  function getGameScore(state) {
+    let whiteTotal = 0, blackTotal = 0;
+    PIECES.forEach(p => {
+      whiteTotal += state.results.white[p.id] || 0;
+      blackTotal += state.results.black[p.id] || 0;
+    });
+    state.assignments.forEach(a => {
+      if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
+      else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
+    });
+    return { white: whiteTotal, black: blackTotal };
+  }
 
-    function getGameScore(state) {
-      let whiteTotal = 0, blackTotal = 0;
-      PIECES.forEach(p => {
-        whiteTotal += state.results.white[p.id] || 0;
-        blackTotal += state.results.black[p.id] || 0;
+  // ============================
+  //  TABELLE
+  // ============================
+  function buildTableData() {
+    if (!spielplan || !teams.length) return [];
+    const stats = {};
+    teams.forEach(t => {
+      stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
+    });
+    spielplan.spieltage.forEach((spieltag, stIdx) => {
+      spieltag.forEach((spiel, spIdx) => {
+        const key = `${stIdx}-${spIdx}`;
+        const state = allGameData[key];
+        if (!state) return;
+        if (!isGameComplete(state)) return;
+        const score = getGameScore(state);
+        const home = spiel.heim, away = spiel.auswaerts;
+        if (!home || !away) return;
+        stats[home].sp++; stats[away].sp++;
+        stats[home].tore += score.white; stats[home].gegentore += score.black;
+        stats[away].tore += score.black; stats[away].gegentore += score.white;
+        if (score.white > score.black) { stats[home].s++; stats[home].punkte += 3; stats[away].n++; }
+        else if (score.black > score.white) { stats[away].s++; stats[away].punkte += 3; stats[home].n++; }
+        else { stats[home].u++; stats[home].punkte += 1; stats[away].u++; stats[away].punkte += 1; }
       });
-      state.assignments.forEach(a => {
-        if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
-        else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
-      });
-      return { white: whiteTotal, black: blackTotal };
-    }
+    });
+    const sorted = teams.slice().sort((a, b) => {
+      if (stats[b].punkte !== stats[a].punkte) return stats[b].punkte - stats[a].punkte;
+      const diffA = stats[a].tore - stats[a].gegentore;
+      const diffB = stats[b].tore - stats[b].gegentore;
+      if (diffB !== diffA) return diffB - diffA;
+      return stats[b].tore - stats[a].tore;
+    });
+    return sorted.map((team, idx) => ({
+      pos: idx + 1,
+      team,
+      sp: stats[team].sp,
+      s: stats[team].s,
+      u: stats[team].u,
+      n: stats[team].n,
+      tore: stats[team].tore,
+      gegentore: stats[team].gegentore,
+      diff: stats[team].tore - stats[team].gegentore,
+      punkte: stats[team].punkte
+    }));
+  }
 
-    // ============================
-    //  LIGA-TABELLE (für beide Tabellen)
-    // ============================
-    function buildTableData() {
-      if (!spielplan || !teams.length) return [];
-      const stats = {};
-      teams.forEach(t => {
-        stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
-      });
+  function renderTables() {
+    const data = buildTableData();
+    const tbody1 = document.getElementById('tableBody');
+    const tbody2 = document.getElementById('tableOnlyBody');
+    tbody1.innerHTML = ''; tbody2.innerHTML = '';
+    data.forEach(row => {
+      const diff = row.diff;
+      const tr1 = document.createElement('tr');
+      tr1.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+      tbody1.appendChild(tr1);
+      const tr2 = document.createElement('tr');
+      tr2.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+      tbody2.appendChild(tr2);
+    });
+  }
 
-      spielplan.spieltage.forEach((spieltag, stIdx) => {
-        spieltag.forEach((spiel, spIdx) => {
-          const key = `${stIdx}-${spIdx}`;
-          const state = allGameData[key];
-          if (!state) return;
-          if (!isGameComplete(state)) return;
+  // ============================
+  //  BRETT-RENDERER
+  // ============================
+  function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
+    const board = document.createElement('div');
+    board.className = 'board-panel';
+    const topbar = document.createElement('div');
+    topbar.className = 'topbar';
+    topbar.innerHTML = `<div><p class="eyebrow">${homeTeam} vs ${awayTeam}</p><h3>Rasenschach · Spieltag ${stIdx+1}</h3></div>`;
+    board.appendChild(topbar);
 
-          const score = getGameScore(state);
-          const home = spiel.heim;
-          const away = spiel.auswaerts;
-          if (!home || !away) return;
+    const score = getGameScore(state);
+    const whiteLogo = state.teamLogos?.white || null;
+    const blackLogo = state.teamLogos?.black || null;
+    const sb = document.createElement('div');
+    sb.className = 'scoreboard';
+    sb.innerHTML = `<div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
+        <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--red),var(--red-deep));padding:3px 12px;border-radius:8px;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
+        <span>${score.white}</span><span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span><span>${score.black}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
+        <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
+      </div>
+    </div>`;
+    board.appendChild(sb);
 
-          stats[home].sp++;
-          stats[away].sp++;
-          stats[home].tore += score.white;
-          stats[home].gegentore += score.black;
-          stats[away].tore += score.black;
-          stats[away].gegentore += score.white;
-
-          if (score.white > score.black) {
-            stats[home].s++; stats[home].punkte += 3;
-            stats[away].n++;
-          } else if (score.black > score.white) {
-            stats[away].s++; stats[away].punkte += 3;
-            stats[home].n++;
+    const grid = document.createElement('div');
+    grid.className = 'chess-grid';
+    const rows = ['top','white','black','bottom'];
+    rows.forEach(row => {
+      PIECES.forEach((piece, idx) => {
+        const cell = document.createElement('div');
+        cell.className = 'grid-cell';
+        if (row === 'top' || row === 'bottom') {
+          cell.classList.add('piece-cell');
+          if ((row === 'top' && idx%2===1) || (row === 'bottom' && idx%2===0)) cell.classList.add('light');
+          const side = row === 'top' ? 'white' : 'black';
+          const slot = `${row}-${piece.id}`;
+          const image = state.figureImages?.[slot] || null;
+          const scoreVal = state.results[side]?.[piece.id] ?? 0;
+          const pieceSvg = PIECE_SVG_URLS[piece.id];
+          let html = `<strong class="field-watermark ${getScoreTone(scoreVal)}">${formatNumber(scoreVal)}</strong>`;
+          if (image) {
+            cell.classList.add('has-player-image');
+            html += `<img class="player-photo" src="${image}" alt="" />`;
+            html += `<img class="piece-corner" src="${pieceSvg}" alt="" />`;
           } else {
-            stats[home].u++; stats[home].punkte += 1;
-            stats[away].u++; stats[away].punkte += 1;
+            html += `<img class="piece-svg" src="${pieceSvg}" alt="" />`;
           }
-        });
-      });
-
-      const sorted = teams.slice().sort((a, b) => {
-        if (stats[b].punkte !== stats[a].punkte) return stats[b].punkte - stats[a].punkte;
-        const diffA = stats[a].tore - stats[a].gegentore;
-        const diffB = stats[b].tore - stats[b].gegentore;
-        if (diffB !== diffA) return diffB - diffA;
-        return stats[b].tore - stats[a].tore;
-      });
-
-      return sorted.map((team, idx) => ({
-        pos: idx + 1,
-        team: team,
-        sp: stats[team].sp,
-        s: stats[team].s,
-        u: stats[team].u,
-        n: stats[team].n,
-        tore: stats[team].tore,
-        gegentore: stats[team].gegentore,
-        diff: stats[team].tore - stats[team].gegentore,
-        punkte: stats[team].punkte
-      }));
-    }
-
-    function renderTables() {
-      const data = buildTableData();
-      const tbody1 = document.getElementById('tableBody');
-      tbody1.innerHTML = '';
-      const tbody2 = document.getElementById('tableOnlyBody');
-      tbody2.innerHTML = '';
-
-      data.forEach(row => {
-        const diff = row.diff;
-        const tr1 = document.createElement('tr');
-        tr1.innerHTML = `
-          <td class="pos">${row.pos}</td>
-          <td class="team">${row.team}</td>
-          <td class="num">${row.sp}</td>
-          <td class="num">${row.s}</td>
-          <td class="num">${row.u}</td>
-          <td class="num">${row.n}</td>
-          <td class="num">${row.tore}:${row.gegentore}</td>
-          <td class="num">${diff > 0 ? '+' : ''}${diff}</td>
-          <td class="pts">${row.punkte}</td>
-        `;
-        tbody1.appendChild(tr1);
-
-        const tr2 = document.createElement('tr');
-        tr2.innerHTML = `
-          <td class="pos">${row.pos}</td>
-          <td class="team">${row.team}</td>
-          <td class="num">${row.sp}</td>
-          <td class="num">${row.s}</td>
-          <td class="num">${row.u}</td>
-          <td class="num">${row.n}</td>
-          <td class="num">${row.tore}:${row.gegentore}</td>
-          <td class="num">${diff > 0 ? '+' : ''}${diff}</td>
-          <td class="pts">${row.punkte}</td>
-        `;
-        tbody2.appendChild(tr2);
-      });
-    }
-
-    // ============================
-    //  BRETT-RENDERER
-    // ============================
-    function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
-      const board = document.createElement('div');
-      board.className = 'board-panel';
-
-      const topbar = document.createElement('div');
-      topbar.className = 'topbar';
-      topbar.innerHTML = `
-        <div>
-          <p class="eyebrow">${homeTeam} vs ${awayTeam}</p>
-          <h3>Rasenschach · Spieltag ${stIdx + 1}</h3>
-        </div>
-      `;
-      board.appendChild(topbar);
-
-      // Scoreboard im Brett (mit Logos ohne weißen Kreis)
-      const score = getGameScore(state);
-      const whiteLogo = state.teamLogos?.white || null;
-      const blackLogo = state.teamLogos?.black || null;
-
-      const scoreboard = document.createElement('div');
-      scoreboard.className = 'scoreboard';
-      scoreboard.style.cssText = 'display:flex;justify-content:center;width:100%;margin-bottom:8px;';
-      scoreboard.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f4f2ee;padding:6px 16px;border-radius:999px;max-width:700px;width:100%;">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="team-logo-wrapper">
-              ${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}
-            </div>
-            <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--red),var(--red-deep));padding:3px 12px;border-radius:8px;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
-            <span>${score.white}</span>
-            <span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span>
-            <span>${score.black}</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
-            <div class="team-logo-wrapper">
-              ${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}
-            </div>
-          </div>
-        </div>
-      `;
-      board.appendChild(scoreboard);
-
-      // Schachbrett
-      const grid = document.createElement('div');
-      grid.className = 'chess-grid';
-      const rows = ['top', 'white', 'black', 'bottom'];
-      rows.forEach(row => {
-        PIECES.forEach((piece, idx) => {
-          const cell = document.createElement('div');
-          cell.className = 'grid-cell';
-          if (row === 'top' || row === 'bottom') {
-            cell.classList.add('piece-cell');
-            if ((row === 'top' && idx % 2 === 1) || (row === 'bottom' && idx % 2 === 0)) {
-              cell.classList.add('light');
-            }
-            const side = row === 'top' ? 'white' : 'black';
-            const slot = `${row}-${piece.id}`;
-            const image = state.figureImages?.[slot] || null;
-            const scoreVal = state.results[side]?.[piece.id] ?? 0;
-            const pieceSvg = PIECE_SVG_URLS[piece.id];
-
-            let html = `<strong class="field-watermark ${getScoreTone(scoreVal)}">${formatNumber(scoreVal)}</strong>`;
-            if (image) {
-              cell.classList.add('has-player-image');
-              html += `<img class="player-photo" src="${image}" alt="" />`;
-              html += `<img class="piece-corner" src="${pieceSvg}" alt="" />`;
-            } else {
-              html += `<img class="piece-svg" src="${pieceSvg}" alt="" />`;
-            }
-            cell.innerHTML = html;
-          } else {
-            cell.classList.add('drop-cell');
-            cell.dataset.side = row;
-            cell.dataset.piece = piece.id;
-            let thesisTotal = 0;
-            state.assignments.forEach(a => {
-              if (a.side === row && a.piece === piece.id) {
-                thesisTotal += getAssignmentScore(a, state);
-              }
-            });
-            let figureValue = (piece.id === 'knight' && state.questionValue !== null)
-              ? formatNumber(state.questionValue)
-              : piece.value;
-            let html = `<div class="drop-value">${figureValue}</div>`;
-            if (thesisTotal !== 0) {
-              html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`;
-              cell.classList.add('has-theses');
-            }
-            html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
-            cell.innerHTML = html;
-          }
-          grid.appendChild(cell);
-        });
-      });
-      board.appendChild(grid);
-
-      container.innerHTML = '';
-      container.appendChild(board);
-
-      container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
-      state.assignments.forEach(a => {
-        if (!a.side || !a.piece) return;
-        const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
-        if (!slot) return;
-        const piece = getPieceById(a.piece);
-        const fieldLabel = (a.piece === 'knight' && state.questionValue !== null)
-          ? formatNumber(state.questionValue)
-          : piece.value;
-        const score = getAssignmentScore(a, state);
-        const chip = document.createElement('span');
-        chip.className = 'placed-chip';
-        chip.innerHTML = `
-          <span class="chip-field-badge">${fieldLabel}</span>
-          <strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong>
-          <span class="fit-text">${state.theses[a.id - 1]}</span>
-        `;
-        slot.appendChild(chip);
-      });
-    }
-
-    // ============================
-    //  SPIEL-LISTE
-    // ============================
-    function createSpielItem(stIdx, spIdx, spiel, state) {
-      const item = document.createElement('div');
-      item.className = 'spiel-item';
-
-      if (!state) {
-        item.innerHTML = `
-          <div class="spiel-header" style="opacity:0.5;cursor:default;">
-            <span>${spiel.heim}</span>
-            <span>vs</span>
-            <span>${spiel.auswaerts}</span>
-            <span style="color:var(--muted);font-size:0.6rem;">nicht verfügbar</span>
-          </div>
-        `;
-        return item;
-      }
-
-      const score = getGameScore(state);
-      const placed = state.assignments.filter(a => a.side && a.piece).length;
-      const complete = placed >= 10;
-      const homeLogo = state.teamLogos?.white || null;
-      const awayLogo = state.teamLogos?.black || null;
-
-      const header = document.createElement('div');
-      header.className = 'spiel-header';
-      header.innerHTML = `
-        <div class="team-block heim">
-          ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
-          <span class="team-name">${spiel.heim}</span>
-        </div>
-        <span class="score-display">${score.white} : ${score.black}</span>
-        <div class="team-block auswaerts">
-          <span class="team-name">${spiel.auswaerts}</span>
-          ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
-        </div>
-        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
-      `;
-      item.appendChild(header);
-
-      const meta = document.createElement('div');
-      meta.className = 'spiel-meta';
-      const statusText = complete ? 'gespielt' : 'offen';
-      meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${statusText}</span>`;
-      item.appendChild(meta);
-
-      const boardContainer = document.createElement('div');
-      boardContainer.className = 'spiel-board-container';
-      item.appendChild(boardContainer);
-
-      const toggleBtn = header.querySelector('.toggle-btn');
-      let isOpen = false;
-      toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isOpen = !isOpen;
-        toggleBtn.classList.toggle('open', isOpen);
-        boardContainer.classList.toggle('open', isOpen);
-        if (isOpen && !boardContainer.hasChildNodes()) {
-          renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
+          cell.innerHTML = html;
+        } else {
+          cell.classList.add('drop-cell');
+          cell.dataset.side = row;
+          cell.dataset.piece = piece.id;
+          let thesisTotal = 0;
+          state.assignments.forEach(a => {
+            if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
+          });
+          let figureValue = (piece.id === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+          let html = `<div class="drop-value">${figureValue}</div>`;
+          if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
+          html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
+          cell.innerHTML = html;
         }
+        grid.appendChild(cell);
       });
+    });
+    board.appendChild(grid);
+    container.innerHTML = '';
+    container.appendChild(board);
+    container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
+    state.assignments.forEach(a => {
+      if (!a.side || !a.piece) return;
+      const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
+      if (!slot) return;
+      const piece = getPieceById(a.piece);
+      const fieldLabel = (a.piece === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+      const score = getAssignmentScore(a, state);
+      const chip = document.createElement('span');
+      chip.className = 'placed-chip';
+      chip.innerHTML = `<span class="chip-field-badge">${fieldLabel}</span><strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
+      slot.appendChild(chip);
+    });
+  }
 
+  // ============================
+  //  SPIEL-LISTE
+  // ============================
+  function createSpielItem(stIdx, spIdx, spiel, state) {
+    const item = document.createElement('div');
+    item.className = 'spiel-item';
+    if (!state) {
+      item.innerHTML = `<div class="spiel-header" style="opacity:0.5;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--muted);font-size:0.6rem;">nicht verfügbar</span></div>`;
       return item;
     }
-
-    // ============================
-    //  HOME-ANSICHT
-    // ============================
-    function renderHome(spieltagIndex) {
-      currentSpieltag = spieltagIndex;
-      const container = document.getElementById('spieleContainer');
-      container.innerHTML = '';
-      const spiele = spielplan.spieltage[spieltagIndex];
-      if (!spiele) {
-        container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>';
-        return;
+    const score = getGameScore(state);
+    const placed = state.assignments.filter(a => a.side && a.piece).length;
+    const complete = placed >= 10;
+    const homeLogo = state.teamLogos?.white || null;
+    const awayLogo = state.teamLogos?.black || null;
+    const header = document.createElement('div');
+    header.className = 'spiel-header';
+    header.innerHTML = `
+      <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
+      <span class="score-display">${score.white} : ${score.black}</span>
+      <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
+      <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
+    `;
+    item.appendChild(header);
+    const meta = document.createElement('div');
+    meta.className = 'spiel-meta';
+    meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${complete ? 'gespielt' : 'offen'}</span>`;
+    item.appendChild(meta);
+    const boardContainer = document.createElement('div');
+    boardContainer.className = 'spiel-board-container';
+    item.appendChild(boardContainer);
+    const toggleBtn = header.querySelector('.toggle-btn');
+    let isOpen = false;
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isOpen = !isOpen;
+      toggleBtn.classList.toggle('open', isOpen);
+      boardContainer.classList.toggle('open', isOpen);
+      if (isOpen && !boardContainer.hasChildNodes()) {
+        renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
       }
+    });
+    return item;
+  }
 
-      spiele.forEach((spiel, idx) => {
-        const key = `${spieltagIndex}-${idx}`;
+  // ============================
+  //  HOME
+  // ============================
+  function renderHome(spieltagIndex) {
+    currentSpieltag = spieltagIndex;
+    const container = document.getElementById('spieleContainer');
+    container.innerHTML = '';
+    const spiele = spielplan.spieltage[spieltagIndex];
+    if (!spiele) { container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>'; return; }
+    spiele.forEach((spiel, idx) => {
+      const key = `${spieltagIndex}-${idx}`;
+      const state = allGameData[key];
+      const item = createSpielItem(spieltagIndex, idx, spiel, state);
+      container.appendChild(item);
+    });
+    renderTabs(spieltagIndex + 1);
+  }
+
+  function computeTabNumbers(total, current) {
+    if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
+    const raw = [1, current-1, current, current+1, total];
+    const seen = new Set();
+    const result = [];
+    raw.forEach(n => { if (n>=1 && n<=total && !seen.has(n)) { seen.add(n); result.push(n); } });
+    result.sort((a,b) => a-b);
+    return result;
+  }
+
+  function renderTabs(current) {
+    const total = spielplan.spieltage.length;
+    const tabsContainer = document.getElementById('spieltagTabs');
+    tabsContainer.innerHTML = '';
+    computeTabNumbers(total, current).forEach(n => {
+      const btn = document.createElement('button');
+      btn.textContent = `${n}. Spieltag`;
+      btn.dataset.index = n - 1;
+      btn.classList.toggle('active', n === current);
+      btn.addEventListener('click', () => renderHome(n - 1));
+      tabsContainer.appendChild(btn);
+    });
+  }
+
+  // ============================
+  //  ALLE SPIELE
+  // ============================
+  function renderAllGames() {
+    const container = document.getElementById('allGamesContainer');
+    container.innerHTML = '';
+    spielplan.spieltage.forEach((spiele, stIdx) => {
+      const group = document.createElement('div');
+      group.className = 'spieltag-group';
+      const headline = document.createElement('div');
+      headline.className = 'spieltag-headline';
+      headline.innerHTML = `Spieltag ${stIdx+1} <small>${spiele.length} Partien</small>`;
+      group.appendChild(headline);
+      const list = document.createElement('div');
+      list.className = 'spiel-liste';
+      spiele.forEach((spiel, spIdx) => {
+        const key = `${stIdx}-${spIdx}`;
         const state = allGameData[key];
-        const item = createSpielItem(spieltagIndex, idx, spiel, state);
-        container.appendChild(item);
+        const item = createSpielItem(stIdx, spIdx, spiel, state);
+        list.appendChild(item);
+      });
+      group.appendChild(list);
+      container.appendChild(group);
+    });
+  }
+
+  // ============================
+  //  STATISTIKEN — SPIELER-FOTOS
+  // ============================
+  function computePlayerStats() {
+    // Aggregiere pro Slot (z.B. "white-rook") die Spieler-Fotos
+    // slotStats = { slot: { playerImage: { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGame: null, gamePoints: [punkte] } } }
+    const slotStats = {};
+    SLOTS.forEach(slot => {
+      slotStats[slot] = {};
+    });
+
+    // Durchlaufe alle Spiele
+    for (const [key, state] of Object.entries(allGameData)) {
+      if (!state) continue;
+      // Für jeden Slot, der ein Bild hat, sammeln wir die Punktzahl für diesen Slot
+      // Die Punktzahl für einen Slot = Summe der Assignment-Punkte, die auf diesem Slot liegen
+      const slotPoints = {};
+      state.assignments.forEach(a => {
+        if (!a.side || !a.piece) return;
+        const slot = `${a.side}-${a.piece}`;
+        if (!slotPoints[slot]) slotPoints[slot] = 0;
+        slotPoints[slot] += getAssignmentScore(a, state);
       });
 
-      renderTabs(spieltagIndex + 1);
-    }
-
-    // ============================
-    //  TAB-LEISTE (nur für Home)
-    // ============================
-    function computeTabNumbers(total, current) {
-      if (total <= 5) {
-        return Array.from({ length: total }, (_, i) => i + 1);
+      // Nun für jeden Slot mit Bild: aggregieren
+      for (const [slot, points] of Object.entries(slotPoints)) {
+        const image = state.figureImages?.[slot];
+        if (!image) continue; // nur Slots mit Spieler-Foto
+        if (!slotStats[slot][image]) {
+          slotStats[slot][image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGame: null, gamePoints: [] };
+        }
+        const player = slotStats[slot][image];
+        player.games += 1;
+        player.totalPoints += points;
+        player.gamePoints.push(points);
+        if (points > player.maxPoints) {
+          player.maxPoints = points;
+          player.maxGame = key;
+        }
       }
-      const raw = [1, current - 1, current, current + 1, total];
-      const seen = new Set();
-      const result = [];
-      raw.forEach(n => {
-        if (n < 1 || n > total) return;
-        if (seen.has(n)) return;
-        seen.add(n);
-        result.push(n);
-      });
-      result.sort((a, b) => a - b);
-      return result;
     }
 
-    function renderTabs(current) {
-      const total = spielplan.spieltage.length;
-      const tabsContainer = document.getElementById('spieltagTabs');
-      tabsContainer.innerHTML = '';
-      computeTabNumbers(total, current).forEach(n => {
-        const btn = document.createElement('button');
-        btn.textContent = `${n}. Spieltag`;
-        btn.dataset.index = n - 1;
-        btn.classList.toggle('active', n === current);
-        btn.addEventListener('click', () => renderHome(n - 1));
-        tabsContainer.appendChild(btn);
+    // Pro Slot: Durchschnitt berechnen und die Top-Spieler ermitteln
+    // Wir geben pro Figur und Seite eine Übersicht:
+    // - Meiste Einsätze
+    // - Bester Durchschnitt (mind. 2 Spiele)
+    // - Meiste absolute Punkte
+    const result = {};
+    PIECES.forEach(p => {
+      result[p.id] = { white: [], black: [] };
+    });
+
+    for (const [slot, players] of Object.entries(slotStats)) {
+      const side = getSlotSide(slot);
+      const piece = getSlotPiece(slot);
+      const playerList = Object.entries(players).map(([image, data]) => {
+        const avg = data.games > 0 ? data.totalPoints / data.games : 0;
+        return { image, games: data.games, totalPoints: data.totalPoints, avg, maxPoints: data.maxPoints, maxGame: data.maxGame };
       });
+      // Sortieren nach Einsätzen, Durchschnitt, total
+      const byGames = [...playerList].sort((a,b) => b.games - a.games || b.totalPoints - a.totalPoints);
+      const byAvg = [...playerList].filter(p => p.games >= 2).sort((a,b) => b.avg - a.avg || b.totalPoints - a.totalPoints);
+      const byTotal = [...playerList].sort((a,b) => b.totalPoints - a.totalPoints || b.games - a.games);
+
+      const bestGames = byGames[0] || null;
+      const bestAvg = byAvg[0] || null;
+      const bestTotal = byTotal[0] || null;
+
+      result[piece][side] = { bestGames, bestAvg, bestTotal };
     }
 
-    // ============================
-    //  ALLE SPIELE (View "Spiele")
-    // ============================
-    function renderAllGames() {
-      const container = document.getElementById('allGamesContainer');
-      container.innerHTML = '';
+    return result;
+  }
 
-      spielplan.spieltage.forEach((spiele, stIdx) => {
+  function renderStatistics() {
+    const container = document.getElementById('statsContainer');
+    container.innerHTML = '';
+    const stats = computePlayerStats();
+
+    const grid = document.createElement('div');
+    grid.className = 'stats-grid';
+
+    const sideLabels = { white: 'Weiß', black: 'Schwarz' };
+    const sideColors = { white: '#f4f2ee', black: '#d0d0d0' };
+
+    PIECES.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'stat-card';
+      const title = document.createElement('h3');
+      title.textContent = p.name;
+      card.appendChild(title);
+
+      SIDES.forEach(side => {
+        const data = stats[p.id][side];
         const group = document.createElement('div');
-        group.className = 'spieltag-group';
+        group.className = 'stat-team';
+        const h4 = document.createElement('h4');
+        h4.textContent = sideLabels[side];
+        group.appendChild(h4);
 
-        const headline = document.createElement('div');
-        headline.className = 'spieltag-headline';
-        headline.innerHTML = `Spieltag ${stIdx + 1} <small>${spiele.length} Partien</small>`;
-        group.appendChild(headline);
-
-        const list = document.createElement('div');
-        list.className = 'spiel-liste';
-
-        spiele.forEach((spiel, spIdx) => {
-          const key = `${stIdx}-${spIdx}`;
-          const state = allGameData[key];
-          const item = createSpielItem(stIdx, spIdx, spiel, state);
-          list.appendChild(item);
-        });
-
-        group.appendChild(list);
-        container.appendChild(group);
-      });
-    }
-
-    // ============================
-    //  VIEW-NAVIGATION
-    // ============================
-    function switchView(view) {
-      currentView = view;
-      document.querySelectorAll('.header-nav button').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.view === view);
-      });
-      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-      document.getElementById(`${view}View`).classList.add('active');
-
-      if (view === 'games') {
-        renderAllGames();
-      }
-    }
-
-    // ============================
-    //  LADE ALLE DATEN (parallel)
-    // ============================
-    async function loadAllGameData() {
-      const gameData = {};
-      const totalSpieltage = spielplan.spieltage.length;
-
-      const stPromises = [];
-      for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
-        const spiele = spielplan.spieltage[stIdx];
-        const spieleCount = spiele.length;
-
-        const spielPromises = [];
-        for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
-          const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
-          spielPromises.push(
-            fetch(filePath)
-              .then(res => {
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                return res.json();
-              })
-              .then(data => ({ stIdx, spIdx, data }))
-              .catch(() => null)
-          );
+        if (!data || (!data.bestGames && !data.bestAvg && !data.bestTotal)) {
+          const empty = document.createElement('p');
+          empty.style.color = 'var(--steel)';
+          empty.style.fontSize = '0.7rem';
+          empty.textContent = 'keine Spieler-Fotos auf dieser Figur';
+          group.appendChild(empty);
+          card.appendChild(group);
+          return;
         }
 
-        stPromises.push(
-          Promise.all(spielPromises).then(results => {
-            const valid = results.filter(r => r !== null);
-            for (const { stIdx, spIdx, data } of valid) {
-              const state = data.data || data;
-              if (!state) return;
-              if (state.positions) {
-                state.assignments = state.positions.map(p => ({
-                  id: p.id,
-                  side: p.side || null,
-                  piece: p.piece || null,
-                  polarity: p.polarity || null,
-                  knightSwing: p.knightSwing ?? 1,
-                }));
-                delete state.positions;
-              }
-              if (!state.results) {
-                state.results = {
-                  white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-                  black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 }
-                };
-              }
-              if (!state.theses) {
-                state.theses = Array.from({ length: 12 }, (_, i) => `These ${i + 1}`);
-              }
-              if (!state.teamLogos) state.teamLogos = { white: null, black: null };
-              if (!state.figureImages) state.figureImages = {};
-              gameData[`${stIdx}-${spIdx}`] = state;
-            }
-          })
+        // Helper zum Rendern einer Zeile
+        function renderPlayerRow(label, player, highlight = false) {
+          if (!player) return '';
+          const avg = player.avg.toFixed(1);
+          const slot = `${side}-${p.id}`;
+          return `
+            <div class="stat-player-row">
+              <img class="player-img" src="${player.image}" alt="Spieler" />
+              <div class="player-info">
+                <span class="stat-label">${label}</span>
+                <span class="stat-value ${highlight ? 'best' : ''}">${player.totalPoints} Pkt</span>
+                <span class="stat-value games">${player.games} Spiele</span>
+                <span class="stat-value">Ø ${avg}</span>
+                <span class="stat-value">max ${formatNumber(player.maxPoints)}</span>
+                <span class="slot-label">${slot}</span>
+              </div>
+            </div>
+          `;
+        }
+
+        let html = '';
+        if (data.bestGames) html += renderPlayerRow('meiste Einsätze', data.bestGames);
+        if (data.bestAvg) html += renderPlayerRow('bester Ø', data.bestAvg, true);
+        if (data.bestTotal && data.bestTotal.image !== data.bestGames?.image && data.bestTotal.image !== data.bestAvg?.image) {
+          html += renderPlayerRow('meiste Punkte', data.bestTotal);
+        }
+
+        if (!html) {
+          html = '<p style="color:var(--steel);font-size:0.7rem;">keine ausreichenden Daten</p>';
+        }
+
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        group.appendChild(wrapper);
+        card.appendChild(group);
+      });
+
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+  }
+
+  // ============================
+  //  VIEW-NAVIGATION
+  // ============================
+  function switchView(view) {
+    currentView = view;
+    document.querySelectorAll('.header-nav button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.view === view);
+    });
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.getElementById(`${view}View`).classList.add('active');
+    if (view === 'games') renderAllGames();
+    if (view === 'stats') renderStatistics();
+  }
+
+  // ============================
+  //  LADE ALLE DATEN (parallel)
+  // ============================
+  async function loadAllGameData() {
+    const gameData = {};
+    const totalSpieltage = spielplan.spieltage.length;
+    const stPromises = [];
+    for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
+      const spiele = spielplan.spieltage[stIdx];
+      const spieleCount = spiele.length;
+      const spielPromises = [];
+      for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
+        const filePath = `${DATA_BASE}Spieltag ${stIdx+1}/${spIdx+1}.json`;
+        spielPromises.push(
+          fetch(filePath)
+            .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+            .then(data => ({ stIdx, spIdx, data }))
+            .catch(() => null)
         );
       }
-
-      await Promise.all(stPromises);
-      return gameData;
+      stPromises.push(
+        Promise.all(spielPromises).then(results => {
+          const valid = results.filter(r => r !== null);
+          for (const { stIdx, spIdx, data } of valid) {
+            const state = data.data || data;
+            if (!state) return;
+            if (state.positions) {
+              state.assignments = state.positions.map(p => ({
+                id: p.id,
+                side: p.side || null,
+                piece: p.piece || null,
+                polarity: p.polarity || null,
+                knightSwing: p.knightSwing ?? 1,
+              }));
+              delete state.positions;
+            }
+            if (!state.results) {
+              state.results = { white: { rook:0, bishop:0, knight:0, queen:0, king:0 }, black: { rook:0, bishop:0, knight:0, queen:0, king:0 } };
+            }
+            if (!state.theses) state.theses = Array.from({ length: 12 }, (_, i) => `These ${i+1}`);
+            if (!state.teamLogos) state.teamLogos = { white: null, black: null };
+            if (!state.figureImages) state.figureImages = {};
+            gameData[`${stIdx}-${spIdx}`] = state;
+          }
+        })
+      );
     }
+    await Promise.all(stPromises);
+    return gameData;
+  }
 
-    // ============================
-    //  INIT
-    // ============================
-    async function init() {
-      try {
-        const res = await fetch(SPIELPLAN_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        spielplan = await res.json();
-        teams = spielplan.teams;
+  // ============================
+  //  INIT
+  // ============================
+  async function init() {
+    try {
+      const res = await fetch(SPIELPLAN_URL);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      spielplan = await res.json();
+      teams = spielplan.teams;
 
-        allGameData = await loadAllGameData();
-        renderTables();
+      allGameData = await loadAllGameData();
+      renderTables();
 
-        let startIndex = 0;
-        for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
-          const spiele = spielplan.spieltage[i];
-          const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
-          if (hasData) { startIndex = i; break; }
-        }
-        if (spielplan.spieltage.length > 0) {
-          renderHome(startIndex);
-        }
-
-        document.querySelectorAll('.header-nav button').forEach(btn => {
-          btn.addEventListener('click', () => {
-            switchView(btn.dataset.view);
-          });
-        });
-
-      } catch (err) {
-        console.error('Fehler beim Laden:', err);
-        document.getElementById('spieleContainer').innerHTML =
-          '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
+      let startIndex = 0;
+      for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
+        const spiele = spielplan.spieltage[i];
+        const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
+        if (hasData) { startIndex = i; break; }
       }
-    }
+      if (spielplan.spieltage.length > 0) renderHome(startIndex);
 
-    init();
-  </script>
+      document.querySelectorAll('.header-nav button').forEach(btn => {
+        btn.addEventListener('click', () => switchView(btn.dataset.view));
+      });
+    } catch (err) {
+      console.error('Fehler beim Laden:', err);
+      document.getElementById('spieleContainer').innerHTML = '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
+    }
+  }
+
+  init();
+</script>
 </body>
 </html>
