@@ -657,11 +657,11 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN — Spieler-Fotos
+       STATISTIKEN — GLOBAL PRO FIGUR
        ============================ */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
       gap: 20px;
       margin-top: 12px;
     }
@@ -679,70 +679,57 @@
       letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--gold);
-      margin: 0 0 8px 0;
+      margin: 0 0 10px 0;
       border-bottom: 1px solid var(--line-strong);
       padding-bottom: 6px;
     }
-    .stat-card .stat-team {
-      margin-top: 8px;
-    }
-    .stat-card .stat-team h4 {
-      font-family: var(--mono-font);
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--steel);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin: 8px 0 4px 0;
-    }
-    .stat-player-row {
+    .stat-entry {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 4px 0;
+      gap: 12px;
+      padding: 6px 0;
       border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .stat-player-row .player-img {
-      width: 36px;
-      height: 36px;
+    .stat-entry:last-child { border-bottom: none; }
+    .stat-entry .player-img {
+      width: 42px;
+      height: 42px;
       border-radius: 4px;
       object-fit: cover;
       background: rgba(0,0,0,0.3);
       flex-shrink: 0;
       border: 1px solid var(--line);
     }
-    .stat-player-row .player-info {
+    .stat-entry .stat-info {
       flex: 1;
       display: flex;
-      align-items: center;
-      gap: 12px;
       flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 12px;
       font-family: var(--mono-font);
       font-size: 0.7rem;
     }
-    .stat-player-row .player-info .stat-label {
+    .stat-entry .stat-info .label {
       color: var(--steel);
       font-weight: 700;
-      min-width: 50px;
-      text-transform: uppercase;
       font-size: 0.55rem;
+      text-transform: uppercase;
       letter-spacing: 0.04em;
+      min-width: 50px;
     }
-    .stat-player-row .player-info .stat-value {
+    .stat-entry .stat-info .highlight {
+      color: #2be08a;
+      font-weight: 800;
+    }
+    .stat-entry .stat-info .value {
       font-weight: 800;
       color: var(--gold);
     }
-    .stat-player-row .player-info .stat-value.best {
-      color: #2be08a;
-    }
-    .stat-player-row .player-info .stat-value.games {
+    .stat-entry .stat-info .team-tag {
+      font-size: 0.6rem;
       color: var(--chalk);
-    }
-    .stat-player-row .player-info .slot-label {
-      font-size: 0.55rem;
-      color: var(--steel);
-      background: rgba(255,255,255,0.06);
-      padding: 1px 6px;
+      background: rgba(255,255,255,0.08);
+      padding: 1px 8px;
       border-radius: 3px;
     }
 
@@ -759,8 +746,8 @@
       .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
       .spiel-header .team-logo-small { width: 26px; height: 26px; }
       .stats-grid { grid-template-columns: 1fr; }
-      .stat-player-row .player-info { font-size: 0.6rem; flex-wrap: wrap; }
-      .stat-player-row .player-img { width: 28px; height: 28px; }
+      .stat-entry .player-img { width: 32px; height: 32px; }
+      .stat-entry .stat-info { font-size: 0.6rem; }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
@@ -820,7 +807,7 @@
     <div id="allGamesContainer"></div>
   </div>
 
-  <!-- VIEW: STATISTIKEN (Spieler-Fotos) -->
+  <!-- VIEW: STATISTIKEN -->
   <div class="view" id="statsView">
     <div id="statsContainer"></div>
   </div>
@@ -1174,21 +1161,22 @@
   }
 
   // ============================
-  //  STATISTIKEN — SPIELER-FOTOS
+  //  STATISTIKEN — GLOBAL PRO FIGUR
   // ============================
   function computePlayerStats() {
-    // Aggregiere pro Slot (z.B. "white-rook") die Spieler-Fotos
-    // slotStats = { slot: { playerImage: { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGame: null, gamePoints: [punkte] } } }
-    const slotStats = {};
-    SLOTS.forEach(slot => {
-      slotStats[slot] = {};
+    // Aggregiere pro Figur (z.B. "rook") über alle Slots (white-rook + black-rook)
+    const pieceStats = {};
+    PIECES.forEach(p => {
+      pieceStats[p.id] = { players: {} }; // players: { image: { games, totalPoints, maxPoints, maxGameKey, maxGameTeam, maxGameSide } }
     });
 
-    // Durchlaufe alle Spiele
     for (const [key, state] of Object.entries(allGameData)) {
       if (!state) continue;
-      // Für jeden Slot, der ein Bild hat, sammeln wir die Punktzahl für diesen Slot
-      // Die Punktzahl für einen Slot = Summe der Assignment-Punkte, die auf diesem Slot liegen
+      const [stIdx, spIdx] = key.split('-').map(Number);
+      const spiel = spielplan.spieltage[stIdx]?.[spIdx];
+      if (!spiel) continue;
+
+      // Punktzahl pro Slot in diesem Spiel
       const slotPoints = {};
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
@@ -1197,53 +1185,67 @@
         slotPoints[slot] += getAssignmentScore(a, state);
       });
 
-      // Nun für jeden Slot mit Bild: aggregieren
       for (const [slot, points] of Object.entries(slotPoints)) {
         const image = state.figureImages?.[slot];
-        if (!image) continue; // nur Slots mit Spieler-Foto
-        if (!slotStats[slot][image]) {
-          slotStats[slot][image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGame: null, gamePoints: [] };
+        if (!image) continue;
+        const side = getSlotSide(slot);
+        const piece = getSlotPiece(slot);
+        const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+
+        const playerData = pieceStats[piece].players;
+        if (!playerData[image]) {
+          playerData[image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGameKey: null, maxGameTeam: null, maxGameSide: null };
         }
-        const player = slotStats[slot][image];
-        player.games += 1;
-        player.totalPoints += points;
-        player.gamePoints.push(points);
-        if (points > player.maxPoints) {
-          player.maxPoints = points;
-          player.maxGame = key;
+        const p = playerData[image];
+        p.games += 1;
+        p.totalPoints += points;
+        if (points > p.maxPoints) {
+          p.maxPoints = points;
+          p.maxGameKey = key;
+          p.maxGameTeam = teamName;
+          p.maxGameSide = side;
         }
       }
     }
 
-    // Pro Slot: Durchschnitt berechnen und die Top-Spieler ermitteln
-    // Wir geben pro Figur und Seite eine Übersicht:
-    // - Meiste Einsätze
-    // - Bester Durchschnitt (mind. 2 Spiele)
-    // - Meiste absolute Punkte
+    // Für jede Figur die Besten ermitteln
     const result = {};
-    PIECES.forEach(p => {
-      result[p.id] = { white: [], black: [] };
-    });
+    for (const [piece, data] of Object.entries(pieceStats)) {
+      const players = data.players;
+      let bestSingle = null;  // höchste Einzelpunktzahl
+      let bestAvg = null;     // bester Durchschnitt (mind. 2 Einsätze)
 
-    for (const [slot, players] of Object.entries(slotStats)) {
-      const side = getSlotSide(slot);
-      const piece = getSlotPiece(slot);
-      const playerList = Object.entries(players).map(([image, data]) => {
-        const avg = data.games > 0 ? data.totalPoints / data.games : 0;
-        return { image, games: data.games, totalPoints: data.totalPoints, avg, maxPoints: data.maxPoints, maxGame: data.maxGame };
-      });
-      // Sortieren nach Einsätzen, Durchschnitt, total
-      const byGames = [...playerList].sort((a,b) => b.games - a.games || b.totalPoints - a.totalPoints);
-      const byAvg = [...playerList].filter(p => p.games >= 2).sort((a,b) => b.avg - a.avg || b.totalPoints - a.totalPoints);
-      const byTotal = [...playerList].sort((a,b) => b.totalPoints - a.totalPoints || b.games - a.games);
-
-      const bestGames = byGames[0] || null;
-      const bestAvg = byAvg[0] || null;
-      const bestTotal = byTotal[0] || null;
-
-      result[piece][side] = { bestGames, bestAvg, bestTotal };
+      for (const [image, stats] of Object.entries(players)) {
+        if (stats.games === 0) continue;
+        // Single
+        if (!bestSingle || stats.maxPoints > bestSingle.maxPoints) {
+          bestSingle = {
+            image,
+            points: stats.maxPoints,
+            gameKey: stats.maxGameKey,
+            team: stats.maxGameTeam,
+            side: stats.maxGameSide,
+            games: stats.games,
+            totalPoints: stats.totalPoints,
+          };
+        }
+        // Avg (mindestens 2 Spiele)
+        if (stats.games >= 2) {
+          const avg = stats.totalPoints / stats.games;
+          if (!bestAvg || avg > bestAvg.avg) {
+            bestAvg = {
+              image,
+              avg,
+              games: stats.games,
+              totalPoints: stats.totalPoints,
+              team: stats.maxGameTeam,
+              side: stats.maxGameSide,
+            };
+          }
+        }
+      }
+      result[piece] = { bestSingle, bestAvg };
     }
-
     return result;
   }
 
@@ -1255,9 +1257,6 @@
     const grid = document.createElement('div');
     grid.className = 'stats-grid';
 
-    const sideLabels = { white: 'Weiß', black: 'Schwarz' };
-    const sideColors = { white: '#f4f2ee', black: '#d0d0d0' };
-
     PIECES.forEach(p => {
       const card = document.createElement('div');
       card.className = 'stat-card';
@@ -1265,60 +1264,46 @@
       title.textContent = p.name;
       card.appendChild(title);
 
-      SIDES.forEach(side => {
-        const data = stats[p.id][side];
-        const group = document.createElement('div');
-        group.className = 'stat-team';
-        const h4 = document.createElement('h4');
-        h4.textContent = sideLabels[side];
-        group.appendChild(h4);
+      const data = stats[p.id];
+      const bestSingle = data?.bestSingle;
+      const bestAvg = data?.bestAvg;
 
-        if (!data || (!data.bestGames && !data.bestAvg && !data.bestTotal)) {
-          const empty = document.createElement('p');
-          empty.style.color = 'var(--steel)';
-          empty.style.fontSize = '0.7rem';
-          empty.textContent = 'keine Spieler-Fotos auf dieser Figur';
-          group.appendChild(empty);
-          card.appendChild(group);
-          return;
-        }
+      // Einmalig
+      const singleDiv = document.createElement('div');
+      singleDiv.className = 'stat-entry';
+      if (bestSingle) {
+        singleDiv.innerHTML = `
+          <img class="player-img" src="${bestSingle.image}" alt="Spieler" />
+          <div class="stat-info">
+            <span class="label">Einmalig</span>
+            <span class="highlight">${formatNumber(bestSingle.points)} Pkt</span>
+            <span class="value">${bestSingle.games} Einsätze</span>
+            <span class="team-tag">${bestSingle.team}</span>
+          </div>
+        `;
+      } else {
+        singleDiv.innerHTML = `<div class="stat-info" style="color:var(--steel);font-size:0.7rem;">keine Daten</div>`;
+      }
+      card.appendChild(singleDiv);
 
-        // Helper zum Rendern einer Zeile
-        function renderPlayerRow(label, player, highlight = false) {
-          if (!player) return '';
-          const avg = player.avg.toFixed(1);
-          const slot = `${side}-${p.id}`;
-          return `
-            <div class="stat-player-row">
-              <img class="player-img" src="${player.image}" alt="Spieler" />
-              <div class="player-info">
-                <span class="stat-label">${label}</span>
-                <span class="stat-value ${highlight ? 'best' : ''}">${player.totalPoints} Pkt</span>
-                <span class="stat-value games">${player.games} Spiele</span>
-                <span class="stat-value">Ø ${avg}</span>
-                <span class="stat-value">max ${formatNumber(player.maxPoints)}</span>
-                <span class="slot-label">${slot}</span>
-              </div>
-            </div>
-          `;
-        }
-
-        let html = '';
-        if (data.bestGames) html += renderPlayerRow('meiste Einsätze', data.bestGames);
-        if (data.bestAvg) html += renderPlayerRow('bester Ø', data.bestAvg, true);
-        if (data.bestTotal && data.bestTotal.image !== data.bestGames?.image && data.bestTotal.image !== data.bestAvg?.image) {
-          html += renderPlayerRow('meiste Punkte', data.bestTotal);
-        }
-
-        if (!html) {
-          html = '<p style="color:var(--steel);font-size:0.7rem;">keine ausreichenden Daten</p>';
-        }
-
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = html;
-        group.appendChild(wrapper);
-        card.appendChild(group);
-      });
+      // Durchschnitt
+      const avgDiv = document.createElement('div');
+      avgDiv.className = 'stat-entry';
+      if (bestAvg) {
+        avgDiv.innerHTML = `
+          <img class="player-img" src="${bestAvg.image}" alt="Spieler" />
+          <div class="stat-info">
+            <span class="label">Ø</span>
+            <span class="highlight">${bestAvg.avg.toFixed(1)} Pkt</span>
+            <span class="value">${bestAvg.games} Spiele</span>
+            <span class="value">${formatNumber(bestAvg.totalPoints)} total</span>
+            <span class="team-tag">${bestAvg.team}</span>
+          </div>
+        `;
+      } else {
+        avgDiv.innerHTML = `<div class="stat-info" style="color:var(--steel);font-size:0.7rem;">nicht genug Einsätze (mind. 2)</div>`;
+      }
+      card.appendChild(avgDiv);
 
       grid.appendChild(card);
     });
