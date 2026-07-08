@@ -657,7 +657,7 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN — ohne Emojis, mit besseren Bildern
+       STATISTIKEN — korrigierte Aggregation pro Bild
        ============================ */
     .stats-container {
       display: flex;
@@ -869,7 +869,7 @@
   let currentSpieltag = 0;
 
   // ============================
-  //  PIECES MIT BASE (wichtig für Berechnung)
+  //  PIECES MIT BASE
   // ============================
   const PIECES = [
     { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
@@ -1201,30 +1201,32 @@
   }
 
   // ============================
-  //  STATISTIKEN — NUR ABSOLUTE PUNKTE, KEINE NEGATIVEN MEHR
+  //  STATISTIKEN — KORREKT: AGGREGATION PRO BILD (FOTO) FÜR JEDE FIGUR
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
     PIECES.forEach(p => {
-      pieceStats[p.id] = { players: {} };
+      pieceStats[p.id] = { players: {} }; // players: { bildUrl: { games, totalPoints, maxPoints, maxGameTeam } }
     });
 
     for (const [key, state] of Object.entries(allGameData)) {
       if (!state) continue;
+      if (!isGameComplete(state)) continue; // nur abgeschlossene Spiele
       const [stIdx, spIdx] = key.split('-').map(Number);
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
+      // Für jeden Slot die absoluten Punkte berechnen
       const slotPoints = {};
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
         const row = a.side === 'white' ? 'top' : 'bottom';
         const slot = `${row}-${a.piece}`;
         if (!slotPoints[slot]) slotPoints[slot] = 0;
-        // NUR ABSOLUTE PUNKTE (Betrag) – keine negativen Werte mehr
         slotPoints[slot] += Math.abs(getAssignmentScore(a, state));
       });
 
+      // Für jeden Slot mit Bild -> zur Figur aggregieren
       for (const [slot, points] of Object.entries(slotPoints)) {
         const image = state.figureImages?.[slot];
         if (!image) continue;
@@ -1234,20 +1236,19 @@
 
         const playerData = pieceStats[piece].players;
         if (!playerData[image]) {
-          playerData[image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGameKey: null, maxGameTeam: null, maxGameSide: null };
+          playerData[image] = { games: 0, totalPoints: 0, maxPoints: -Infinity, maxGameTeam: null };
         }
         const p = playerData[image];
         p.games += 1;
         p.totalPoints += points;
         if (points > p.maxPoints) {
           p.maxPoints = points;
-          p.maxGameKey = key;
           p.maxGameTeam = teamName;
-          p.maxGameSide = side;
         }
       }
     }
 
+    // Top-5 für jede Figur extrahieren
     const result = {};
     for (const [piece, data] of Object.entries(pieceStats)) {
       const players = data.players;
@@ -1258,14 +1259,10 @@
         maxPoints: stats.maxPoints,
         avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
         team: stats.maxGameTeam,
-        side: stats.maxGameSide,
       }));
 
-      // Top 5 nach Einzelpunktzahl (maxPoints)
       const bySingle = [...entries].sort((a, b) => b.maxPoints - a.maxPoints).slice(0, 5);
-      // Top 5 nach Durchschnitt (mind. 2 Spiele)
       const byAvg = [...entries].filter(e => e.games >= 2).sort((a, b) => b.avg - a.avg).slice(0, 5);
-
       result[piece] = { bySingle, byAvg };
     }
     return result;
@@ -1284,7 +1281,7 @@
       title.textContent = p.name;
       card.appendChild(title);
 
-      // Einmalig (höchste Einzelpunktzahl)
+      // Höchste Einzelpunktzahl
       const sectionSingle = document.createElement('div');
       sectionSingle.className = 'stat-section';
       sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
@@ -1312,7 +1309,7 @@
       sectionSingle.appendChild(listSingle);
       card.appendChild(sectionSingle);
 
-      // Durchschnitt (bester Ø, mind. 2 Spiele)
+      // Bester Durchschnitt (mind. 2 Spiele)
       const sectionAvg = document.createElement('div');
       sectionAvg.className = 'stat-section';
       sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (mindestens 2 Spiele)</div>`;
