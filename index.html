@@ -138,17 +138,6 @@
       transform: rotate(12deg);
       pointer-events: none;
     }
-    .liga-header .head-eyebrow {
-      display: block;
-      font-family: var(--mono-font);
-      font-size: 0.62rem;
-      font-weight: 700;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin: 0 0 6px;
-      opacity: 0.9;
-    }
     .liga-header h1 {
       position: relative;
       font-family: var(--headline-font);
@@ -171,14 +160,6 @@
     .liga-header .sub strong {
       color: var(--gold);
       font-weight: 800;
-    }
-    .liga-header .sub::before {
-      content: "●";
-      color: var(--green);
-      font-size: 0.55rem;
-      margin-right: 8px;
-      vertical-align: middle;
-      filter: drop-shadow(0 0 6px rgba(34,195,131,0.8));
     }
 
     /* ============================
@@ -307,7 +288,7 @@
     }
 
     /* ============================
-       SPIELTAG-NAVIGATION — 5 Positionen, keine Scrollbar
+       SPIELTAG-NAVIGATION — 5 Positionen
        ============================ */
     .liga-tabs {
       display: flex;
@@ -522,21 +503,6 @@
       letter-spacing: 0.03em;
       text-transform: uppercase;
       color: var(--chalk);
-    }
-    .board-panel .topbar .action-buttons button {
-      min-height: 20px;
-      padding: 3px 9px;
-      font-size: 0.48rem;
-      font-family: var(--mono-font);
-      border-radius: 2px;
-      border: 1px solid var(--line-strong);
-      background: rgba(255,255,255,0.04);
-      color: var(--chalk);
-      cursor: default;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      opacity: 0.6;
     }
 
     .board-panel .chess-grid {
@@ -799,11 +765,9 @@
     <!-- Kopf -->
     <header class="liga-header">
       <div>
-        <span class="head-eyebrow">Live-Taktiktafel</span>
         <h1>2. Bundesliga</h1>
         <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
       </div>
-      <div class="sub" id="ligaInfo">34 Spieltage · 18 Teams</div>
     </header>
 
     <!-- Navigation -->
@@ -1003,10 +967,6 @@
           <p class="eyebrow">${homeTeam} vs ${awayTeam}</p>
           <h3>Rasenschach · Spieltag ${stIdx + 1}</h3>
         </div>
-        <div class="action-buttons">
-          <button type="button">? ${state.questionValue !== null ? formatNumber(state.questionValue) : 'würfeln'}</button>
-          <button type="button">Rückgängig</button>
-        </div>
       `;
       board.appendChild(topbar);
 
@@ -1184,7 +1144,7 @@
               <span>${spiel.heim}</span>
               <span>vs</span>
               <span>${spiel.auswaerts}</span>
-              <span style="color:var(--muted);font-size:0.6rem;">⏳ nicht verfügbar</span>
+              <span style="color:var(--muted);font-size:0.6rem;">nicht verfügbar</span>
             </div>
           `;
           container.appendChild(item);
@@ -1215,9 +1175,9 @@
 
         const meta = document.createElement('div');
         meta.className = 'spiel-meta';
+        const statusText = complete ? 'gespielt' : 'offen';
         meta.innerHTML = `
-          <span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span>
-          <span>${placed}/10 Thesen</span>
+          <span class="status ${complete ? 'done' : ''}">${statusText}</span>
         `;
         item.appendChild(meta);
 
@@ -1288,7 +1248,6 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         spielplan = await res.json();
         teams = spielplan.teams;
-        document.getElementById('ligaInfo').textContent = `${spielplan.spieltage.length} Spieltage · ${teams.length} Teams`;
 
         // 2. Daten parallel laden (nur vorhandene Dateien)
         allGameData = await loadAllGameData();
@@ -1310,7 +1269,7 @@
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
         document.getElementById('spieleContainer').innerHTML =
-          '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden. Bitte stelle sicher, dass spielplan.json im gleichen Verzeichnis liegt.</p>';
+          '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
       }
     }
 
