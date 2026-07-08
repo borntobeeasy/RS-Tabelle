@@ -151,6 +151,10 @@
       border-color: var(--bundesliga-red);
       color: white;
     }
+    .liga-tabs button.loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
     /* ============================
        TABELLE
@@ -266,9 +270,13 @@
     .spiel-card .meta .status.done {
       color: var(--green);
     }
+    .spiel-card .loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
     /* ============================
-       MODAL (BRETT)
+       MODAL (BRETT – rein lesend)
        ============================ */
     .modal-overlay {
       display: none;
@@ -323,7 +331,7 @@
     }
 
     /* ============================
-       BRETT-STYLES (aus styles.css)
+       BRETT-STYLES (nur Anzeige, keine Interaktion)
        ============================ */
     .board-panel {
       position: relative;
@@ -378,14 +386,11 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
       background: rgba(255, 255, 255, 0.06);
       color: white;
-      cursor: pointer;
+      cursor: default;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      transition: background 0.2s;
-    }
-    .topbar .action-buttons button:hover {
-      background: rgba(255, 255, 255, 0.15);
+      opacity: 0.6;
     }
 
     .scoreboard {
@@ -521,8 +526,6 @@
       color: white;
       font-weight: 800;
       isolation: isolate;
-      cursor: pointer;
-      transition: background 0.15s;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
     }
     .piece-cell.light { background: #242424; }
@@ -589,10 +592,6 @@
       display: none;
     }
     .drop-cell.has-theses .drop-total { display: block; }
-    .drop-cell.drag-over {
-      background: rgba(211,1,12,0.08);
-      box-shadow: inset 0 0 30px rgba(211,1,12,0.12), 0 0 20px rgba(211,1,12,0.06);
-    }
 
     .placed-list {
       position: absolute;
@@ -616,14 +615,13 @@
       border-radius: 4px;
       background: rgba(255,255,255,0.92);
       color: #0a0a0a;
-      cursor: grab;
       font-size: clamp(0.35rem, 0.5vw, 0.55rem);
       font-weight: 700;
       line-height: 1.05;
       overflow-wrap: anywhere;
       padding: clamp(6px, calc(var(--cell-size)*0.06), 12px) 4px 4px;
       text-align: center;
-      pointer-events: auto;
+      pointer-events: none;
       isolation: isolate;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
@@ -706,13 +704,11 @@
       background: radial-gradient(circle at 15% 0%, rgba(255,255,255,0.06), transparent 40%), linear-gradient(150deg, rgba(211,1,12,0.12), transparent 55%), rgba(255,255,255,0.04);
       color: white;
       padding: 10px 6px 4px;
-      cursor: grab;
       font-weight: 800;
       font-size: 0.65rem;
       user-select: none;
-      touch-action: none;
-      transition: transform 0.14s, border-color 0.14s, box-shadow 0.14s;
       overflow: hidden;
+      pointer-events: none;
     }
     .thesis-card .thesis-title {
       width: 100%;
@@ -737,28 +733,29 @@
       background: rgba(255,255,255,0.05);
       color: var(--muted);
       font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
+      cursor: default;
       padding: 0 6px;
       font-size: 0.65rem;
+      opacity: 0.6;
     }
     .evaluation-controls button.active {
       background: var(--bundesliga-gold);
       color: var(--bundesliga-black);
       border-color: var(--bundesliga-gold);
+      opacity: 1;
     }
     .evaluation-controls .polarity-button.active[data-polarity="positive"] {
       background: var(--green);
       color: white;
       border-color: var(--green);
+      opacity: 1;
     }
     .evaluation-controls .polarity-button.active[data-polarity="negative"] {
       background: var(--bundesliga-red);
       color: white;
       border-color: var(--bundesliga-red);
+      opacity: 1;
     }
-    .evaluation-controls .polarity-button:not(.active) { opacity: 0.5; }
-    .evaluation-controls .neutral-button:not(.active) { opacity: 0.5; }
 
     .results-grid {
       display: grid;
@@ -790,15 +787,10 @@
       font-size: 0.6rem;
       color: var(--muted);
     }
-    .result-row input {
-      min-height: 24px;
-      padding: 0 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.06);
-      color: white;
+    .result-row span {
       font-size: 0.7rem;
-      width: 100%;
+      font-weight: 700;
+      color: white;
     }
 
     /* ============================
@@ -869,7 +861,7 @@
     <div class="spieltag-grid" id="spieleContainer"></div>
   </div>
 
-  <!-- MODAL für Brett -->
+  <!-- MODAL für Brett (nur Anzeige) -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box" id="modalBox">
       <button class="modal-close" id="modalClose">×</button>
@@ -882,126 +874,96 @@
     //  LIGA-DATEN & SPIELPLAN
     // ============================
     const SPIELPLAN_URL = 'spielplan.json';
+    const DATA_BASE = 'data/';
 
-    let spielplan = null;         // gesamter Spielplan
-    let teams = [];              // Teamnamen (Reihenfolge aus JSON)
-    let aktuellerSpieltag = 0;   // 0-basiert
-
-    // Für jedes Spiel speichern wir den Zustand (wie in 1.json)
-    // Key: "spieltag-index-spiel-index"
-    const gameStates = new Map();
+    let spielplan = null;
+    let teams = [];
+    let aktuellerSpieltag = 0;
+    let gameDataCache = {}; // key: "st-spiel" -> geladene JSON-Daten
 
     // ============================
     //  HILFSFUNKTIONEN
     // ============================
-    function loadGameState(spieltagIdx, spielIdx) {
-      const key = `${spieltagIdx}-${spielIdx}`;
-      if (gameStates.has(key)) return gameStates.get(key);
-      // Standardzustand (leer)
-      const defaults = {
-        theses: Array.from({ length: 12 }, (_, i) => `These ${i + 1}`),
-        assignments: Array.from({ length: 12 }, (_, i) => ({
-          id: i + 1,
-          side: null,
-          piece: null,
-          polarity: null,
-          knightSwing: Math.random() > 0.5 ? 1 : -1,
-        })),
-        results: {
-          white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-          black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
-        },
-        figureImages: {},
-        questionValue: null,
-      };
-      gameStates.set(key, JSON.parse(JSON.stringify(defaults)));
-      return gameStates.get(key);
+    function getAssignmentScore(assignment, state) {
+      if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
+      const piece = PIECES.find(p => p.id === assignment.piece);
+      const sign = assignment.polarity === 'positive' ? 1 : -1;
+      switch (assignment.piece) {
+        case 'knight':
+          return (assignment.polarity === 'positive') ? (state.questionValue ?? assignment.knightSwing) : 0;
+        case 'bishop':
+          return (assignment.polarity === 'positive') ? -piece.base : 0;
+        case 'queen':
+          return (assignment.polarity === 'positive') ? piece.base : 0;
+        case 'rook':
+          return piece.base * sign * -1;
+        default:
+          return piece.base * sign;
+      }
     }
 
-    function saveGameState(spieltagIdx, spielIdx, state) {
-      const key = `${spieltagIdx}-${spielIdx}`;
-      gameStates.set(key, JSON.parse(JSON.stringify(state)));
-      // Optional: in localStorage speichern
-      try {
-        const all = {};
-        for (const [k, v] of gameStates) all[k] = v;
-        localStorage.setItem('rasenschach.liga', JSON.stringify(all));
-      } catch (_) {}
+    function isGameComplete(state) {
+      // Ein Spiel gilt als gespielt, wenn alle 10 Thesen platziert sind
+      const placed = state.assignments.filter(a => a.side && a.piece).length;
+      return placed >= 10;
     }
 
-    function loadAllStates() {
-      try {
-        const raw = localStorage.getItem('rasenschach.liga');
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          for (const [k, v] of Object.entries(parsed)) {
-            gameStates.set(k, v);
-          }
-        }
-      } catch (_) {}
+    function getGameScore(state) {
+      let whiteTotal = 0, blackTotal = 0;
+      PIECES.forEach(p => {
+        whiteTotal += state.results.white[p.id] || 0;
+        blackTotal += state.results.black[p.id] || 0;
+      });
+      state.assignments.forEach(a => {
+        if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
+        else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
+      });
+      return { white: whiteTotal, black: blackTotal };
     }
 
     // ============================
     //  LIGA-TABELLE
     // ============================
-    function buildTable() {
+    function buildTable(gameData) {
       if (!spielplan || !teams.length) return;
-      // Initialisiere Statistik pro Team
+      // gameData: Map mit "st-spiel" -> state
       const stats = {};
       teams.forEach(t => {
         stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
       });
 
-      // Durch alle Spiele und Spielstände gehen
       spielplan.spieltage.forEach((spieltag, stIdx) => {
         spieltag.forEach((spiel, spIdx) => {
-          const state = loadGameState(stIdx, spIdx);
-          // Aus den Ergebnissen (results) die Tore ableiten?
-          // In Rasenschach sind die "Tore" nicht direkt in results.
-          // Wir verwenden die Summen der Thesen-Scores als Indikator.
-          // Einfach: wir berechnen whiteTotal und blackTotal aus den Assignments.
-          // Das ist aufwändig, daher nehmen wir hier Platzhalter.
-          // Besser: wir speichern in jedem Spiel explizit Tore.
-          // Für den Prototypen nehmen wir die Punkte aus den Ergebnis-Eingaben.
-          // Wir lesen die results-Werte (weiß/schwarz) aus dem State.
-          // Das sind die festen Werte für jede Figur.
-          // Wir summieren sie, um ein "Tor"-Äquivalent zu haben.
-          const whiteScore = Object.values(state.results.white).reduce((a, b) => a + b, 0);
-          const blackScore = Object.values(state.results.black).reduce((a, b) => a + b, 0);
-          // Hinzu kommen die Thesen-Scores (Assignment-Scores)
-          let whiteThesen = 0, blackThesen = 0;
-          state.assignments.forEach(a => {
-            if (a.side === 'white') whiteThesen += getAssignmentScore(a, state);
-            else if (a.side === 'black') blackThesen += getAssignmentScore(a, state);
-          });
-          const totalWhite = whiteScore + whiteThesen;
-          const totalBlack = blackScore + blackThesen;
+          const key = `${stIdx}-${spIdx}`;
+          const state = gameData[key];
+          if (!state) return;
+          if (!isGameComplete(state)) return; // nur gespielte Partien zählen
 
-          // Nur wenn beide Teams zugewiesen sind (Spiel gespielt)
+          const score = getGameScore(state);
           const home = spiel.heim;
           const away = spiel.auswaerts;
-          if (home && away) {
-            stats[home].sp++;
-            stats[away].sp++;
-            stats[home].tore += totalWhite;
-            stats[home].gegentore += totalBlack;
-            stats[away].tore += totalBlack;
-            stats[away].gegentore += totalWhite;
-            if (totalWhite > totalBlack) {
-              stats[home].s++; stats[home].punkte += 3;
-              stats[away].n++;
-            } else if (totalBlack > totalWhite) {
-              stats[away].s++; stats[away].punkte += 3;
-              stats[home].n++;
-            } else {
-              stats[home].u++; stats[home].punkte += 1;
-              stats[away].u++; stats[away].punkte += 1;
-            }
+          if (!home || !away) return;
+
+          stats[home].sp++;
+          stats[away].sp++;
+          stats[home].tore += score.white;
+          stats[home].gegentore += score.black;
+          stats[away].tore += score.black;
+          stats[away].gegentore += score.white;
+
+          if (score.white > score.black) {
+            stats[home].s++; stats[home].punkte += 3;
+            stats[away].n++;
+          } else if (score.black > score.white) {
+            stats[away].s++; stats[away].punkte += 3;
+            stats[home].n++;
+          } else {
+            stats[home].u++; stats[home].punkte += 1;
+            stats[away].u++; stats[away].punkte += 1;
           }
         });
       });
 
-      // Sortieren
       const sorted = teams.slice().sort((a, b) => {
         if (stats[b].punkte !== stats[a].punkte) return stats[b].punkte - stats[a].punkte;
         const diffA = stats[a].tore - stats[a].gegentore;
@@ -1031,27 +993,8 @@
       });
     }
 
-    // Hilfsfunktion für Assignment-Score (wie in app.js)
-    function getAssignmentScore(assignment, state) {
-      if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
-      const piece = PIECES.find(p => p.id === assignment.piece);
-      const sign = assignment.polarity === 'positive' ? 1 : -1;
-      switch (assignment.piece) {
-        case 'knight':
-          return (assignment.polarity === 'positive') ? (state.questionValue ?? assignment.knightSwing) : 0;
-        case 'bishop':
-          return (assignment.polarity === 'positive') ? -piece.base : 0;
-        case 'queen':
-          return (assignment.polarity === 'positive') ? piece.base : 0;
-        case 'rook':
-          return piece.base * sign * -1;
-        default:
-          return piece.base * sign;
-      }
-    }
-
     // ============================
-    //  BRETT-RENDERER (basierend auf app.js)
+    //  BRETT-RENDERER (rein lesend)
     // ============================
     const PIECES = [
       { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
@@ -1062,8 +1005,6 @@
     ];
     const PIECE_IDS = PIECES.map(p => p.id);
     const SIDES = ['white', 'black'];
-    const POLARITIES = ['positive', 'negative'];
-    const QUESTION_VALUES = [-3, -2, -1, 1, 2, 3];
 
     const PIECE_SVG_URLS = {
       rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
@@ -1073,12 +1014,20 @@
       king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
     };
 
-    function renderBoard(container, spieltagIdx, spielIdx, homeTeam, awayTeam) {
-      const state = loadGameState(spieltagIdx, spielIdx);
+    function formatNumber(num) {
+      return num > 0 ? `+${num}` : String(num);
+    }
+    function getScoreTone(value, evaluated) {
+      if (value > 0) return 'positive';
+      if (value < 0) return 'negative';
+      if (value === 0 && evaluated) return 'zero';
+      return 'neutral';
+    }
+    function getPieceById(id) { return PIECES.find(p => p.id === id); }
+
+    function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
       board.className = 'board-panel';
-      board.dataset.st = spieltagIdx;
-      board.dataset.si = spielIdx;
 
       // Topbar
       const topbar = document.createElement('div');
@@ -1086,16 +1035,17 @@
       topbar.innerHTML = `
         <div>
           <p class="eyebrow">${homeTeam} vs ${awayTeam}</p>
-          <h2>Rasenschach · Spieltag ${spieltagIdx + 1}</h2>
+          <h2>Rasenschach · Spieltag ${stIdx + 1}</h2>
         </div>
         <div class="action-buttons">
-          <button class="random-question-btn" type="button">? würfeln</button>
-          <button class="undo-btn" type="button" style="opacity:0.4;cursor:default;" disabled>Rückgängig</button>
+          <button type="button" style="opacity:0.4;">? ${state.questionValue !== null ? formatNumber(state.questionValue) : 'würfeln'}</button>
+          <button type="button" style="opacity:0.4;">Rückgängig</button>
         </div>
       `;
       board.appendChild(topbar);
 
       // Scoreboard
+      const score = getGameScore(state);
       const scoreboard = document.createElement('div');
       scoreboard.className = 'scoreboard';
       scoreboard.innerHTML = `
@@ -1107,9 +1057,9 @@
                 <span class="team-name">${homeTeam}</span>
               </div>
               <div class="score-core">
-                <span class="white-total">0</span>
+                <span class="white-total">${score.white}</span>
                 <span class="score-separator">:</span>
-                <span class="black-total">0</span>
+                <span class="black-total">${score.black}</span>
               </div>
               <div class="score-team score-team-black">
                 <span class="team-name">${awayTeam}</span>
@@ -1139,15 +1089,11 @@
               cell.classList.add('light');
             }
             const side = row === 'top' ? 'white' : 'black';
-            const score = state.results[side]?.[piece.id] ?? 0;
-            const scoreMarkup = `<strong class="field-watermark ${getScoreTone(score, true)}">${formatNumber(score)}</strong>`;
+            const scoreVal = state.results[side]?.[piece.id] ?? 0;
+            const scoreMarkup = `<strong class="field-watermark ${getScoreTone(scoreVal, true)}">${formatNumber(scoreVal)}</strong>`;
             const pieceSvg = PIECE_SVG_URLS[piece.id];
             const imgMarkup = pieceSvg ? `<img class="piece-svg" src="${pieceSvg}" alt="" />` : '';
             cell.innerHTML = `${scoreMarkup}${imgMarkup}`;
-            cell.dataset.figureSlot = `${row}-${piece.id}`;
-            cell.dataset.side = side;
-            cell.dataset.piece = piece.id;
-            cell.addEventListener('click', () => handleFigurePick(cell, spieltagIdx, spielIdx));
           } else {
             cell.classList.add('drop-cell');
             cell.dataset.side = row;
@@ -1168,9 +1114,6 @@
             }
             html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
             cell.innerHTML = html;
-            cell.addEventListener('dragover', handleDragOver);
-            cell.addEventListener('dragleave', handleDragLeave);
-            cell.addEventListener('drop', (e) => handleDrop(e, spieltagIdx, spielIdx));
           }
           grid.appendChild(cell);
         });
@@ -1180,6 +1123,7 @@
       // Thesen-Panel
       const thesisPanel = document.createElement('div');
       thesisPanel.className = 'thesis-panel';
+      const placed = state.assignments.filter(a => a.side && a.piece).length;
       thesisPanel.innerHTML = `
         <div class="thesis-head">
           <div>
@@ -1187,7 +1131,7 @@
             <h3>Pick Board</h3>
           </div>
           <div style="font-size:0.6rem;color:var(--muted);">
-            <span class="placed-count">0</span> / 10 platziert
+            <span>${placed}</span> / 10 platziert
           </div>
         </div>
         <div class="thesis-list"></div>
@@ -1200,54 +1144,17 @@
       container.innerHTML = '';
       container.appendChild(board);
 
-      // Nach dem Einfügen: Thesen, Platzierungen, Evaluation, Ergebnisse rendern
-      renderTheses(board, spieltagIdx, spielIdx);
-      renderPlacements(board, spieltagIdx, spielIdx);
-      renderEvaluation(board, spieltagIdx, spielIdx);
-      renderResults(board, spieltagIdx, spielIdx);
-      updateTotals(board, spieltagIdx, spielIdx);
-      updatePlacedCount(board, spieltagIdx, spielIdx);
-      setupDragDrop(board, spieltagIdx, spielIdx);
-      setupUndo(board, spieltagIdx, spielIdx);
-      setupRandomizer(board, spieltagIdx, spielIdx);
-    }
-
-    // --- Hilfsfunktionen für Rendering ---
-    function formatNumber(num) {
-      return num > 0 ? `+${num}` : String(num);
-    }
-    function getScoreTone(value, evaluated) {
-      if (value > 0) return 'positive';
-      if (value < 0) return 'negative';
-      if (value === 0 && evaluated) return 'zero';
-      return 'neutral';
-    }
-
-    function getPieceById(id) { return PIECES.find(p => p.id === id); }
-
-    function renderTheses(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
+      // Thesen
       const list = board.querySelector('.thesis-list');
-      list.innerHTML = '';
       state.assignments.forEach(a => {
         if (a.side && a.piece) return;
         const card = document.createElement('div');
         card.className = 'thesis-card';
-        card.draggable = true;
-        card.dataset.id = a.id;
         card.innerHTML = `<div class="thesis-title">${state.theses[a.id - 1]}</div>`;
-        card.addEventListener('dragstart', (e) => {
-          e.dataTransfer.setData('text/plain', String(a.id));
-        });
-        card.addEventListener('pointerdown', (e) => {
-          // Touch-Drag initialisieren (vereinfacht)
-        });
         list.appendChild(card);
       });
-    }
 
-    function renderPlacements(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
+      // Platzierungen
       board.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
@@ -1260,24 +1167,16 @@
         const score = getAssignmentScore(a, state);
         const chip = document.createElement('span');
         chip.className = 'placed-chip';
-        chip.draggable = true;
-        chip.dataset.id = a.id;
         chip.innerHTML = `
           <span class="chip-field-badge">${fieldLabel}</span>
           <strong class="chip-watermark ${getScoreTone(score, Boolean(a.polarity))}">${formatNumber(score)}</strong>
           <span class="fit-text">${state.theses[a.id - 1]}</span>
         `;
-        chip.addEventListener('dragstart', (e) => {
-          e.dataTransfer.setData('text/plain', String(a.id));
-        });
         slot.appendChild(chip);
       });
-    }
 
-    function renderEvaluation(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
-      const container = board.querySelector('.evaluation-controls');
-      container.innerHTML = '';
+      // Evaluation
+      const evalContainer = board.querySelector('.evaluation-controls');
       state.assignments.forEach(a => {
         const neutralActive = !a.polarity ? 'active' : '';
         const positiveActive = a.polarity === 'positive' ? 'active' : '';
@@ -1290,153 +1189,38 @@
         div.style.fontWeight = '700';
         div.innerHTML = `
           <span style="min-width:50px;">These ${a.id}</span>
-          <button class="neutral-button ${neutralActive}" data-id="${a.id}" data-polarity="" type="button">unausgewertet</button>
-          <button class="polarity-button ${positiveActive}" data-id="${a.id}" data-polarity="positive" type="button">+</button>
-          <button class="polarity-button ${negativeActive}" data-id="${a.id}" data-polarity="negative" type="button">-</button>
+          <button class="neutral-button ${neutralActive}" data-polarity="" type="button">unausgewertet</button>
+          <button class="polarity-button ${positiveActive}" data-polarity="positive" type="button">+</button>
+          <button class="polarity-button ${negativeActive}" data-polarity="negative" type="button">-</button>
         `;
-        container.appendChild(div);
+        evalContainer.appendChild(div);
       });
-      container.querySelectorAll('[data-polarity]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = Number(btn.dataset.id);
-          const polarity = btn.dataset.polarity || null;
-          const state = loadGameState(stIdx, spIdx);
-          const a = state.assignments.find(item => item.id === id);
-          if (!a) return;
-          a.polarity = polarity;
-          saveGameState(stIdx, spIdx, state);
-          renderBoard(board.parentElement, stIdx, spIdx, board.dataset.home, board.dataset.away);
-        });
-      });
-    }
 
-    function renderResults(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
-      const container = board.querySelector('.results-grid');
-      container.innerHTML = '';
+      // Ergebnisse
+      const resultsContainer = board.querySelector('.results-grid');
       SIDES.forEach(side => {
         const group = document.createElement('div');
         group.className = 'result-group';
-        const label = side === 'white' ? board.dataset.home : board.dataset.away;
+        const label = side === 'white' ? homeTeam : awayTeam;
         group.innerHTML = `<h4>${label}</h4>`;
         PIECES.forEach(p => {
           const row = document.createElement('div');
           row.className = 'result-row';
+          const val = state.results[side][p.id] ?? 0;
           row.innerHTML = `
             <label>${p.name}</label>
-            <input type="number" step="1" value="${state.results[side][p.id]}" data-side="${side}" data-piece="${p.id}" />
+            <span>${formatNumber(val)}</span>
           `;
           group.appendChild(row);
         });
-        container.appendChild(group);
+        resultsContainer.appendChild(group);
       });
-      container.querySelectorAll('input[data-side]').forEach(inp => {
-        inp.addEventListener('change', () => {
-          const side = inp.dataset.side;
-          const piece = inp.dataset.piece;
-          const val = Number(inp.value) || 0;
-          const state = loadGameState(stIdx, spIdx);
-          state.results[side][piece] = val;
-          saveGameState(stIdx, spIdx, state);
-          renderBoard(board.parentElement, stIdx, spIdx, board.dataset.home, board.dataset.away);
-        });
-      });
-    }
-
-    function updateTotals(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
-      let whiteTotal = 0, blackTotal = 0;
-      PIECES.forEach(p => {
-        whiteTotal += state.results.white[p.id] || 0;
-        blackTotal += state.results.black[p.id] || 0;
-      });
-      state.assignments.forEach(a => {
-        if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
-        else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
-      });
-      board.querySelector('.white-total').textContent = whiteTotal;
-      board.querySelector('.black-total').textContent = blackTotal;
-    }
-
-    function updatePlacedCount(board, stIdx, spIdx) {
-      const state = loadGameState(stIdx, spIdx);
-      const placed = state.assignments.filter(a => a.side && a.piece).length;
-      board.querySelector('.placed-count').textContent = placed;
-    }
-
-    function setupDragDrop(board, stIdx, spIdx) {
-      // Drag & Drop wird über die Event-Listener auf den drop-cells und den Cards gesteuert.
-      // Wir nutzen die globalen Handler, die mit stIdx/spIdx arbeiten.
-      // Die Handler sind bereits an den Zellen angebracht.
-      // Zusätzlich müssen wir die Drag-Events auf den Cards setzen (bereits in renderTheses/renderPlacements).
-    }
-
-    function setupUndo(board, stIdx, spIdx) {
-      const btn = board.querySelector('.undo-btn');
-      // Einfache Undo-Implementierung: Wir speichern den letzten Zustand im localStorage.
-      // Für den Prototypen deaktiviert.
-      btn.disabled = true;
-      btn.style.opacity = '0.4';
-    }
-
-    function setupRandomizer(board, stIdx, spIdx) {
-      const btn = board.querySelector('.random-question-btn');
-      btn.addEventListener('click', () => {
-        const state = loadGameState(stIdx, spIdx);
-        state.questionValue = QUESTION_VALUES[Math.floor(Math.random() * QUESTION_VALUES.length)];
-        saveGameState(stIdx, spIdx, state);
-        renderBoard(board.parentElement, stIdx, spIdx, board.dataset.home, board.dataset.away);
-      });
-    }
-
-    function handleFigurePick(cell, stIdx, spIdx) {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = () => {
-        if (input.files?.[0]) {
-          const file = input.files[0];
-          const reader = new FileReader();
-          reader.onload = () => {
-            const state = loadGameState(stIdx, spIdx);
-            state.figureImages[cell.dataset.figureSlot] = reader.result;
-            saveGameState(stIdx, spIdx, state);
-            const board = cell.closest('.board-panel');
-            renderBoard(board.parentElement, stIdx, spIdx, board.dataset.home, board.dataset.away);
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-      input.click();
-    }
-
-    function handleDragOver(e) {
-      e.preventDefault();
-      e.currentTarget.classList.add('drag-over');
-    }
-    function handleDragLeave(e) {
-      e.currentTarget.classList.remove('drag-over');
-    }
-    function handleDrop(e, stIdx, spIdx) {
-      e.preventDefault();
-      const cell = e.currentTarget;
-      cell.classList.remove('drag-over');
-      const id = Number(e.dataTransfer.getData('text/plain'));
-      if (!id) return;
-      const state = loadGameState(stIdx, spIdx);
-      const assignment = state.assignments.find(a => a.id === id);
-      if (!assignment) return;
-      assignment.side = cell.dataset.side;
-      assignment.piece = cell.dataset.piece;
-      saveGameState(stIdx, spIdx, state);
-      const board = cell.closest('.board-panel');
-      renderBoard(board.parentElement, stIdx, spIdx, board.dataset.home, board.dataset.away);
     }
 
     // ============================
     //  SPIELTAG-ANSICHT
     // ============================
-    function renderSpieltag(index) {
+    function renderSpieltag(index, gameData) {
       aktuellerSpieltag = index;
       const container = document.getElementById('spieleContainer');
       container.innerHTML = '';
@@ -1444,11 +1228,28 @@
       if (!spiele) return;
 
       spiele.forEach((spiel, idx) => {
+        const key = `${index}-${idx}`;
+        const state = gameData[key];
         const card = document.createElement('div');
         card.className = 'spiel-card';
-        const state = loadGameState(index, idx);
+        if (!state) {
+          card.classList.add('loading');
+          card.innerHTML = `
+            <div class="teams">
+              <span>${spiel.heim}</span>
+              <span class="vs">vs</span>
+              <span>${spiel.auswaerts}</span>
+            </div>
+            <div class="meta">
+              <span class="status">⏳ wird geladen…</span>
+            </div>
+          `;
+          container.appendChild(card);
+          return;
+        }
         const placed = state.assignments.filter(a => a.side && a.piece).length;
-        const status = placed >= 10 ? 'fertig' : 'offen';
+        const complete = placed >= 10;
+        const status = complete ? 'fertig' : 'offen';
         card.innerHTML = `
           <div class="teams">
             <span>${spiel.heim}</span>
@@ -1456,12 +1257,12 @@
             <span>${spiel.auswaerts}</span>
           </div>
           <div class="meta">
-            <span class="status ${status === 'fertig' ? 'done' : ''}">${status === 'fertig' ? '✓ gespielt' : '⏳ offen'}</span>
+            <span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span>
             <span>${placed}/10 Thesen</span>
           </div>
         `;
         card.addEventListener('click', () => {
-          openModal(index, idx, spiel.heim, spiel.auswaerts);
+          openModal(index, idx, spiel.heim, spiel.auswaerts, state);
         });
         container.appendChild(card);
       });
@@ -1470,25 +1271,19 @@
       document.querySelectorAll('.liga-tabs button').forEach((btn, i) => {
         btn.classList.toggle('active', i === index);
       });
-
-      // Tabelle neu bauen
-      buildTable();
     }
 
     // ============================
     //  MODAL
     // ============================
     const modalOverlay = document.getElementById('modalOverlay');
-    const modalBox = document.getElementById('modalBox');
     const boardContainer = document.getElementById('boardContainer');
 
-    function openModal(stIdx, spIdx, home, away) {
+    function openModal(stIdx, spIdx, home, away, state) {
       boardContainer.innerHTML = '';
       const boardDiv = document.createElement('div');
-      boardDiv.dataset.home = home;
-      boardDiv.dataset.away = away;
       boardContainer.appendChild(boardDiv);
-      renderBoard(boardDiv, stIdx, spIdx, home, away);
+      renderBoard(boardDiv, stIdx, spIdx, home, away, state);
       modalOverlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -1505,10 +1300,58 @@
     });
 
     // ============================
-    //  INIT
+    //  INIT – LADE ALLE JSONs
     // ============================
+    async function loadAllGameData() {
+      const gameData = {};
+      const totalSpiele = spielplan.spieltage.reduce((acc, st) => acc + st.length, 0);
+      let geladen = 0;
+
+      for (let stIdx = 0; stIdx < spielplan.spieltage.length; stIdx++) {
+        const spieltag = spielplan.spieltage[stIdx];
+        for (let spIdx = 0; spIdx < spieltag.length; spIdx++) {
+          const spiel = spieltag[spIdx];
+          const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
+          try {
+            const res = await fetch(filePath);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            // Datenstruktur aus 1.json: { app, version, exportedAt, data: { theses, positions, names, results, questionValue, figureImages, teamLogos } }
+            const state = data.data;
+            // Sicherstellen, dass assignments im erwarteten Format vorliegen
+            if (state.positions) {
+              state.assignments = state.positions.map(p => ({
+                id: p.id,
+                side: p.side || null,
+                piece: p.piece || null,
+                polarity: p.polarity || null,
+                knightSwing: p.knightSwing ?? 1,
+              }));
+              delete state.positions;
+            }
+            // results, theses, questionValue, figureImages sind bereits vorhanden
+            if (!state.results) {
+              state.results = {
+                white: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 },
+                black: { rook: 0, bishop: 0, knight: 0, queen: 0, king: 0 }
+              };
+            }
+            if (!state.theses) {
+              state.theses = Array.from({ length: 12 }, (_, i) => `These ${i + 1}`);
+            }
+            gameData[`${stIdx}-${spIdx}`] = state;
+          } catch (err) {
+            console.warn(`Konnte ${filePath} nicht laden:`, err);
+            // Spiel ohne Daten – wird als nicht gespielt behandelt
+          }
+          geladen++;
+          // Fortschritt in der UI anzeigen (optional)
+        }
+      }
+      return gameData;
+    }
+
     async function init() {
-      loadAllStates();
       try {
         const res = await fetch(SPIELPLAN_URL);
         spielplan = await res.json();
@@ -1520,13 +1363,22 @@
         spielplan.spieltage.forEach((_, i) => {
           const btn = document.createElement('button');
           btn.textContent = `${i + 1}. Spieltag`;
-          btn.addEventListener('click', () => renderSpieltag(i));
+          btn.addEventListener('click', () => {
+            // Beim Wechsel des Spieltags neu rendern mit den bereits geladenen Daten
+            renderSpieltag(i, gameData);
+          });
           tabsContainer.appendChild(btn);
         });
 
+        // Alle JSONs laden
+        const gameData = await loadAllGameData();
+
+        // Tabelle berechnen
+        buildTable(gameData);
+
         // Ersten Spieltag anzeigen
         if (spielplan.spieltage.length > 0) {
-          renderSpieltag(0);
+          renderSpieltag(0, gameData);
         }
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
@@ -1534,6 +1386,16 @@
           '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden. Bitte stelle sicher, dass spielplan.json im gleichen Verzeichnis liegt.</p>';
       }
     }
+
+    // Globale Variable für die geladenen Daten (für Tab-Wechsel)
+    let gameData = {};
+
+    // Überschreibe renderSpieltag, damit sie auf die globale gameData zugreift
+    const originalRender = renderSpieltag;
+    renderSpieltag = function(index, data) {
+      if (data) gameData = data;
+      originalRender(index, gameData);
+    };
 
     init();
   </script>
