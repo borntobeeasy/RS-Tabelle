@@ -6,73 +6,91 @@
   <title>2. Bundesliga · Rasenschach 26/27</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================
-       BASIS
+       TOKENS — Flutlicht-Taktiktafel
        ============================ */
     :root {
       color-scheme: dark;
-      --bundesliga-red: #D3010C;
-      --bundesliga-red-dark: #8B0000;
-      --bundesliga-gold: #F5C518;
-      --bundesliga-white: #FFFFFF;
-      --bundesliga-black: #000000;
-      --paper: #0a0a0a;
-      --ink: var(--bundesliga-white);
-      --muted: #a0a8b8;
-      --line: rgba(255, 255, 255, 0.12);
-      --grid: rgba(255, 255, 255, 0.05);
-      --accent: var(--bundesliga-red);
-      --yellow: var(--bundesliga-gold);
-      --green: #00b050;
-      --green-dark: #00843d;
-      --red: #ff1a1a;
-      --zero: #a89fcc;
+      --night: #06090a;
+      --night-2: #0b1210;
+      --pitch: #0c1f16;
+      --red: #e2001a;
+      --red-deep: #7a0010;
+      --gold: #ffbe3d;
+      --gold-dim: #b8862a;
+      --chalk: #f4f2ea;
+      --steel: #7c8794;
+      --line: rgba(244, 242, 234, 0.10);
+      --line-strong: rgba(244, 242, 234, 0.18);
+      --green: #22c383;
+      --green-dark: #0f7a4f;
+      --loss: #ff3b3b;
+      --zero: #b39dff;
+
+      --ink: var(--chalk);
+      --muted: var(--steel);
+      --accent: var(--red);
+      --yellow: var(--gold);
+
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
-      --shadow: 0 28px 75px rgba(0, 0, 0, 0.46);
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
       --event-font: "Sora", "Segoe UI", Arial, sans-serif;
-      --headline-font: "DFL Sans", "Anton", "Arial Narrow", Impact, sans-serif;
+      --headline-font: "Anton", "Arial Narrow", Impact, sans-serif;
+      --mono-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     }
 
     * { box-sizing: border-box; }
 
+    ::selection { background: var(--red); color: var(--chalk); }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background-color: #0a0a0a;
+      background-color: var(--night);
       background-image:
-        linear-gradient(145deg, rgba(211, 1, 12, 0.18) 0%, transparent 45%),
-        linear-gradient(215deg, rgba(211, 1, 12, 0.08) 0%, transparent 35%),
-        repeating-linear-gradient(45deg,
-          rgba(255, 255, 255, 0.015) 0px,
-          rgba(255, 255, 255, 0.015) 1px,
+        radial-gradient(ellipse 900px 500px at 12% -6%, rgba(226, 0, 26, 0.16) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 500px at 100% 8%, rgba(255, 190, 61, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 900px 700px at 90% 100%, rgba(12, 31, 22, 0.9) 0%, transparent 60%),
+        repeating-linear-gradient(90deg,
+          rgba(244, 242, 234, 0.012) 0px,
+          rgba(244, 242, 234, 0.012) 1px,
           transparent 1px,
-          transparent 24px
+          transparent 46px
         ),
-        radial-gradient(ellipse at 10% 5%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
-        radial-gradient(ellipse at 90% 95%, rgba(211, 1, 12, 0.08) 0%, transparent 40%),
-        #0a0a0a;
+        var(--night);
       color: var(--ink);
       font-family: var(--event-font);
-      padding: 20px;
+      padding: 22px;
     }
 
+    /* Flutlicht-Wasserzeichen im Hintergrund */
     body::after {
-      content: "2. BUNDESLIGA 26/27";
+      content: "RASENSCHACH";
       position: fixed;
-      bottom: -8vh;
-      right: -4vw;
+      bottom: -9vh;
+      right: -3vw;
       z-index: -3;
       font-family: var(--headline-font);
-      font-size: min(28vw, 18rem);
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.025);
+      font-size: min(24vw, 15rem);
+      letter-spacing: 0.04em;
+      color: rgba(244, 242, 234, 0.022);
       white-space: nowrap;
       pointer-events: none;
-      transform: rotate(-8deg);
-      text-shadow: 0 0 60px rgba(211, 1, 12, 0.04);
+      transform: skewX(-8deg);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      background-image:
+        linear-gradient(rgba(244,242,234,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244,242,234,0.02) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 0%, transparent 75%);
+      pointer-events: none;
     }
 
     .app-shell {
@@ -83,46 +101,79 @@
     }
 
     /* ============================
-       LIGA-ÜBERSICHT
+       KOPF — Anzeigetafel
        ============================ */
     .liga-header {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 28px;
-      padding: 16px 24px;
+      margin-bottom: 22px;
+      padding: 22px 30px 22px 34px;
       background:
-        linear-gradient(120deg, rgba(211, 1, 12, 0.15), transparent 22%, transparent 74%, rgba(211, 1, 12, 0.08)),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-        rgba(10, 10, 10, 0.92);
-      border: 1px solid rgba(211, 1, 12, 0.3);
-      border-radius: 8px;
-      box-shadow: var(--shadow), 0 0 60px rgba(211, 1, 12, 0.05);
+        linear-gradient(100deg, rgba(226, 0, 26, 0.22) 0%, transparent 38%),
+        linear-gradient(180deg, rgba(244,242,234,0.05), rgba(244,242,234,0.015)),
+        var(--night-2);
+      border: 1px solid var(--line-strong);
+      border-left: 4px solid var(--red);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(244,242,234,0.06);
+      overflow: hidden;
+    }
+    .liga-header::before {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -6%;
+      width: 40%;
+      height: 220%;
+      background: radial-gradient(ellipse, rgba(255,190,61,0.14) 0%, transparent 65%);
+      transform: rotate(12deg);
+      pointer-events: none;
+    }
+    .liga-header .head-eyebrow {
+      display: block;
+      font-family: var(--mono-font);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0 0 6px;
+      opacity: 0.9;
     }
     .liga-header h1 {
+      position: relative;
       font-family: var(--headline-font);
-      font-size: clamp(1.4rem, 3vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      font-size: clamp(1.6rem, 3.4vw, 2.9rem);
+      font-weight: 400;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       margin: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #cccccc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--chalk);
+      text-shadow: 0 2px 0 var(--red-deep), 0 14px 30px rgba(226,0,26,0.2);
     }
     .liga-header .sub {
       color: var(--muted);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      margin-top: 4px;
     }
     .liga-header .sub strong {
-      color: var(--bundesliga-gold);
+      color: var(--gold);
       font-weight: 800;
+    }
+    .liga-header .sub::before {
+      content: "●";
+      color: var(--green);
+      font-size: 0.55rem;
+      margin-right: 8px;
+      vertical-align: middle;
+      filter: drop-shadow(0 0 6px rgba(34,195,131,0.8));
     }
 
     /* ============================
@@ -130,7 +181,7 @@
        ============================ */
     .content-wrapper {
       display: flex;
-      gap: 24px;
+      gap: 22px;
       align-items: flex-start;
     }
     .content-wrapper .left-col {
@@ -140,6 +191,8 @@
       top: 20px;
       max-height: calc(100vh - 120px);
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line-strong) transparent;
     }
     .content-wrapper .right-col {
       flex: 1;
@@ -160,16 +213,16 @@
     }
 
     /* ============================
-       TABELLE
+       TABELLE — Anzeigetafel-Stil
        ============================ */
     .table-wrap {
       overflow-x: auto;
-      background:
-        linear-gradient(180deg, rgba(211, 1, 12, 0.06), transparent 30%),
-        rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 8px 0;
+      background: linear-gradient(180deg, rgba(244,242,234,0.04), rgba(244,242,234,0.015));
+      border: 1px solid var(--line);
+      border-top: 2px solid var(--red);
+      border-radius: 4px;
+      padding: 4px 0 6px;
+      box-shadow: var(--shadow);
     }
     .liga-table {
       width: 100%;
@@ -179,37 +232,62 @@
     }
     .liga-table th {
       text-align: left;
-      padding: 8px 10px;
+      padding: 10px 10px 8px;
       font-weight: 700;
       font-size: 0.55rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       color: var(--muted);
-      border-bottom: 2px solid rgba(211, 1, 12, 0.3);
+      border-bottom: 1px solid var(--line-strong);
+      font-family: var(--mono-font);
     }
     .liga-table td {
-      padding: 6px 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(244,242,234,0.045);
       vertical-align: middle;
+      font-family: var(--mono-font);
+    }
+    .liga-table td.team { font-family: var(--event-font); }
+    .liga-table tbody tr {
+      transition: background 0.15s;
+    }
+    .liga-table tbody tr:nth-child(even) td {
+      background: rgba(244,242,234,0.018);
     }
     .liga-table tr:hover td {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(226, 0, 26, 0.08);
     }
     .liga-table .pos {
       font-weight: 800;
-      color: var(--bundesliga-gold);
-      width: 26px;
+      color: var(--muted);
+      width: 30px;
       text-align: center;
+      position: relative;
+    }
+    /* Aufstiegs- / Abstiegszone wie auf echten Tabellen-Grafiken */
+    .liga-table tbody tr:nth-child(-n+2) .pos {
+      color: var(--night);
+      background: var(--gold);
+      border-radius: 3px;
+      box-shadow: 0 0 12px rgba(255,190,61,0.4);
+    }
+    .liga-table tbody tr:nth-child(-n+2) td:first-child { position: relative; }
+    .liga-table tbody tr:nth-last-child(-n+2) .pos {
+      color: var(--chalk);
+      background: rgba(226, 0, 26, 0.55);
+      border-radius: 3px;
     }
     .liga-table .team {
       font-weight: 700;
       white-space: nowrap;
+      color: var(--chalk);
     }
     .liga-table .pts {
-      font-weight: 900;
+      font-weight: 800;
       font-size: 0.95rem;
-      color: white;
+      color: var(--chalk);
       text-align: center;
+      background: rgba(226,0,26,0.10);
     }
     .liga-table .num {
       text-align: center;
@@ -217,22 +295,26 @@
     }
 
     /* ============================
-       SPIELTAG-NAVIGATION
+       SPIELTAG-NAVIGATION — Ticker
        ============================ */
     .liga-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 16px;
+      gap: 6px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
     }
     .liga-tabs button {
-      padding: 4px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.06);
+      padding: 6px 14px;
+      border-radius: 2px;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      border: 1px solid var(--line-strong);
+      background: rgba(244,242,234,0.03);
       color: var(--muted);
       font-weight: 700;
-      font-size: 0.6rem;
+      font-size: 0.62rem;
+      font-family: var(--mono-font);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       cursor: pointer;
@@ -240,13 +322,15 @@
       white-space: nowrap;
     }
     .liga-tabs button:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
+      background: rgba(244,242,234,0.1);
+      color: var(--chalk);
+      border-color: var(--line-strong);
     }
     .liga-tabs button.active {
-      background: var(--bundesliga-red);
-      border-color: var(--bundesliga-red);
-      color: white;
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--chalk);
+      box-shadow: 0 0 18px rgba(226,0,26,0.45);
     }
     .liga-tabs button:disabled {
       opacity: 0.3;
@@ -254,7 +338,7 @@
     }
 
     /* ============================
-       SPIELE – VERTIKALE LISTE
+       SPIELE — VERTIKALE LISTE
        ============================ */
     .spiel-liste {
       display: flex;
@@ -263,31 +347,31 @@
     }
 
     .spiel-item {
-      background:
-        linear-gradient(160deg, rgba(211, 1, 12, 0.08), transparent 50%),
-        rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(244,242,234,0.035), rgba(244,242,234,0.012));
+      border: 1px solid var(--line);
+      border-left: 3px solid transparent;
+      border-radius: 3px;
       overflow: hidden;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, transform 0.15s;
     }
     .spiel-item:hover {
-      border-color: rgba(211, 1, 12, 0.4);
+      border-left-color: var(--red);
+      transform: translateX(2px);
     }
 
     .spiel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 12px 16px;
       gap: 10px;
       flex-wrap: wrap;
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.25);
     }
     .spiel-header .team-block {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex: 1;
       min-width: 0;
     }
@@ -298,36 +382,40 @@
       height: 28px;
       border-radius: 50%;
       object-fit: contain;
-      background: white;
+      background: var(--chalk);
       border: 1px solid rgba(0,0,0,0.1);
       flex-shrink: 0;
     }
     .spiel-header .team-name {
       font-weight: 700;
       font-size: 0.85rem;
+      color: var(--chalk);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .spiel-header .score-display {
-      font-family: var(--headline-font);
-      font-size: 1.1rem;
-      font-weight: 900;
-      background: var(--bundesliga-red);
-      padding: 2px 12px;
-      border-radius: 6px;
-      color: white;
+      font-family: var(--mono-font);
+      font-size: 1.15rem;
+      font-weight: 800;
+      background: var(--night);
+      border: 1px solid var(--line-strong);
+      padding: 4px 14px;
+      border-radius: 2px;
+      color: var(--gold);
+      text-shadow: 0 0 10px rgba(255,190,61,0.5);
       white-space: nowrap;
       flex-shrink: 0;
+      letter-spacing: 0.04em;
     }
     .spiel-header .toggle-btn {
       background: none;
-      border: 1px solid rgba(255,255,255,0.2);
+      border: 1px solid var(--line-strong);
       border-radius: 50%;
       width: 28px;
       height: 28px;
-      color: white;
-      font-size: 0.9rem;
+      color: var(--chalk);
+      font-size: 0.85rem;
       cursor: pointer;
       transition: transform 0.25s ease, background 0.15s;
       display: flex;
@@ -336,23 +424,28 @@
       flex-shrink: 0;
     }
     .spiel-header .toggle-btn:hover {
-      background: rgba(255,255,255,0.1);
+      background: rgba(226,0,26,0.2);
+      border-color: var(--red);
     }
     .spiel-header .toggle-btn.open {
       transform: rotate(180deg);
+      background: rgba(226,0,26,0.25);
     }
 
     .spiel-meta {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 0.55rem;
+      font-size: 0.58rem;
+      font-family: var(--mono-font);
       color: var(--muted);
-      padding: 2px 14px 6px 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      padding: 5px 16px 8px;
+      border-bottom: 1px solid rgba(244,242,234,0.04);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .spiel-meta .status {
-      color: var(--bundesliga-gold);
+      color: var(--gold);
       font-weight: 700;
     }
     .spiel-meta .status.done {
@@ -360,69 +453,77 @@
     }
 
     .spiel-board-container {
-      display: none;
-      padding: 10px 14px 14px 14px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      background: rgba(0,0,0,0.2);
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 0.32s ease, opacity 0.28s ease;
+      border-top: 0px solid rgba(244,242,234,0.06);
+      background: rgba(0,0,0,0.25);
     }
+    .spiel-board-container > * { overflow: hidden; }
     .spiel-board-container.open {
-      display: block;
+      display: grid;
+      grid-template-rows: 1fr;
+      opacity: 1;
+      border-top: 1px solid rgba(244,242,234,0.06);
+      padding: 12px 16px 16px;
     }
 
     /* ============================
-       BRETT – NUR SCHACHBRETT
+       BRETT — TAKTIKTAFEL
        ============================ */
     .board-panel {
       position: relative;
       overflow: hidden;
       background:
-        linear-gradient(120deg, rgba(211, 1, 12, 0.08), transparent 22%, transparent 74%, rgba(211, 1, 12, 0.04)),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
-        rgba(10, 10, 10, 0.92);
-      border: 1px solid rgba(211, 1, 12, 0.2);
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: var(--shadow), 0 0 40px rgba(211, 1, 12, 0.04);
+        radial-gradient(ellipse 500px 260px at 50% -20%, rgba(255,190,61,0.10) 0%, transparent 60%),
+        linear-gradient(160deg, rgba(12,31,22,0.55), rgba(6,9,10,0.9));
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      padding: 12px;
+      box-shadow: var(--shadow);
     }
     .board-panel .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
     .board-panel .topbar .eyebrow {
-      margin: 0 0 2px;
-      font-size: 0.45rem;
-      font-weight: 800;
+      margin: 0 0 3px;
+      font-size: 0.5rem;
+      font-weight: 700;
+      font-family: var(--mono-font);
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--bundesliga-gold);
-      opacity: 0.7;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      opacity: 0.85;
     }
     .board-panel .topbar h3 {
       margin: 0;
       font-family: var(--headline-font);
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.85rem;
+      font-weight: 400;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      color: white;
+      color: var(--chalk);
     }
     .board-panel .topbar .action-buttons button {
       min-height: 20px;
-      padding: 2px 8px;
-      font-size: 0.45rem;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.05);
-      color: white;
+      padding: 3px 9px;
+      font-size: 0.48rem;
+      font-family: var(--mono-font);
+      border-radius: 2px;
+      border: 1px solid var(--line-strong);
+      background: rgba(244,242,234,0.04);
+      color: var(--chalk);
       cursor: default;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      opacity: 0.5;
+      letter-spacing: 0.05em;
+      opacity: 0.6;
     }
 
     .board-panel .chess-grid {
@@ -432,11 +533,11 @@
       width: calc(var(--cell-size) * 5);
       height: calc(var(--cell-size) * 4);
       margin: 0 auto;
-      border: 2px solid rgba(211,1,12,0.5);
-      border-radius: 6px;
-      outline: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 0 3px rgba(10,10,10,0.9), 0 0 30px rgba(211,1,12,0.12), inset 0 0 30px rgba(0,0,0,0.4), var(--shadow);
-      background: #1a1a1a;
+      border: 2px solid var(--red);
+      border-radius: 3px;
+      outline: 1px solid rgba(244,242,234,0.06);
+      box-shadow: 0 0 0 3px var(--night), 0 0 34px rgba(226,0,26,0.14), inset 0 0 30px rgba(0,0,0,0.5), var(--shadow);
+      background: #10231a;
       overflow: hidden;
     }
     .board-panel .grid-cell {
@@ -444,42 +545,43 @@
       border: none;
       padding: 0;
       overflow: hidden;
-      background: #1f1f1f;
+      background: #142a1f;
     }
     .board-panel .piece-cell {
       display: grid;
       place-items: center;
-      background: #181818;
-      color: white;
+      background: #0f2318;
+      color: var(--chalk);
       font-weight: 800;
       isolation: isolate;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+      box-shadow: inset 0 0 0 1px rgba(244,242,234,0.03);
       position: relative;
     }
-    .board-panel .piece-cell.light { background: #242424; }
+    .board-panel .piece-cell.light { background: #17301f; }
     .board-panel .piece-cell .field-watermark {
       position: absolute;
       right: 4px;
       bottom: 4px;
       z-index: 4;
+      font-family: var(--mono-font);
       font-size: clamp(0.6rem, calc(var(--cell-size)*0.14), 1.1rem);
-      font-weight: 900;
+      font-weight: 800;
       line-height: 1;
       opacity: 1 !important;
       pointer-events: none;
       text-shadow: 0 0 8px rgba(0,0,0,0.9);
     }
     .board-panel .piece-cell .field-watermark.positive {
-      color: #00ff80 !important;
+      color: #2be08a !important;
     }
     .board-panel .piece-cell .field-watermark.negative {
-      color: #ff3333 !important;
+      color: #ff4d4d !important;
     }
     .board-panel .piece-cell .field-watermark.zero {
-      color: #c9b8ff !important;
+      color: #c3aeff !important;
     }
     .board-panel .piece-cell .field-watermark.neutral {
-      color: rgba(255,255,255,0.15);
+      color: rgba(244,242,234,0.15);
     }
 
     .board-panel .piece-cell .piece-svg {
@@ -489,11 +591,11 @@
       width: 60%;
       max-width: 50px;
       height: auto;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,0.08)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+      filter: invert(1) sepia(1) saturate(0) brightness(1.65) drop-shadow(0 0 6px rgba(255,190,61,0.12)) drop-shadow(0 8px 12px rgba(0,0,0,0.6));
       opacity: 0.95;
     }
     .board-panel .piece-cell:not(.light) .piece-svg {
-      filter: invert(1) drop-shadow(0 0 6px rgba(211,1,12,0.15)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+      filter: invert(1) sepia(1) saturate(0) brightness(1.65) drop-shadow(0 0 6px rgba(226,0,26,0.18)) drop-shadow(0 8px 12px rgba(0,0,0,0.6));
     }
     .board-panel .piece-cell .player-photo {
       position: absolute;
@@ -501,7 +603,7 @@
       z-index: 1;
       width: calc(100% - 8px);
       height: calc(100% - 8px);
-      border-radius: 6px;
+      border-radius: 4px;
       background: rgba(0,0,0,0.3);
       object-fit: contain;
       object-position: center bottom;
@@ -516,8 +618,8 @@
       width: 24%;
       max-width: 22px;
       padding: 2px;
-      border-radius: 4px;
-      background: rgba(0,0,0,0.5);
+      border-radius: 3px;
+      background: rgba(0,0,0,0.55);
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       filter: none !important;
     }
@@ -529,14 +631,14 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: #1a1a1a;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      background: #0d1f16;
+      box-shadow: inset 0 0 0 1px rgba(244,242,234,0.02);
     }
     .board-panel .drop-cell .drop-value {
+      font-family: var(--mono-font);
       font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
-      font-weight: 900;
-      font-family: var(--headline-font);
-      color: rgba(255,255,255,0.85);
+      font-weight: 800;
+      color: rgba(244,242,234,0.8);
       text-shadow: 0 0 15px rgba(0,0,0,0.6);
       pointer-events: none;
     }
@@ -545,16 +647,16 @@
       top: 4px;
       left: 4px;
       font-size: clamp(0.4rem, calc(var(--cell-size)*0.08), 0.7rem);
-      color: rgba(255,255,255,0.5);
+      color: rgba(244,242,234,0.5);
     }
     .board-panel .drop-cell .drop-total {
       position: absolute;
       bottom: 4px;
       right: 4px;
+      font-family: var(--mono-font);
       font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
-      font-weight: 900;
-      font-family: var(--headline-font);
-      color: rgba(255,255,255,0.2);
+      font-weight: 800;
+      color: rgba(244,242,234,0.2);
       pointer-events: none;
       display: none;
     }
@@ -578,10 +680,10 @@
       place-items: center;
       width: 100%;
       height: 100%;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 4px;
-      background: rgba(255,255,255,0.92);
-      color: #0a0a0a;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 3px;
+      background: var(--chalk);
+      color: var(--night);
       font-size: clamp(0.25rem, 0.4vw, 0.45rem);
       font-weight: 700;
       line-height: 1.05;
@@ -590,7 +692,7 @@
       text-align: center;
       pointer-events: none;
       isolation: isolate;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .board-panel .placed-chip .chip-field-badge {
       position: absolute;
@@ -598,9 +700,10 @@
       left: 3px;
       z-index: 2;
       line-height: 1;
+      font-family: var(--mono-font);
       font-size: 1.1em;
       font-weight: 800;
-      color: rgba(10,10,10,0.55);
+      color: rgba(6,9,10,0.55);
       pointer-events: none;
     }
     .board-panel .placed-chip .chip-watermark {
@@ -609,28 +712,32 @@
       bottom: 2px;
       z-index: 1;
       line-height: 1;
+      font-family: var(--mono-font);
       font-size: 1.6em;
-      font-weight: 900;
+      font-weight: 800;
       opacity: 1 !important;
       pointer-events: none;
     }
     .board-panel .placed-chip .chip-watermark.positive {
-      color: #00cc66 !important;
+      color: #0f9d5c !important;
     }
     .board-panel .placed-chip .chip-watermark.negative {
-      color: #ff1a1a !important;
+      color: #d81e1e !important;
     }
     .board-panel .placed-chip .chip-watermark.zero {
-      color: #b399ff !important;
+      color: #7a5cd6 !important;
     }
     .board-panel .placed-chip .chip-watermark.neutral {
-      color: rgba(10,10,10,0.15);
+      color: rgba(6,9,10,0.15);
     }
 
     /* ============================
        RESPONSIVE
        ============================ */
     @media (max-width: 700px) {
+      .liga-header {
+        padding: 16px 20px 16px 22px;
+      }
       .spiel-header {
         flex-wrap: wrap;
         gap: 6px;
@@ -641,7 +748,7 @@
       }
       .spiel-header .score-display {
         font-size: 0.95rem;
-        padding: 2px 10px;
+        padding: 3px 10px;
       }
       .board-panel .chess-grid {
         --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px);
@@ -667,13 +774,19 @@
         height: 18px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
   </style>
+
 </head>
 <body>
   <div class="app-shell" id="app">
     <!-- Kopf -->
     <header class="liga-header">
       <div>
+        <span class="head-eyebrow">Live-Taktiktafel</span>
         <h1>2. Bundesliga</h1>
         <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
       </div>
