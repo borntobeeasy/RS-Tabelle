@@ -76,7 +76,7 @@
     }
 
     .app-shell {
-      max-width: 1100px;
+      max-width: 1440px;
       margin: 0 auto;
       position: relative;
       isolation: isolate;
@@ -125,33 +125,38 @@
       font-weight: 800;
     }
 
-    .liga-tabs {
+    /* ============================
+       ZWEISPALTIGES LAYOUT
+       ============================ */
+    .content-wrapper {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 20px;
+      gap: 24px;
+      align-items: flex-start;
     }
-    .liga-tabs button {
-      padding: 6px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      transition: all 0.15s;
+    .content-wrapper .left-col {
+      flex: 0 0 380px;
+      min-width: 0;
+      position: sticky;
+      top: 20px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
     }
-    .liga-tabs button:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
+    .content-wrapper .right-col {
+      flex: 1;
+      min-width: 0;
     }
-    .liga-tabs button.active {
-      background: var(--bundesliga-red);
-      border-color: var(--bundesliga-red);
-      color: white;
+
+    @media (max-width: 1000px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+      .content-wrapper .left-col {
+        flex: none;
+        width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+      }
     }
 
     /* ============================
@@ -159,7 +164,6 @@
        ============================ */
     .table-wrap {
       overflow-x: auto;
-      margin-bottom: 28px;
       background:
         linear-gradient(180deg, rgba(211, 1, 12, 0.06), transparent 30%),
         rgba(255, 255, 255, 0.03);
@@ -170,21 +174,21 @@
     .liga-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
-      min-width: 600px;
+      font-size: 0.75rem;
+      min-width: 360px;
     }
     .liga-table th {
       text-align: left;
-      padding: 10px 12px;
+      padding: 8px 10px;
       font-weight: 700;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--muted);
       border-bottom: 2px solid rgba(211, 1, 12, 0.3);
     }
     .liga-table td {
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       vertical-align: middle;
     }
@@ -194,7 +198,7 @@
     .liga-table .pos {
       font-weight: 800;
       color: var(--bundesliga-gold);
-      width: 30px;
+      width: 26px;
       text-align: center;
     }
     .liga-table .team {
@@ -203,7 +207,7 @@
     }
     .liga-table .pts {
       font-weight: 900;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: white;
       text-align: center;
     }
@@ -213,12 +217,49 @@
     }
 
     /* ============================
+       SPIELTAG-NAVIGATION
+       ============================ */
+    .liga-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+    .liga-tabs button {
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .liga-tabs button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+    }
+    .liga-tabs button.active {
+      background: var(--bundesliga-red);
+      border-color: var(--bundesliga-red);
+      color: white;
+    }
+    .liga-tabs button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* ============================
        SPIELE – VERTIKALE LISTE
        ============================ */
     .spiel-liste {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .spiel-item {
@@ -234,28 +275,27 @@
       border-color: rgba(211, 1, 12, 0.4);
     }
 
-    /* Header = dauerhaftes Scoreboard */
     .spiel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
-      gap: 12px;
+      padding: 10px 14px;
+      gap: 10px;
       flex-wrap: wrap;
       background: rgba(0,0,0,0.2);
     }
     .spiel-header .team-block {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex: 1;
       min-width: 0;
     }
     .spiel-header .team-block.heim { justify-content: flex-start; }
     .spiel-header .team-block.auswaerts { justify-content: flex-end; }
     .spiel-header .team-logo-small {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       object-fit: contain;
       background: white;
@@ -264,17 +304,17 @@
     }
     .spiel-header .team-name {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .spiel-header .score-display {
       font-family: var(--headline-font);
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 900;
       background: var(--bundesliga-red);
-      padding: 2px 16px;
+      padding: 2px 12px;
       border-radius: 6px;
       color: white;
       white-space: nowrap;
@@ -284,10 +324,10 @@
       background: none;
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       color: white;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: transform 0.25s ease, background 0.15s;
       display: flex;
@@ -306,9 +346,9 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--muted);
-      padding: 4px 16px 8px 16px;
+      padding: 2px 14px 6px 14px;
       border-bottom: 1px solid rgba(255,255,255,0.04);
     }
     .spiel-meta .status {
@@ -319,10 +359,9 @@
       color: var(--green);
     }
 
-    /* Brett-Container – nur Schachbrett */
     .spiel-board-container {
       display: none;
-      padding: 12px 16px 16px 16px;
+      padding: 10px 14px 14px 14px;
       border-top: 1px solid rgba(255,255,255,0.06);
       background: rgba(0,0,0,0.2);
     }
@@ -331,7 +370,7 @@
     }
 
     /* ============================
-       BRETT – NUR SCHACHBRETT (ohne Scoreboard)
+       BRETT – NUR SCHACHBRETT
        ============================ */
     .board-panel {
       position: relative;
@@ -342,20 +381,20 @@
         rgba(10, 10, 10, 0.92);
       border: 1px solid rgba(211, 1, 12, 0.2);
       border-radius: 8px;
-      padding: 12px;
+      padding: 10px;
       box-shadow: var(--shadow), 0 0 40px rgba(211, 1, 12, 0.04);
     }
     .board-panel .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
+      gap: 10px;
+      margin-bottom: 8px;
       flex-wrap: wrap;
     }
     .board-panel .topbar .eyebrow {
       margin: 0 0 2px;
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.16em;
@@ -365,16 +404,16 @@
     .board-panel .topbar h3 {
       margin: 0;
       font-family: var(--headline-font);
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       color: white;
     }
     .board-panel .topbar .action-buttons button {
-      min-height: 24px;
-      padding: 2px 10px;
-      font-size: 0.5rem;
+      min-height: 20px;
+      padding: 2px 8px;
+      font-size: 0.45rem;
       border-radius: 4px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.05);
@@ -423,10 +462,10 @@
       right: 4px;
       bottom: 4px;
       z-index: 4;
-      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.3rem);
+      font-size: clamp(0.6rem, calc(var(--cell-size)*0.14), 1.1rem);
       font-weight: 900;
       line-height: 1;
-      opacity: 1 !important;  /* sattere Farben */
+      opacity: 1 !important;
       pointer-events: none;
       text-shadow: 0 0 8px rgba(0,0,0,0.9);
     }
@@ -448,7 +487,7 @@
       z-index: 1;
       display: block;
       width: 60%;
-      max-width: 60px;
+      max-width: 50px;
       height: auto;
       filter: drop-shadow(0 0 6px rgba(255,255,255,0.08)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
       opacity: 0.95;
@@ -475,7 +514,7 @@
       left: 4px;
       z-index: 2;
       width: 24%;
-      max-width: 24px;
+      max-width: 22px;
       padding: 2px;
       border-radius: 4px;
       background: rgba(0,0,0,0.5);
@@ -494,7 +533,7 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
     .board-panel .drop-cell .drop-value {
-      font-size: clamp(0.9rem, calc(var(--cell-size)*0.2), 1.5rem);
+      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
       font-weight: 900;
       font-family: var(--headline-font);
       color: rgba(255,255,255,0.85);
@@ -505,14 +544,14 @@
       position: absolute;
       top: 4px;
       left: 4px;
-      font-size: clamp(0.5rem, calc(var(--cell-size)*0.1), 0.8rem);
+      font-size: clamp(0.4rem, calc(var(--cell-size)*0.08), 0.7rem);
       color: rgba(255,255,255,0.5);
     }
     .board-panel .drop-cell .drop-total {
       position: absolute;
       bottom: 4px;
       right: 4px;
-      font-size: clamp(0.9rem, calc(var(--cell-size)*0.2), 1.5rem);
+      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
       font-weight: 900;
       font-family: var(--headline-font);
       color: rgba(255,255,255,0.2);
@@ -543,11 +582,11 @@
       border-radius: 4px;
       background: rgba(255,255,255,0.92);
       color: #0a0a0a;
-      font-size: clamp(0.3rem, 0.45vw, 0.5rem);
+      font-size: clamp(0.25rem, 0.4vw, 0.45rem);
       font-weight: 700;
       line-height: 1.05;
       overflow-wrap: anywhere;
-      padding: clamp(4px, calc(var(--cell-size)*0.05), 10px) 4px 4px;
+      padding: clamp(3px, calc(var(--cell-size)*0.04), 8px) 4px 4px;
       text-align: center;
       pointer-events: none;
       isolation: isolate;
@@ -555,22 +594,22 @@
     }
     .board-panel .placed-chip .chip-field-badge {
       position: absolute;
-      top: 3px;
-      left: 4px;
+      top: 2px;
+      left: 3px;
       z-index: 2;
       line-height: 1;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: 800;
       color: rgba(10,10,10,0.55);
       pointer-events: none;
     }
     .board-panel .placed-chip .chip-watermark {
       position: absolute;
-      right: 4px;
-      bottom: 3px;
+      right: 3px;
+      bottom: 2px;
       z-index: 1;
       line-height: 1;
-      font-size: 1.8em;
+      font-size: 1.6em;
       font-weight: 900;
       opacity: 1 !important;
       pointer-events: none;
@@ -594,33 +633,38 @@
     @media (max-width: 700px) {
       .spiel-header {
         flex-wrap: wrap;
-        gap: 8px;
-      }
-      .spiel-header .team-name {
-        font-size: 0.8rem;
-      }
-      .spiel-header .score-display {
-        font-size: 1.1rem;
-        padding: 2px 12px;
-      }
-      .board-panel .chess-grid {
-        --cell-size: clamp(48px, calc((100vw - 60px)/5), 70px);
-      }
-    }
-    @media (max-width: 500px) {
-      .spiel-header .team-logo-small {
-        width: 24px;
-        height: 24px;
+        gap: 6px;
+        padding: 8px 10px;
       }
       .spiel-header .team-name {
         font-size: 0.7rem;
       }
       .spiel-header .score-display {
         font-size: 0.95rem;
+        padding: 2px 10px;
+      }
+      .board-panel .chess-grid {
+        --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px);
+      }
+      .spiel-header .team-logo-small {
+        width: 22px;
+        height: 22px;
+      }
+    }
+    @media (max-width: 500px) {
+      .spiel-header .team-name {
+        font-size: 0.6rem;
+      }
+      .spiel-header .score-display {
+        font-size: 0.8rem;
         padding: 2px 8px;
       }
       .board-panel .chess-grid {
-        --cell-size: clamp(38px, calc((100vw - 40px)/5), 52px);
+        --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px);
+      }
+      .spiel-header .team-logo-small {
+        width: 18px;
+        height: 18px;
       }
     }
   </style>
@@ -636,36 +680,41 @@
       <div class="sub" id="ligaInfo">34 Spieltage · 18 Teams</div>
     </header>
 
-    <!-- Tabelle -->
-    <div class="table-wrap" id="tableWrap">
-      <table class="liga-table" id="ligaTable">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Team</th>
-            <th class="num">Sp</th>
-            <th class="num">S</th>
-            <th class="num">U</th>
-            <th class="num">N</th>
-            <th class="num">Tore</th>
-            <th class="num">Diff</th>
-            <th class="pts">Pkt</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-
-    <!-- Spieltag-Navigation -->
+    <!-- Navigation -->
     <div class="liga-tabs" id="spieltagTabs"></div>
 
-    <!-- Spiele des aktuellen Spieltags – vertikale Liste -->
-    <div class="spiel-liste" id="spieleContainer"></div>
+    <!-- ZWEISPALTIG: Tabelle links, Spiele rechts -->
+    <div class="content-wrapper">
+      <div class="left-col">
+        <div class="table-wrap" id="tableWrap">
+          <table class="liga-table" id="ligaTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th class="num">Sp</th>
+                <th class="num">S</th>
+                <th class="num">U</th>
+                <th class="num">N</th>
+                <th class="num">Tore</th>
+                <th class="num">Diff</th>
+                <th class="pts">Pkt</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="spiel-liste" id="spieleContainer"></div>
+      </div>
+    </div>
   </div>
 
   <script>
     // ============================
-    //  LIGA-DATEN & SPIELPLAN
+    //  KONFIGURATION
     // ============================
     const SPIELPLAN_URL = 'spielplan.json';
     const DATA_BASE = 'data/';
@@ -673,7 +722,8 @@
     let spielplan = null;
     let teams = [];
     let aktuellerSpieltag = 0;
-    let allGameData = {};
+    let allGameData = {}; // key: "st-spiel" -> state
+    let vorhandeneSpieltage = []; // Indizes der tatsächlich vorhandenen Spieltage
 
     // ============================
     //  HILFSFUNKTIONEN
@@ -915,14 +965,20 @@
     }
 
     // ============================
-    //  SPIELTAG-ANSICHT – VERTIKALE LISTE
+    //  SPIELTAG-ANSICHT
     // ============================
     function renderSpieltag(index) {
       aktuellerSpieltag = index;
       const container = document.getElementById('spieleContainer');
       container.innerHTML = '';
       const spiele = spielplan.spieltage[index];
-      if (!spiele) return;
+      if (!spiele) {
+        container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>';
+        return;
+      }
+
+      // Prüfen, ob Daten für diesen Spieltag geladen sind
+      const hasData = spiele.some((_, idx) => allGameData[`${index}-${idx}`]);
 
       spiele.forEach((spiel, idx) => {
         const key = `${index}-${idx}`;
@@ -937,7 +993,7 @@
               <span>${spiel.heim}</span>
               <span>vs</span>
               <span>${spiel.auswaerts}</span>
-              <span style="color:var(--muted);font-size:0.6rem;">⏳ wird geladen…</span>
+              <span style="color:var(--muted);font-size:0.6rem;">⏳ nicht verfügbar</span>
             </div>
           `;
           container.appendChild(item);
@@ -950,7 +1006,6 @@
         const homeLogo = state.teamLogos?.white || null;
         const awayLogo = state.teamLogos?.black || null;
 
-        // Header = dauerhaftes Scoreboard
         const header = document.createElement('div');
         header.className = 'spiel-header';
         header.innerHTML = `
@@ -967,7 +1022,6 @@
         `;
         item.appendChild(header);
 
-        // Meta-Info
         const meta = document.createElement('div');
         meta.className = 'spiel-meta';
         meta.innerHTML = `
@@ -976,14 +1030,12 @@
         `;
         item.appendChild(meta);
 
-        // Brett-Container (zunächst ausgeblendet)
         const boardContainer = document.createElement('div');
         boardContainer.className = 'spiel-board-container';
         item.appendChild(boardContainer);
 
         container.appendChild(item);
 
-        // Toggle-Logik
         const toggleBtn = header.querySelector('.toggle-btn');
         let isOpen = false;
         toggleBtn.addEventListener('click', (e) => {
@@ -992,7 +1044,6 @@
           toggleBtn.classList.toggle('open', isOpen);
           boardContainer.classList.toggle('open', isOpen);
           if (isOpen && !boardContainer.hasChildNodes()) {
-            // Brett beim ersten Öffnen rendern (ohne Scoreboard)
             renderBoard(boardContainer, index, idx, spiel.heim, spiel.auswaerts, state);
           }
         });
@@ -1005,19 +1056,40 @@
     }
 
     // ============================
-    //  INIT – LADE ALLE JSONs
+    //  PRÜFT, WELCHE SPIELTAG-DATEIEN EXISTIEREN
     // ============================
-    async function loadAllGameData() {
+    async function checkExistingSpieltage(total) {
+      const existing = [];
+      const checks = [];
+      for (let i = 0; i < total; i++) {
+        const filePath = `${DATA_BASE}Spieltag ${i + 1}.json`;
+        checks.push(
+          fetch(filePath, { method: 'HEAD' })
+            .then(res => res.ok ? i : null)
+            .catch(() => null)
+        );
+      }
+      const results = await Promise.all(checks);
+      return results.filter(idx => idx !== null);
+    }
+
+    // ============================
+    //  LADE NUR VORHANDENE SPIELTAGE
+    // ============================
+    async function loadExistingGameData(existingIndices) {
       const gameData = {};
-      for (let stIdx = 0; stIdx < spielplan.spieltage.length; stIdx++) {
-        const spieltag = spielplan.spieltage[stIdx];
-        for (let spIdx = 0; spIdx < spieltag.length; spIdx++) {
-          const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
-          try {
-            const res = await fetch(filePath);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            const state = data.data;
+      const loadPromises = existingIndices.map(async (stIdx) => {
+        const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}.json`;
+        try {
+          const res = await fetch(filePath);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (!Array.isArray(data)) {
+            console.warn(`Spieltag ${stIdx + 1}: erwartet Array, erhalten:`, typeof data);
+            return;
+          }
+          data.forEach((state, spIdx) => {
+            if (!state) return;
             if (state.positions) {
               state.assignments = state.positions.map(p => ({
                 id: p.id,
@@ -1040,34 +1112,64 @@
             if (!state.teamLogos) state.teamLogos = { white: null, black: null };
             if (!state.figureImages) state.figureImages = {};
             gameData[`${stIdx}-${spIdx}`] = state;
-          } catch (err) {
-            console.warn(`Konnte ${filePath} nicht laden:`, err);
-          }
+          });
+        } catch (err) {
+          console.warn(`Fehler beim Laden von ${filePath}:`, err);
         }
-      }
+      });
+      await Promise.all(loadPromises);
       return gameData;
     }
 
+    // ============================
+    //  INIT
+    // ============================
     async function init() {
       try {
+        // 1. Spielplan laden
         const res = await fetch(SPIELPLAN_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         spielplan = await res.json();
         teams = spielplan.teams;
         document.getElementById('ligaInfo').textContent = `${spielplan.spieltage.length} Spieltage · ${teams.length} Teams`;
 
+        // 2. Tabs erstellen (zunächst deaktiviert)
         const tabsContainer = document.getElementById('spieltagTabs');
         spielplan.spieltage.forEach((_, i) => {
           const btn = document.createElement('button');
           btn.textContent = `${i + 1}. Spieltag`;
+          btn.dataset.index = i;
+          btn.disabled = true;
           btn.addEventListener('click', () => renderSpieltag(i));
           tabsContainer.appendChild(btn);
         });
 
-        allGameData = await loadAllGameData();
+        // 3. Prüfen, welche Spieltag-Dateien existieren
+        const existing = await checkExistingSpieltage(spielplan.spieltage.length);
+        vorhandeneSpieltage = existing;
+
+        // 4. Tabs für vorhandene aktivieren
+        existing.forEach(idx => {
+          const btn = tabsContainer.querySelector(`button[data-index="${idx}"]`);
+          if (btn) btn.disabled = false;
+        });
+
+        if (existing.length === 0) {
+          document.getElementById('spieleContainer').innerHTML =
+            '<p style="color:var(--bundesliga-gold);">Keine Spieltag-Dateien gefunden. Bitte lege sie im Ordner <code>data/</code> an.</p>';
+          return;
+        }
+
+        // 5. Nur vorhandene laden
+        allGameData = await loadExistingGameData(existing);
+
+        // 6. Tabelle berechnen
         buildTable();
 
-        if (spielplan.spieltage.length > 0) {
-          renderSpieltag(0);
+        // 7. Ersten vorhandenen Spieltag anzeigen
+        const firstExisting = existing[0];
+        if (firstExisting !== undefined) {
+          renderSpieltag(firstExisting);
         }
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
