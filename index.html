@@ -838,7 +838,6 @@
   ];
   const PIECE_IDS = PIECES.map(p => p.id);
   const SIDES = ['white', 'black'];
-  const SLOTS = SIDES.flatMap(s => PIECE_IDS.map(p => `${s}-${p}`));
 
   const PIECE_SVG_URLS = {
     rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
@@ -855,8 +854,6 @@
     return 'zero';
   }
   function getPieceById(id) { return PIECES.find(p => p.id === id); }
-  function getSlotSide(slot) { return slot.split('-')[0]; }
-  function getSlotPiece(slot) { return slot.split('-')[1]; }
 
   function getAssignmentScore(assignment, state) {
     if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
@@ -1161,10 +1158,9 @@
   }
 
   // ============================
-  //  STATISTIKEN — GLOBAL PRO FIGUR
+  //  STATISTIKEN — GLOBAL PRO FIGUR (mit korrekten Slots top/bottom)
   // ============================
   function computePlayerStats() {
-    // Aggregiere pro Figur (z.B. "rook") über alle Slots (white-rook + black-rook)
     const pieceStats = {};
     PIECES.forEach(p => {
       pieceStats[p.id] = { players: {} }; // players: { image: { games, totalPoints, maxPoints, maxGameKey, maxGameTeam, maxGameSide } }
@@ -1176,11 +1172,12 @@
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
-      // Punktzahl pro Slot in diesem Spiel
+      // Punktzahl pro Slot (mit top/bottom)
       const slotPoints = {};
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
-        const slot = `${a.side}-${a.piece}`;
+        const row = a.side === 'white' ? 'top' : 'bottom';
+        const slot = `${row}-${a.piece}`;
         if (!slotPoints[slot]) slotPoints[slot] = 0;
         slotPoints[slot] += getAssignmentScore(a, state);
       });
@@ -1188,9 +1185,9 @@
       for (const [slot, points] of Object.entries(slotPoints)) {
         const image = state.figureImages?.[slot];
         if (!image) continue;
-        const side = getSlotSide(slot);
-        const piece = getSlotPiece(slot);
-        const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+        const piece = slot.split('-')[1]; // z.B. "rook"
+        const side = slot.split('-')[0]; // "top" oder "bottom"
+        const teamName = side === 'top' ? spiel.heim : spiel.auswaerts;
 
         const playerData = pieceStats[piece].players;
         if (!playerData[image]) {
@@ -1208,12 +1205,11 @@
       }
     }
 
-    // Für jede Figur die Besten ermitteln
     const result = {};
     for (const [piece, data] of Object.entries(pieceStats)) {
       const players = data.players;
-      let bestSingle = null;  // höchste Einzelpunktzahl
-      let bestAvg = null;     // bester Durchschnitt (mind. 2 Einsätze)
+      let bestSingle = null;
+      let bestAvg = null;
 
       for (const [image, stats] of Object.entries(players)) {
         if (stats.games === 0) continue;
