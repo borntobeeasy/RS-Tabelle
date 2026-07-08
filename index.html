@@ -424,13 +424,14 @@
     .spiel-header .team-block.heim { justify-content: flex-start; }
     .spiel-header .team-block.auswaerts { justify-content: flex-end; }
     .spiel-header .team-logo-small {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: contain;
-      background: var(--chalk);
-      border: 1px solid rgba(0,0,0,0.1);
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
+      object-fit: contain;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
     }
     .spiel-header .team-name {
       font-weight: 700;
@@ -785,6 +786,26 @@
       color: rgba(6,9,10,0.15);
     }
 
+    /* Scoreboard-Logos im Brett (ohne weißen Kreis) */
+    .board-panel .team-logo-wrapper {
+      width: clamp(1.8rem, 2.6vw, 2.8rem);
+      height: clamp(1.8rem, 2.6vw, 2.8rem);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
+    }
+    .board-panel .team-logo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
+    }
+
     /* ============================
        RESPONSIVE
        ============================ */
@@ -818,8 +839,8 @@
         --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px);
       }
       .spiel-header .team-logo-small {
-        width: 22px;
-        height: 22px;
+        width: 26px;
+        height: 26px;
       }
     }
     @media (max-width: 500px) {
@@ -834,8 +855,8 @@
         --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px);
       }
       .spiel-header .team-logo-small {
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
       }
     }
 
@@ -1066,10 +1087,8 @@
 
     function renderTables() {
       const data = buildTableData();
-      // Tabelle in Home
       const tbody1 = document.getElementById('tableBody');
       tbody1.innerHTML = '';
-      // Tabelle in "Tabelle"-View
       const tbody2 = document.getElementById('tableOnlyBody');
       tbody2.innerHTML = '';
 
@@ -1122,6 +1141,38 @@
       `;
       board.appendChild(topbar);
 
+      // Scoreboard im Brett (mit Logos ohne weißen Kreis)
+      const score = getGameScore(state);
+      const whiteLogo = state.teamLogos?.white || null;
+      const blackLogo = state.teamLogos?.black || null;
+
+      const scoreboard = document.createElement('div');
+      scoreboard.className = 'scoreboard';
+      scoreboard.style.cssText = 'display:flex;justify-content:center;width:100%;margin-bottom:8px;';
+      scoreboard.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f4f2ee;padding:6px 16px;border-radius:999px;max-width:700px;width:100%;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="team-logo-wrapper">
+              ${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}
+            </div>
+            <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--red),var(--red-deep));padding:3px 12px;border-radius:8px;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
+            <span>${score.white}</span>
+            <span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span>
+            <span>${score.black}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
+            <div class="team-logo-wrapper">
+              ${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}
+            </div>
+          </div>
+        </div>
+      `;
+      board.appendChild(scoreboard);
+
+      // Schachbrett
       const grid = document.createElement('div');
       grid.className = 'chess-grid';
       const rows = ['top', 'white', 'black', 'bottom'];
@@ -1358,20 +1409,14 @@
     // ============================
     function switchView(view) {
       currentView = view;
-      // Buttons
       document.querySelectorAll('.header-nav button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === view);
       });
-      // Views
       document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
       document.getElementById(`${view}View`).classList.add('active');
 
-      // Bei "Spiele" alle Spiele rendern (nur einmal)
       if (view === 'games') {
         renderAllGames();
-      }
-      if (view === 'table') {
-        // Tabelle wurde bereits gerendert
       }
     }
 
@@ -1449,11 +1494,8 @@
         teams = spielplan.teams;
 
         allGameData = await loadAllGameData();
-
-        // Tabellen rendern
         renderTables();
 
-        // Home: letzten verfügbaren Spieltag finden
         let startIndex = 0;
         for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
           const spiele = spielplan.spieltage[i];
@@ -1464,9 +1506,6 @@
           renderHome(startIndex);
         }
 
-        // "Spiele"-View vorbereiten (wird bei Klick gerendert)
-
-        // Header-Navigation
         document.querySelectorAll('.header-nav button').forEach(btn => {
           btn.addEventListener('click', () => {
             switchView(btn.dataset.view);
