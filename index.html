@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================
-       BASIS – identisch mit styles.css
+       BASIS
        ============================ */
     :root {
       color-scheme: dark;
@@ -74,7 +74,7 @@
     }
 
     .app-shell {
-      max-width: 1440px;
+      max-width: 1100px;
       margin: 0 auto;
       position: relative;
       isolation: isolate;
@@ -213,281 +213,239 @@
       text-align: center;
       color: var(--muted);
     }
-    .liga-table .trend {
-      font-size: 0.6rem;
-      color: var(--green);
-    }
 
     /* ============================
-       SPIELTAG-CARDS mit Logo & Ergebnis
+       SPIELE – VERTIKALE LISTE
        ============================ */
-    .spieltag-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
+    .spiel-liste {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .spiel-card {
+
+    .spiel-item {
       background:
         linear-gradient(160deg, rgba(211, 1, 12, 0.08), transparent 50%),
         rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      padding: 12px 14px;
-      cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      overflow: hidden;
+      transition: border-color 0.2s;
     }
-    .spiel-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: var(--bundesliga-red);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    .spiel-item:hover {
+      border-color: rgba(211, 1, 12, 0.4);
     }
-    .spiel-card .teams {
+
+    .spiel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
+      padding: 12px 16px;
+      cursor: pointer;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .spiel-card .team-block {
+    .spiel-header .team-block {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex: 1;
       min-width: 0;
     }
-    .spiel-card .team-block.heim { justify-content: flex-start; }
-    .spiel-card .team-block.auswaerts { justify-content: flex-end; }
-    .spiel-card .team-logo-small {
-      width: 28px;
-      height: 28px;
+    .spiel-header .team-block.heim { justify-content: flex-start; }
+    .spiel-header .team-block.auswaerts { justify-content: flex-end; }
+    .spiel-header .team-logo-small {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       object-fit: contain;
       background: white;
       border: 1px solid rgba(0,0,0,0.1);
       flex-shrink: 0;
     }
-    .spiel-card .team-name {
+    .spiel-header .team-name {
+      font-weight: 700;
+      font-size: 0.95rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 0.8rem;
     }
-    .spiel-card .score-display {
+    .spiel-header .score-display {
       font-family: var(--headline-font);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 900;
       background: var(--bundesliga-red);
-      padding: 2px 12px;
+      padding: 2px 16px;
       border-radius: 6px;
       color: white;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .spiel-card .meta {
+    .spiel-header .toggle-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.25s ease, background 0.15s;
       display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .spiel-header .toggle-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .spiel-header .toggle-btn.open {
+      transform: rotate(180deg);
+    }
+
+    .spiel-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-size: 0.6rem;
       color: var(--muted);
-      border-top: 1px solid rgba(255,255,255,0.04);
-      padding-top: 6px;
+      padding: 0 16px 8px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .spiel-card .meta .status {
+    .spiel-meta .status {
       color: var(--bundesliga-gold);
       font-weight: 700;
     }
-    .spiel-card .meta .status.done {
+    .spiel-meta .status.done {
       color: var(--green);
     }
-    .spiel-card .loading {
-      opacity: 0.5;
-      pointer-events: none;
-    }
 
-    /* ============================
-       MODAL (Brett – rein lesend)
-       ============================ */
-    .modal-overlay {
+    .spiel-board-container {
       display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-      overflow-y: auto;
+      padding: 12px 16px 16px 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.2);
     }
-    .modal-overlay.open {
-      display: flex;
-    }
-    .modal-box {
-      max-width: 1100px;
-      width: 100%;
-      max-height: 98vh;
-      background:
-        radial-gradient(circle at 18% 8%, rgba(211, 1, 12, 0.12), transparent 26%),
-        radial-gradient(circle at 90% 12%, rgba(211, 1, 12, 0.08), transparent 26%),
-        rgba(10, 10, 10, 0.98);
-      border: 2px solid var(--bundesliga-red);
-      border-radius: 12px;
-      padding: 20px;
-      overflow-y: auto;
-      position: relative;
-    }
-    .modal-close {
-      position: sticky;
-      top: 0;
-      float: right;
-      width: 38px;
-      height: 38px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 6px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      font-size: 1.3rem;
-      font-weight: 700;
-      cursor: pointer;
-      z-index: 10;
-      transition: background 0.15s;
-    }
-    .modal-close:hover {
-      background: var(--bundesliga-red);
-    }
-    .modal-box .board-container {
-      margin-top: 8px;
+    .spiel-board-container.open {
+      display: block;
     }
 
     /* ============================
-       BRETT-STYLES (inkl. Spielerfotos)
+       BRETT – OHNE THESIS-PANEL
        ============================ */
     .board-panel {
       position: relative;
       overflow: hidden;
       background:
-        linear-gradient(120deg, rgba(211, 1, 12, 0.10), transparent 22%, transparent 74%, rgba(211, 1, 12, 0.06)),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+        linear-gradient(120deg, rgba(211, 1, 12, 0.08), transparent 22%, transparent 74%, rgba(211, 1, 12, 0.04)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
         rgba(10, 10, 10, 0.92);
-      border: 1px solid rgba(211, 1, 12, 0.25);
+      border: 1px solid rgba(211, 1, 12, 0.2);
       border-radius: 8px;
-      padding: 16px;
-      box-shadow: var(--shadow), 0 0 60px rgba(211, 1, 12, 0.05);
+      padding: 12px;
+      box-shadow: var(--shadow), 0 0 40px rgba(211, 1, 12, 0.04);
     }
     .board-panel > * { position: relative; z-index: 2; }
 
-    .topbar {
+    .board-panel .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .topbar .eyebrow {
+    .board-panel .topbar .eyebrow {
       margin: 0 0 2px;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.16em;
       color: var(--bundesliga-gold);
-      opacity: 0.8;
+      opacity: 0.7;
     }
-    .topbar h2 {
+    .board-panel .topbar h3 {
       margin: 0;
       font-family: var(--headline-font);
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       color: white;
     }
-    .topbar .action-buttons {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .topbar .action-buttons button {
-      min-height: 28px;
-      padding: 4px 12px;
-      font-size: 0.6rem;
+    .board-panel .topbar .action-buttons button {
+      min-height: 24px;
+      padding: 2px 10px;
+      font-size: 0.5rem;
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
       color: white;
       cursor: default;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
-    .scoreboard {
+    .board-panel .scoreboard {
       display: flex;
       justify-content: center;
       width: 100%;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .scorebug {
+    .board-panel .scorebug {
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 900px;
+      max-width: 700px;
     }
-    .scorebug-main {
-      display: flex;
-      align-items: stretch;
-      border-radius: 999px;
-      overflow: hidden;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.45);
-    }
-    .scoreline {
-      flex: 1;
+    .board-panel .scoreline {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       background: #f4f2ee;
-      padding: 8px 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
       min-width: 0;
     }
-    .score-team {
+    .board-panel .score-team {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       min-width: 0;
     }
-    .score-team-white { justify-content: flex-start; }
-    .score-team-black { justify-content: flex-end; }
-    .team-logo-wrapper {
-      width: clamp(1.8rem, 3vw, 3.2rem);
-      height: clamp(1.8rem, 3vw, 3.2rem);
+    .board-panel .score-team-white { justify-content: flex-start; }
+    .board-panel .score-team-black { justify-content: flex-end; }
+    .board-panel .team-logo-wrapper {
+      width: clamp(1.6rem, 2.6vw, 2.8rem);
+      height: clamp(1.6rem, 2.6vw, 2.8rem);
       flex-shrink: 0;
       border-radius: 50%;
       background: rgba(0,0,0,0.05);
-      border: 2px dashed rgba(0,0,0,0.15);
+      border: 2px dashed rgba(0,0,0,0.12);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.5rem;
+      font-size: 0.4rem;
       color: rgba(0,0,0,0.3);
       font-weight: 700;
       text-transform: uppercase;
       overflow: hidden;
     }
-    .team-logo-wrapper.has-logo {
+    .board-panel .team-logo-wrapper.has-logo {
       border-color: transparent;
       background: white;
     }
-    .team-logo-wrapper img {
+    .board-panel .team-logo-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       border-radius: 50%;
     }
-    .team-name {
-      font-size: clamp(0.9rem, 1.8vw, 1.5rem);
+    .board-panel .team-name {
+      font-size: clamp(0.8rem, 1.5vw, 1.2rem);
       font-weight: 800;
       color: #16171a;
       text-transform: uppercase;
@@ -496,61 +454,54 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 30vw;
+      max-width: 26vw;
     }
-    .score-core {
+    .board-panel .score-core {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 4px;
       font-family: var(--headline-font);
       background: linear-gradient(180deg, var(--bundesliga-red) 0%, var(--bundesliga-red-dark) 100%);
-      padding: 4px 16px;
+      padding: 3px 12px;
       border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(211,1,12,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+      box-shadow: 0 4px 14px rgba(211,1,12,0.3), inset 0 1px 0 rgba(255,255,255,0.12);
     }
-    .score-core span {
-      font-size: clamp(1.2rem, 2.4vw, 2rem);
+    .board-panel .score-core span {
+      font-size: clamp(1rem, 2vw, 1.6rem);
       font-weight: 700;
       color: white;
       line-height: 1;
     }
-    .score-separator {
+    .board-panel .score-separator {
       font-weight: 700;
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      color: rgba(255,255,255,0.75);
+      font-size: clamp(1.3rem, 2.5vw, 2rem);
+      color: rgba(255,255,255,0.7);
       padding: 0 2px;
     }
 
-    .field-thesis-wrapper {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 16px;
-      align-items: start;
-      margin-top: 10px;
-    }
-    .chess-grid {
+    .board-panel .chess-grid {
       display: grid;
       grid-template-columns: repeat(5, var(--cell-size));
       grid-template-rows: repeat(4, var(--cell-size));
       width: calc(var(--cell-size) * 5);
       height: calc(var(--cell-size) * 4);
+      margin: 0 auto;
       border: 2px solid rgba(211,1,12,0.5);
       border-radius: 6px;
       outline: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 0 3px rgba(10,10,10,0.9), 0 0 30px rgba(211,1,12,0.15), inset 0 0 30px rgba(0,0,0,0.4), var(--shadow);
+      box-shadow: 0 0 0 3px rgba(10,10,10,0.9), 0 0 30px rgba(211,1,12,0.12), inset 0 0 30px rgba(0,0,0,0.4), var(--shadow);
       background: #1a1a1a;
       overflow: hidden;
-      flex-shrink: 0;
     }
-    .grid-cell {
+    .board-panel .grid-cell {
       position: relative;
       border: none;
       padding: 0;
       overflow: hidden;
       background: #1f1f1f;
     }
-    .piece-cell {
+    .board-panel .piece-cell {
       display: grid;
       place-items: center;
       background: #181818;
@@ -560,36 +511,36 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
       position: relative;
     }
-    .piece-cell.light { background: #242424; }
-    .piece-cell .field-watermark {
+    .board-panel .piece-cell.light { background: #242424; }
+    .board-panel .piece-cell .field-watermark {
       position: absolute;
       right: 4px;
       bottom: 4px;
       z-index: 4;
       color: rgba(255,255,255,0.12);
-      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.6rem);
+      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.3rem);
       font-weight: 900;
       line-height: 1;
       opacity: 0.6;
       pointer-events: none;
       text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
-    .piece-cell .field-watermark.positive { color: rgba(0,200,80,0.5); }
-    .piece-cell .field-watermark.negative { color: rgba(211,1,12,0.5); }
-    .piece-cell .piece-svg {
+    .board-panel .piece-cell .field-watermark.positive { color: rgba(0,200,80,0.5); }
+    .board-panel .piece-cell .field-watermark.negative { color: rgba(211,1,12,0.5); }
+    .board-panel .piece-cell .piece-svg {
       position: relative;
       z-index: 1;
       display: block;
       width: 60%;
-      max-width: 70px;
+      max-width: 60px;
       height: auto;
       filter: drop-shadow(0 0 6px rgba(255,255,255,0.08)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
       opacity: 0.95;
     }
-    .piece-cell:not(.light) .piece-svg {
+    .board-panel .piece-cell:not(.light) .piece-svg {
       filter: invert(1) drop-shadow(0 0 6px rgba(211,1,12,0.15)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
     }
-    .piece-cell .player-photo {
+    .board-panel .piece-cell .player-photo {
       position: absolute;
       inset: 4px;
       z-index: 1;
@@ -602,23 +553,23 @@
       padding: 3px;
       box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
     }
-    .piece-cell .piece-corner {
+    .board-panel .piece-cell .piece-corner {
       position: absolute;
       top: 4px;
       left: 4px;
       z-index: 2;
       width: 24%;
-      max-width: 28px;
+      max-width: 24px;
       padding: 2px;
       border-radius: 4px;
       background: rgba(0,0,0,0.5);
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       filter: none !important;
     }
-    .piece-cell.has-player-image .piece-svg { display: none; }
-    .piece-cell.has-player-image .piece-corner { display: block; }
+    .board-panel .piece-cell.has-player-image .piece-svg { display: none; }
+    .board-panel .piece-cell.has-player-image .piece-corner { display: block; }
 
-    .drop-cell {
+    .board-panel .drop-cell {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -626,35 +577,35 @@
       background: #1a1a1a;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
-    .drop-cell .drop-value {
-      font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.7rem);
+    .board-panel .drop-cell .drop-value {
+      font-size: clamp(0.9rem, calc(var(--cell-size)*0.2), 1.5rem);
       font-weight: 900;
       font-family: var(--headline-font);
       color: rgba(255,255,255,0.85);
       text-shadow: 0 0 15px rgba(0,0,0,0.6);
       pointer-events: none;
     }
-    .drop-cell.has-theses .drop-value {
+    .board-panel .drop-cell.has-theses .drop-value {
       position: absolute;
       top: 4px;
       left: 4px;
-      font-size: clamp(0.6rem, calc(var(--cell-size)*0.12), 1rem);
+      font-size: clamp(0.5rem, calc(var(--cell-size)*0.1), 0.8rem);
       color: rgba(255,255,255,0.5);
     }
-    .drop-cell .drop-total {
+    .board-panel .drop-cell .drop-total {
       position: absolute;
       bottom: 4px;
       right: 4px;
-      font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.7rem);
+      font-size: clamp(0.9rem, calc(var(--cell-size)*0.2), 1.5rem);
       font-weight: 900;
       font-family: var(--headline-font);
       color: rgba(255,255,255,0.2);
       pointer-events: none;
       display: none;
     }
-    .drop-cell.has-theses .drop-total { display: block; }
+    .board-panel .drop-cell.has-theses .drop-total { display: block; }
 
-    .placed-list {
+    .board-panel .placed-list {
       position: absolute;
       inset: 0;
       z-index: 2;
@@ -665,7 +616,7 @@
       padding: 2px;
       pointer-events: none;
     }
-    .placed-chip {
+    .board-panel .placed-chip {
       position: relative;
       display: grid;
       grid-template-columns: minmax(0,1fr);
@@ -676,17 +627,17 @@
       border-radius: 4px;
       background: rgba(255,255,255,0.92);
       color: #0a0a0a;
-      font-size: clamp(0.35rem, 0.5vw, 0.55rem);
+      font-size: clamp(0.3rem, 0.45vw, 0.5rem);
       font-weight: 700;
       line-height: 1.05;
       overflow-wrap: anywhere;
-      padding: clamp(6px, calc(var(--cell-size)*0.06), 12px) 4px 4px;
+      padding: clamp(4px, calc(var(--cell-size)*0.05), 10px) 4px 4px;
       text-align: center;
       pointer-events: none;
       isolation: isolate;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    .placed-chip .chip-field-badge {
+    .board-panel .placed-chip .chip-field-badge {
       position: absolute;
       top: 3px;
       left: 4px;
@@ -697,194 +648,78 @@
       color: rgba(10,10,10,0.55);
       pointer-events: none;
     }
-    .placed-chip .chip-watermark {
+    .board-panel .placed-chip .chip-watermark {
       position: absolute;
       right: 4px;
       bottom: 3px;
       z-index: 1;
       line-height: 1;
-      font-size: 2em;
+      font-size: 1.8em;
       font-weight: 900;
       opacity: 0.6;
       pointer-events: none;
       color: rgba(10,10,10,0.15);
     }
-    .placed-chip .chip-watermark.positive { color: rgba(0,132,61,0.55); }
-    .placed-chip .chip-watermark.negative { color: rgba(211,1,12,0.5); }
-    .placed-chip .chip-watermark.neutral  { color: rgba(10,10,10,0.15); }
-
-    .thesis-panel {
-      border: 1px solid rgba(211,1,12,0.25);
-      border-radius: 8px;
-      padding: 12px;
-      background: linear-gradient(180deg, rgba(211,1,12,0.06), transparent 30%), rgba(255,255,255,0.04);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 22px 44px rgba(0,0,0,0.34);
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-    }
-    .thesis-panel .thesis-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .thesis-panel .thesis-head .eyebrow {
-      margin: 0;
-      font-size: 0.5rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--bundesliga-gold);
-      opacity: 0.7;
-    }
-    .thesis-panel .thesis-head h3 {
-      margin: 0;
-      font-family: var(--headline-font);
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: white;
-    }
-    .thesis-list {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap: 6px;
-      flex: 1;
-    }
-    .thesis-card {
-      position: relative;
-      display: grid;
-      place-items: center;
-      height: calc(var(--cell-size) * 0.7);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-left: 3px solid var(--bundesliga-red);
-      border-radius: 6px;
-      background: radial-gradient(circle at 15% 0%, rgba(255,255,255,0.06), transparent 40%), linear-gradient(150deg, rgba(211,1,12,0.12), transparent 55%), rgba(255,255,255,0.04);
-      color: white;
-      padding: 10px 6px 4px;
-      font-weight: 800;
-      font-size: 0.65rem;
-      user-select: none;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .thesis-card .thesis-title {
-      width: 100%;
-      text-align: center;
-      font-size: 0.7rem;
-      line-height: 1.2;
-      font-family: var(--headline-font);
-      letter-spacing: 0.01em;
-    }
-
-    .evaluation-controls {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .evaluation-controls button {
-      flex: 1;
-      min-height: 24px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      background: rgba(255,255,255,0.05);
-      color: var(--muted);
-      font-weight: 700;
-      cursor: default;
-      padding: 0 6px;
-      font-size: 0.65rem;
-      opacity: 0.6;
-    }
-    .evaluation-controls button.active {
-      background: var(--bundesliga-gold);
-      color: var(--bundesliga-black);
-      border-color: var(--bundesliga-gold);
-      opacity: 1;
-    }
-    .evaluation-controls .polarity-button.active[data-polarity="positive"] {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
-      opacity: 1;
-    }
-    .evaluation-controls .polarity-button.active[data-polarity="negative"] {
-      background: var(--bundesliga-red);
-      color: white;
-      border-color: var(--bundesliga-red);
-      opacity: 1;
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .result-group {
-      display: grid;
-      gap: 4px;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      background: rgba(255,255,255,0.04);
-      padding: 6px 8px;
-    }
-    .result-group h4 {
-      margin: 0 0 4px;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .result-row {
-      display: grid;
-      grid-template-columns: 50px 1fr;
-      gap: 4px;
-      align-items: center;
-    }
-    .result-row label {
-      font-size: 0.6rem;
-      color: var(--muted);
-    }
-    .result-row span {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: white;
-    }
+    .board-panel .placed-chip .chip-watermark.positive { color: rgba(0,132,61,0.55); }
+    .board-panel .placed-chip .chip-watermark.negative { color: rgba(211,1,12,0.5); }
+    .board-panel .placed-chip .chip-watermark.neutral  { color: rgba(10,10,10,0.15); }
 
     /* ============================
        RESPONSIVE
        ============================ */
-    @media (max-width: 900px) {
-      .field-thesis-wrapper {
-        grid-template-columns: 1fr;
-        justify-items: center;
+    @media (max-width: 700px) {
+      .spiel-header {
+        flex-wrap: wrap;
+        gap: 8px;
       }
-      .thesis-list { grid-template-columns: repeat(3, minmax(0,1fr)); }
-      .scoreline { padding: 6px 12px; gap: 8px; }
-      .team-name { font-size: clamp(0.7rem, 1.8vw, 1.1rem); max-width: 22vw; }
-      .score-core { padding: 3px 12px; }
-      .score-core span { font-size: clamp(1rem, 2vw, 1.5rem); }
-      .spieltag-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+      .spiel-header .team-block .team-name {
+        font-size: 0.8rem;
+      }
+      .spiel-header .score-display {
+        font-size: 1.1rem;
+        padding: 2px 12px;
+      }
+      .board-panel .scoreline {
+        padding: 4px 10px;
+        gap: 6px;
+      }
+      .board-panel .team-name {
+        font-size: clamp(0.6rem, 1.4vw, 0.9rem);
+        max-width: 20vw;
+      }
+      .board-panel .score-core span {
+        font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+      }
+      .board-panel .chess-grid {
+        --cell-size: clamp(48px, calc((100vw - 60px)/5), 70px);
+      }
     }
-    @media (max-width: 600px) {
-      .liga-header { flex-direction: column; align-items: flex-start; }
-      .spieltag-grid { grid-template-columns: 1fr; }
-      .thesis-list { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .results-grid { grid-template-columns: 1fr; }
-      .chess-grid { --cell-size: clamp(44px, calc((100vw - 40px)/5), 64px); }
-      .spiel-card .team-logo-small { width: 22px; height: 22px; }
-      .spiel-card .score-display { font-size: 1rem; padding: 2px 8px; }
-    }
-    @media (max-width: 480px) {
-      .scoreline { padding: 4px 8px; gap: 4px; }
-      .team-name { font-size: clamp(0.5rem, 2.2vw, 0.8rem); max-width: 18vw; }
-      .score-core { padding: 2px 8px; }
-      .score-core span { font-size: clamp(0.75rem, 3.5vw, 1rem); }
-      .chess-grid { --cell-size: clamp(32px, calc((100vw - 24px)/5), 48px); }
-      .spiel-card .team-name { font-size: 0.7rem; }
+    @media (max-width: 500px) {
+      .spiel-header .team-logo-small {
+        width: 24px;
+        height: 24px;
+      }
+      .spiel-header .team-name {
+        font-size: 0.7rem;
+      }
+      .spiel-header .score-display {
+        font-size: 0.95rem;
+        padding: 2px 8px;
+      }
+      .board-panel .chess-grid {
+        --cell-size: clamp(38px, calc((100vw - 40px)/5), 52px);
+      }
+      .board-panel .team-logo-wrapper {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+      .board-panel .team-name {
+        font-size: clamp(0.5rem, 1.2vw, 0.7rem);
+        max-width: 16vw;
+      }
+      .board-panel .score-core span {
+        font-size: clamp(0.7rem, 1.5vw, 1rem);
+      }
     }
   </style>
 </head>
@@ -922,16 +757,8 @@
     <!-- Spieltag-Navigation -->
     <div class="liga-tabs" id="spieltagTabs"></div>
 
-    <!-- Spiele des aktuellen Spieltags -->
-    <div class="spieltag-grid" id="spieleContainer"></div>
-  </div>
-
-  <!-- MODAL für Brett (nur Anzeige) -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box" id="modalBox">
-      <button class="modal-close" id="modalClose">×</button>
-      <div class="board-container" id="boardContainer"></div>
-    </div>
+    <!-- Spiele des aktuellen Spieltags – vertikale Liste -->
+    <div class="spiel-liste" id="spieleContainer"></div>
   </div>
 
   <script>
@@ -944,7 +771,7 @@
     let spielplan = null;
     let teams = [];
     let aktuellerSpieltag = 0;
-    let allGameData = {};   // key: "st-spiel" -> state
+    let allGameData = {};
 
     // ============================
     //  HILFSFUNKTIONEN
@@ -1029,7 +856,7 @@
           const key = `${stIdx}-${spIdx}`;
           const state = allGameData[key];
           if (!state) return;
-          if (!isGameComplete(state)) return; // nur fertige Spiele
+          if (!isGameComplete(state)) return;
 
           const score = getGameScore(state);
           const home = spiel.heim;
@@ -1086,7 +913,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER (mit Bildern)
+    //  BRETT-RENDERER (ohne Thesis-Panel)
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1098,11 +925,11 @@
       topbar.innerHTML = `
         <div>
           <p class="eyebrow">${homeTeam} vs ${awayTeam}</p>
-          <h2>Rasenschach · Spieltag ${stIdx + 1}</h2>
+          <h3>Rasenschach · Spieltag ${stIdx + 1}</h3>
         </div>
         <div class="action-buttons">
-          <button type="button" style="opacity:0.4;">? ${state.questionValue !== null ? formatNumber(state.questionValue) : 'würfeln'}</button>
-          <button type="button" style="opacity:0.4;">Rückgängig</button>
+          <button type="button">? ${state.questionValue !== null ? formatNumber(state.questionValue) : 'würfeln'}</button>
+          <button type="button">Rückgängig</button>
         </div>
       `;
       board.appendChild(topbar);
@@ -1116,34 +943,28 @@
       scoreboard.className = 'scoreboard';
       scoreboard.innerHTML = `
         <div class="scorebug">
-          <div class="scorebug-main">
-            <div class="scoreline">
-              <div class="score-team score-team-white">
-                <div class="team-logo-wrapper ${whiteLogo ? 'has-logo' : ''}">
-                  ${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}
-                </div>
-                <span class="team-name">${homeTeam}</span>
+          <div class="scoreline">
+            <div class="score-team score-team-white">
+              <div class="team-logo-wrapper ${whiteLogo ? 'has-logo' : ''}">
+                ${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}
               </div>
-              <div class="score-core">
-                <span class="white-total">${score.white}</span>
-                <span class="score-separator">:</span>
-                <span class="black-total">${score.black}</span>
-              </div>
-              <div class="score-team score-team-black">
-                <span class="team-name">${awayTeam}</span>
-                <div class="team-logo-wrapper ${blackLogo ? 'has-logo' : ''}">
-                  ${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}
-                </div>
+              <span class="team-name">${homeTeam}</span>
+            </div>
+            <div class="score-core">
+              <span class="white-total">${score.white}</span>
+              <span class="score-separator">:</span>
+              <span class="black-total">${score.black}</span>
+            </div>
+            <div class="score-team score-team-black">
+              <span class="team-name">${awayTeam}</span>
+              <div class="team-logo-wrapper ${blackLogo ? 'has-logo' : ''}">
+                ${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}
               </div>
             </div>
           </div>
         </div>
       `;
       board.appendChild(scoreboard);
-
-      // Feld + Thesen
-      const wrapper = document.createElement('div');
-      wrapper.className = 'field-thesis-wrapper';
 
       // Schachbrett
       const grid = document.createElement('div');
@@ -1197,47 +1018,16 @@
           grid.appendChild(cell);
         });
       });
-      wrapper.appendChild(grid);
-
-      // Thesen-Panel
-      const thesisPanel = document.createElement('div');
-      thesisPanel.className = 'thesis-panel';
-      const placed = state.assignments.filter(a => a.side && a.piece).length;
-      thesisPanel.innerHTML = `
-        <div class="thesis-head">
-          <div>
-            <p class="eyebrow">Draft</p>
-            <h3>Pick Board</h3>
-          </div>
-          <div style="font-size:0.6rem;color:var(--muted);">
-            <span>${placed}</span> / 10 platziert
-          </div>
-        </div>
-        <div class="thesis-list"></div>
-        <div class="evaluation-controls" style="margin-top:10px;"></div>
-        <div class="results-grid"></div>
-      `;
-      wrapper.appendChild(thesisPanel);
-      board.appendChild(wrapper);
+      board.appendChild(grid);
 
       container.innerHTML = '';
       container.appendChild(board);
 
-      // Thesen
-      const list = board.querySelector('.thesis-list');
-      state.assignments.forEach(a => {
-        if (a.side && a.piece) return;
-        const card = document.createElement('div');
-        card.className = 'thesis-card';
-        card.innerHTML = `<div class="thesis-title">${state.theses[a.id - 1]}</div>`;
-        list.appendChild(card);
-      });
-
-      // Platzierungen
-      board.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
+      // Platzierungen (Chips) in den drop-Zellen
+      container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
-        const slot = board.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
+        const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
         const piece = getPieceById(a.piece);
         const fieldLabel = (a.piece === 'knight' && state.questionValue !== null)
@@ -1253,51 +1043,10 @@
         `;
         slot.appendChild(chip);
       });
-
-      // Evaluation
-      const evalContainer = board.querySelector('.evaluation-controls');
-      state.assignments.forEach(a => {
-        const neutralActive = !a.polarity ? 'active' : '';
-        const positiveActive = a.polarity === 'positive' ? 'active' : '';
-        const negativeActive = a.polarity === 'negative' ? 'active' : '';
-        const div = document.createElement('div');
-        div.style.display = 'flex';
-        div.style.alignItems = 'center';
-        div.style.gap = '6px';
-        div.style.fontSize = '0.6rem';
-        div.style.fontWeight = '700';
-        div.innerHTML = `
-          <span style="min-width:50px;">These ${a.id}</span>
-          <button class="neutral-button ${neutralActive}" data-polarity="" type="button">unausgewertet</button>
-          <button class="polarity-button ${positiveActive}" data-polarity="positive" type="button">+</button>
-          <button class="polarity-button ${negativeActive}" data-polarity="negative" type="button">-</button>
-        `;
-        evalContainer.appendChild(div);
-      });
-
-      // Ergebnisse
-      const resultsContainer = board.querySelector('.results-grid');
-      SIDES.forEach(side => {
-        const group = document.createElement('div');
-        group.className = 'result-group';
-        const label = side === 'white' ? homeTeam : awayTeam;
-        group.innerHTML = `<h4>${label}</h4>`;
-        PIECES.forEach(p => {
-          const row = document.createElement('div');
-          row.className = 'result-row';
-          const val = state.results[side][p.id] ?? 0;
-          row.innerHTML = `
-            <label>${p.name}</label>
-            <span>${formatNumber(val)}</span>
-          `;
-          group.appendChild(row);
-        });
-        resultsContainer.appendChild(group);
-      });
     }
 
     // ============================
-    //  SPIELTAG-ANSICHT
+    //  SPIELTAG-ANSICHT – VERTIKALE LISTE
     // ============================
     function renderSpieltag(index) {
       aktuellerSpieltag = index;
@@ -1309,53 +1058,75 @@
       spiele.forEach((spiel, idx) => {
         const key = `${index}-${idx}`;
         const state = allGameData[key];
-        const card = document.createElement('div');
-        card.className = 'spiel-card';
+        const item = document.createElement('div');
+        item.className = 'spiel-item';
+
         if (!state) {
-          card.classList.add('loading');
-          card.innerHTML = `
-            <div class="teams">
+          item.classList.add('loading');
+          item.innerHTML = `
+            <div class="spiel-header" style="opacity:0.5;cursor:default;">
               <span>${spiel.heim}</span>
-              <span class="vs">vs</span>
+              <span>vs</span>
               <span>${spiel.auswaerts}</span>
-            </div>
-            <div class="meta">
-              <span class="status">⏳ wird geladen…</span>
+              <span style="color:var(--muted);font-size:0.6rem;">⏳ wird geladen…</span>
             </div>
           `;
-          container.appendChild(card);
+          container.appendChild(item);
           return;
         }
 
         const score = getGameScore(state);
         const placed = state.assignments.filter(a => a.side && a.piece).length;
         const complete = placed >= 10;
-
-        // Team-Logos aus state.teamLogos (Base64)
         const homeLogo = state.teamLogos?.white || null;
         const awayLogo = state.teamLogos?.black || null;
 
-        card.innerHTML = `
-          <div class="teams">
-            <div class="team-block heim">
-              ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
-              <span class="team-name">${spiel.heim}</span>
-            </div>
-            <span class="score-display">${score.white} : ${score.black}</span>
-            <div class="team-block auswaerts">
-              <span class="team-name">${spiel.auswaerts}</span>
-              ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
-            </div>
+        // Header (immer sichtbar)
+        const header = document.createElement('div');
+        header.className = 'spiel-header';
+        header.innerHTML = `
+          <div class="team-block heim">
+            ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
+            <span class="team-name">${spiel.heim}</span>
           </div>
-          <div class="meta">
-            <span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span>
-            <span>${placed}/10 Thesen</span>
+          <span class="score-display">${score.white} : ${score.black}</span>
+          <div class="team-block auswaerts">
+            <span class="team-name">${spiel.auswaerts}</span>
+            ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
           </div>
+          <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
         `;
-        card.addEventListener('click', () => {
-          openModal(index, idx, spiel.heim, spiel.auswaerts, state);
+        item.appendChild(header);
+
+        // Meta-Info
+        const meta = document.createElement('div');
+        meta.className = 'spiel-meta';
+        meta.innerHTML = `
+          <span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span>
+          <span>${placed}/10 Thesen</span>
+        `;
+        item.appendChild(meta);
+
+        // Brett-Container (zunächst ausgeblendet)
+        const boardContainer = document.createElement('div');
+        boardContainer.className = 'spiel-board-container';
+        item.appendChild(boardContainer);
+
+        container.appendChild(item);
+
+        // Toggle-Logik
+        const toggleBtn = header.querySelector('.toggle-btn');
+        let isOpen = false;
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isOpen = !isOpen;
+          toggleBtn.classList.toggle('open', isOpen);
+          boardContainer.classList.toggle('open', isOpen);
+          if (isOpen && !boardContainer.hasChildNodes()) {
+            // Brett beim ersten Öffnen rendern
+            renderBoard(boardContainer, index, idx, spiel.heim, spiel.auswaerts, state);
+          }
         });
-        container.appendChild(card);
       });
 
       // Tabs aktualisieren
@@ -1363,32 +1134,6 @@
         btn.classList.toggle('active', i === index);
       });
     }
-
-    // ============================
-    //  MODAL
-    // ============================
-    const modalOverlay = document.getElementById('modalOverlay');
-    const boardContainer = document.getElementById('boardContainer');
-
-    function openModal(stIdx, spIdx, home, away, state) {
-      boardContainer.innerHTML = '';
-      const boardDiv = document.createElement('div');
-      boardContainer.appendChild(boardDiv);
-      renderBoard(boardDiv, stIdx, spIdx, home, away, state);
-      modalOverlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    document.getElementById('modalClose').addEventListener('click', () => {
-      modalOverlay.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-    modalOverlay.addEventListener('click', (e) => {
-      if (e.target === modalOverlay) {
-        modalOverlay.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    });
 
     // ============================
     //  INIT – LADE ALLE JSONs
@@ -1441,7 +1186,6 @@
         teams = spielplan.teams;
         document.getElementById('ligaInfo').textContent = `${spielplan.spieltage.length} Spieltage · ${teams.length} Teams`;
 
-        // Tabs erstellen
         const tabsContainer = document.getElementById('spieltagTabs');
         spielplan.spieltage.forEach((_, i) => {
           const btn = document.createElement('button');
@@ -1450,13 +1194,9 @@
           tabsContainer.appendChild(btn);
         });
 
-        // Alle JSONs laden
         allGameData = await loadAllGameData();
-
-        // Tabelle berechnen
         buildTable();
 
-        // Ersten Spieltag anzeigen
         if (spielplan.spieltage.length > 0) {
           renderSpieltag(0);
         }
