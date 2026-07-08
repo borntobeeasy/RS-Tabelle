@@ -6,7 +6,7 @@
   <title>2. Bundesliga · Rasenschach 26/27</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================
        TOKENS — Flutlicht-Taktiktafel
@@ -138,6 +138,12 @@
       transform: rotate(12deg);
       pointer-events: none;
     }
+    .liga-header .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
     .liga-header h1 {
       position: relative;
       font-family: var(--headline-font);
@@ -162,8 +168,52 @@
       font-weight: 800;
     }
 
+    /* Header-Navigation */
+    .header-nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      background: rgba(0,0,0,0.3);
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+    .header-nav button {
+      padding: 8px 20px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono-font);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .header-nav button:hover {
+      color: var(--chalk);
+      background: rgba(255,255,255,0.06);
+    }
+    .header-nav button.active {
+      background: var(--red);
+      color: var(--chalk);
+      box-shadow: 0 0 16px rgba(211,1,12,0.4);
+    }
+
     /* ============================
-       ZWEISPALTIGES LAYOUT
+       VIEWS
+       ============================ */
+    .view {
+      display: none;
+    }
+    .view.active {
+      display: block;
+    }
+
+    /* ============================
+       ZWEISPALTIGES LAYOUT (Home)
        ============================ */
     .content-wrapper {
       display: flex;
@@ -203,6 +253,10 @@
       border-radius: 4px;
       padding: 4px 0 6px;
       box-shadow: var(--shadow);
+    }
+    .table-wrap.centered {
+      max-width: 900px;
+      margin: 0 auto;
     }
     .liga-table {
       width: 100%;
@@ -255,14 +309,12 @@
       text-align: center;
       position: relative;
     }
-    /* Aufstiegs- / Abstiegszone wie auf echten Tabellen-Grafiken */
     .liga-table tbody tr:nth-child(-n+2) .pos {
       color: var(--night);
       background: var(--gold);
       border-radius: 3px;
       box-shadow: 0 0 12px rgba(245,197,24,0.4);
     }
-    .liga-table tbody tr:nth-child(-n+2) td:first-child { position: relative; }
     .liga-table tbody tr:nth-last-child(-n+2) .pos {
       color: var(--chalk);
       background: rgba(211, 1, 12, 0.55);
@@ -461,6 +513,29 @@
       opacity: 1;
       border-top: 1px solid rgba(255,255,255,0.06);
       padding: 12px 16px 16px;
+    }
+
+    /* Spieltag-Gruppe in der "Spiele"-Ansicht */
+    .spieltag-group {
+      margin-bottom: 28px;
+    }
+    .spieltag-group .spieltag-headline {
+      font-family: var(--headline-font);
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0 0 10px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--line-strong);
+    }
+    .spieltag-group .spieltag-headline small {
+      font-family: var(--mono-font);
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-left: 12px;
     }
 
     /* ============================
@@ -716,6 +791,16 @@
     @media (max-width: 700px) {
       .liga-header {
         padding: 16px 20px 16px 22px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .liga-header .header-left {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .header-nav {
+        justify-content: center;
       }
       .spiel-header {
         flex-wrap: wrap;
@@ -762,43 +847,76 @@
 </head>
 <body>
   <div class="app-shell" id="app">
-    <!-- Kopf -->
+    <!-- Kopf mit Navigation -->
     <header class="liga-header">
-      <div>
-        <h1>2. Bundesliga</h1>
-        <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
+      <div class="header-left">
+        <div>
+          <h1>2. Bundesliga</h1>
+          <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
+        </div>
+        <div class="header-nav" id="headerNav">
+          <button class="active" data-view="home">Home</button>
+          <button data-view="table">Tabelle</button>
+          <button data-view="games">Spiele</button>
+        </div>
       </div>
     </header>
 
-    <!-- Navigation -->
-    <div class="liga-tabs" id="spieltagTabs"></div>
-
-    <!-- ZWEISPALTIG: Tabelle links, Spiele rechts -->
-    <div class="content-wrapper">
-      <div class="left-col">
-        <div class="table-wrap" id="tableWrap">
-          <table class="liga-table" id="ligaTable">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Team</th>
-                <th class="num">Sp</th>
-                <th class="num">S</th>
-                <th class="num">U</th>
-                <th class="num">N</th>
-                <th class="num">Tore</th>
-                <th class="num">Diff</th>
-                <th class="pts">Pkt</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-          </table>
+    <!-- VIEW: HOME (zweispaltig) -->
+    <div class="view active" id="homeView">
+      <div class="liga-tabs" id="spieltagTabs"></div>
+      <div class="content-wrapper">
+        <div class="left-col">
+          <div class="table-wrap" id="tableWrap">
+            <table class="liga-table" id="ligaTable">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Team</th>
+                  <th class="num">Sp</th>
+                  <th class="num">S</th>
+                  <th class="num">U</th>
+                  <th class="num">N</th>
+                  <th class="num">Tore</th>
+                  <th class="num">Diff</th>
+                  <th class="pts">Pkt</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="right-col">
+          <div class="spiel-liste" id="spieleContainer"></div>
         </div>
       </div>
+    </div>
 
-      <div class="right-col">
-        <div class="spiel-liste" id="spieleContainer"></div>
+    <!-- VIEW: TABELLE (nur Tabelle) -->
+    <div class="view" id="tableView">
+      <div class="table-wrap centered">
+        <table class="liga-table" id="tableOnly">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th class="num">Sp</th>
+              <th class="num">S</th>
+              <th class="num">U</th>
+              <th class="num">N</th>
+              <th class="num">Tore</th>
+              <th class="num">Diff</th>
+              <th class="pts">Pkt</th>
+            </tr>
+          </thead>
+          <tbody id="tableOnlyBody"></tbody>
+        </table>
       </div>
+    </div>
+
+    <!-- VIEW: SPIELE (alle Spieltage) -->
+    <div class="view" id="gamesView">
+      <div id="allGamesContainer"></div>
     </div>
   </div>
 
@@ -811,8 +929,9 @@
 
     let spielplan = null;
     let teams = [];
-    let aktuellerSpieltag = 0;
     let allGameData = {}; // key: "st-spiel" -> state
+    let currentView = 'home';
+    let currentSpieltag = 0;
 
     // ============================
     //  HILFSFUNKTIONEN
@@ -882,10 +1001,10 @@
     }
 
     // ============================
-    //  LIGA-TABELLE
+    //  LIGA-TABELLE (für beide Tabellen)
     // ============================
-    function buildTable() {
-      if (!spielplan || !teams.length) return;
+    function buildTableData() {
+      if (!spielplan || !teams.length) return [];
       const stats = {};
       teams.forEach(t => {
         stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
@@ -931,35 +1050,68 @@
         return stats[b].tore - stats[a].tore;
       });
 
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
-      sorted.forEach((team, idx) => {
-        const s = stats[team];
-        const diff = s.tore - s.gegentore;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="pos">${idx + 1}</td>
-          <td class="team">${team}</td>
-          <td class="num">${s.sp}</td>
-          <td class="num">${s.s}</td>
-          <td class="num">${s.u}</td>
-          <td class="num">${s.n}</td>
-          <td class="num">${s.tore}:${s.gegentore}</td>
+      return sorted.map((team, idx) => ({
+        pos: idx + 1,
+        team: team,
+        sp: stats[team].sp,
+        s: stats[team].s,
+        u: stats[team].u,
+        n: stats[team].n,
+        tore: stats[team].tore,
+        gegentore: stats[team].gegentore,
+        diff: stats[team].tore - stats[team].gegentore,
+        punkte: stats[team].punkte
+      }));
+    }
+
+    function renderTables() {
+      const data = buildTableData();
+      // Tabelle in Home
+      const tbody1 = document.getElementById('tableBody');
+      tbody1.innerHTML = '';
+      // Tabelle in "Tabelle"-View
+      const tbody2 = document.getElementById('tableOnlyBody');
+      tbody2.innerHTML = '';
+
+      data.forEach(row => {
+        const diff = row.diff;
+        const tr1 = document.createElement('tr');
+        tr1.innerHTML = `
+          <td class="pos">${row.pos}</td>
+          <td class="team">${row.team}</td>
+          <td class="num">${row.sp}</td>
+          <td class="num">${row.s}</td>
+          <td class="num">${row.u}</td>
+          <td class="num">${row.n}</td>
+          <td class="num">${row.tore}:${row.gegentore}</td>
           <td class="num">${diff > 0 ? '+' : ''}${diff}</td>
-          <td class="pts">${s.punkte}</td>
+          <td class="pts">${row.punkte}</td>
         `;
-        tbody.appendChild(tr);
+        tbody1.appendChild(tr1);
+
+        const tr2 = document.createElement('tr');
+        tr2.innerHTML = `
+          <td class="pos">${row.pos}</td>
+          <td class="team">${row.team}</td>
+          <td class="num">${row.sp}</td>
+          <td class="num">${row.s}</td>
+          <td class="num">${row.u}</td>
+          <td class="num">${row.n}</td>
+          <td class="num">${row.tore}:${row.gegentore}</td>
+          <td class="num">${diff > 0 ? '+' : ''}${diff}</td>
+          <td class="pts">${row.punkte}</td>
+        `;
+        tbody2.appendChild(tr2);
       });
     }
 
     // ============================
-    //  BRETT-RENDERER (nur Schachbrett)
+    //  BRETT-RENDERER
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
       board.className = 'board-panel';
 
-      // Topbar (klein)
       const topbar = document.createElement('div');
       topbar.className = 'topbar';
       topbar.innerHTML = `
@@ -970,7 +1122,6 @@
       `;
       board.appendChild(topbar);
 
-      // Schachbrett
       const grid = document.createElement('div');
       grid.className = 'chess-grid';
       const rows = ['top', 'white', 'black', 'bottom'];
@@ -1027,7 +1178,6 @@
       container.innerHTML = '';
       container.appendChild(board);
 
-      // Platzierungen (Chips) in den drop-Zellen
       container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
@@ -1050,19 +1200,193 @@
     }
 
     // ============================
-    //  OPTIMIERTES LADEN – PARALLEL, NUR VORHANDENE
+    //  SPIEL-LISTE
+    // ============================
+    function createSpielItem(stIdx, spIdx, spiel, state) {
+      const item = document.createElement('div');
+      item.className = 'spiel-item';
+
+      if (!state) {
+        item.innerHTML = `
+          <div class="spiel-header" style="opacity:0.5;cursor:default;">
+            <span>${spiel.heim}</span>
+            <span>vs</span>
+            <span>${spiel.auswaerts}</span>
+            <span style="color:var(--muted);font-size:0.6rem;">nicht verfügbar</span>
+          </div>
+        `;
+        return item;
+      }
+
+      const score = getGameScore(state);
+      const placed = state.assignments.filter(a => a.side && a.piece).length;
+      const complete = placed >= 10;
+      const homeLogo = state.teamLogos?.white || null;
+      const awayLogo = state.teamLogos?.black || null;
+
+      const header = document.createElement('div');
+      header.className = 'spiel-header';
+      header.innerHTML = `
+        <div class="team-block heim">
+          ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
+          <span class="team-name">${spiel.heim}</span>
+        </div>
+        <span class="score-display">${score.white} : ${score.black}</span>
+        <div class="team-block auswaerts">
+          <span class="team-name">${spiel.auswaerts}</span>
+          ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
+        </div>
+        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
+      `;
+      item.appendChild(header);
+
+      const meta = document.createElement('div');
+      meta.className = 'spiel-meta';
+      const statusText = complete ? 'gespielt' : 'offen';
+      meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${statusText}</span>`;
+      item.appendChild(meta);
+
+      const boardContainer = document.createElement('div');
+      boardContainer.className = 'spiel-board-container';
+      item.appendChild(boardContainer);
+
+      const toggleBtn = header.querySelector('.toggle-btn');
+      let isOpen = false;
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isOpen = !isOpen;
+        toggleBtn.classList.toggle('open', isOpen);
+        boardContainer.classList.toggle('open', isOpen);
+        if (isOpen && !boardContainer.hasChildNodes()) {
+          renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
+        }
+      });
+
+      return item;
+    }
+
+    // ============================
+    //  HOME-ANSICHT
+    // ============================
+    function renderHome(spieltagIndex) {
+      currentSpieltag = spieltagIndex;
+      const container = document.getElementById('spieleContainer');
+      container.innerHTML = '';
+      const spiele = spielplan.spieltage[spieltagIndex];
+      if (!spiele) {
+        container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>';
+        return;
+      }
+
+      spiele.forEach((spiel, idx) => {
+        const key = `${spieltagIndex}-${idx}`;
+        const state = allGameData[key];
+        const item = createSpielItem(spieltagIndex, idx, spiel, state);
+        container.appendChild(item);
+      });
+
+      renderTabs(spieltagIndex + 1);
+    }
+
+    // ============================
+    //  TAB-LEISTE (nur für Home)
+    // ============================
+    function computeTabNumbers(total, current) {
+      if (total <= 5) {
+        return Array.from({ length: total }, (_, i) => i + 1);
+      }
+      const raw = [1, current - 1, current, current + 1, total];
+      const seen = new Set();
+      const result = [];
+      raw.forEach(n => {
+        if (n < 1 || n > total) return;
+        if (seen.has(n)) return;
+        seen.add(n);
+        result.push(n);
+      });
+      result.sort((a, b) => a - b);
+      return result;
+    }
+
+    function renderTabs(current) {
+      const total = spielplan.spieltage.length;
+      const tabsContainer = document.getElementById('spieltagTabs');
+      tabsContainer.innerHTML = '';
+      computeTabNumbers(total, current).forEach(n => {
+        const btn = document.createElement('button');
+        btn.textContent = `${n}. Spieltag`;
+        btn.dataset.index = n - 1;
+        btn.classList.toggle('active', n === current);
+        btn.addEventListener('click', () => renderHome(n - 1));
+        tabsContainer.appendChild(btn);
+      });
+    }
+
+    // ============================
+    //  ALLE SPIELE (View "Spiele")
+    // ============================
+    function renderAllGames() {
+      const container = document.getElementById('allGamesContainer');
+      container.innerHTML = '';
+
+      spielplan.spieltage.forEach((spiele, stIdx) => {
+        const group = document.createElement('div');
+        group.className = 'spieltag-group';
+
+        const headline = document.createElement('div');
+        headline.className = 'spieltag-headline';
+        headline.innerHTML = `Spieltag ${stIdx + 1} <small>${spiele.length} Partien</small>`;
+        group.appendChild(headline);
+
+        const list = document.createElement('div');
+        list.className = 'spiel-liste';
+
+        spiele.forEach((spiel, spIdx) => {
+          const key = `${stIdx}-${spIdx}`;
+          const state = allGameData[key];
+          const item = createSpielItem(stIdx, spIdx, spiel, state);
+          list.appendChild(item);
+        });
+
+        group.appendChild(list);
+        container.appendChild(group);
+      });
+    }
+
+    // ============================
+    //  VIEW-NAVIGATION
+    // ============================
+    function switchView(view) {
+      currentView = view;
+      // Buttons
+      document.querySelectorAll('.header-nav button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+      // Views
+      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+      document.getElementById(`${view}View`).classList.add('active');
+
+      // Bei "Spiele" alle Spiele rendern (nur einmal)
+      if (view === 'games') {
+        renderAllGames();
+      }
+      if (view === 'table') {
+        // Tabelle wurde bereits gerendert
+      }
+    }
+
+    // ============================
+    //  LADE ALLE DATEN (parallel)
     // ============================
     async function loadAllGameData() {
       const gameData = {};
       const totalSpieltage = spielplan.spieltage.length;
 
-      // Für jeden Spieltag: prüfen, welche Dateien existieren und parallel laden
       const stPromises = [];
       for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
         const spiele = spielplan.spieltage[stIdx];
         const spieleCount = spiele.length;
 
-        // Pro Spiel: fetch mit catch (404 ignorieren)
         const spielPromises = [];
         for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
           const filePath = `${DATA_BASE}Spieltag ${stIdx + 1}/${spIdx + 1}.json`;
@@ -1073,19 +1397,15 @@
                 return res.json();
               })
               .then(data => ({ stIdx, spIdx, data }))
-              .catch(err => {
-                // 404 oder andere Fehler – ignorieren
-                return null;
-              })
+              .catch(() => null)
           );
         }
 
-        // Alle Spiele dieses Spieltags parallel laden
         stPromises.push(
           Promise.all(spielPromises).then(results => {
             const valid = results.filter(r => r !== null);
             for (const { stIdx, spIdx, data } of valid) {
-              const state = data.data || data; // manche JSONs haben data als wrapper
+              const state = data.data || data;
               if (!state) return;
               if (state.positions) {
                 state.assignments = state.positions.map(p => ({
@@ -1119,144 +1439,21 @@
     }
 
     // ============================
-    //  SPIELTAG-ANSICHT
-    // ============================
-    function renderSpieltag(index) {
-      aktuellerSpieltag = index;
-      const container = document.getElementById('spieleContainer');
-      container.innerHTML = '';
-      const spiele = spielplan.spieltage[index];
-      if (!spiele) {
-        container.innerHTML = '<p style="color:var(--muted);">Spieltag nicht gefunden.</p>';
-        return;
-      }
-
-      spiele.forEach((spiel, idx) => {
-        const key = `${index}-${idx}`;
-        const state = allGameData[key];
-        const item = document.createElement('div');
-        item.className = 'spiel-item';
-
-        if (!state) {
-          item.classList.add('loading');
-          item.innerHTML = `
-            <div class="spiel-header" style="opacity:0.5;cursor:default;">
-              <span>${spiel.heim}</span>
-              <span>vs</span>
-              <span>${spiel.auswaerts}</span>
-              <span style="color:var(--muted);font-size:0.6rem;">nicht verfügbar</span>
-            </div>
-          `;
-          container.appendChild(item);
-          return;
-        }
-
-        const score = getGameScore(state);
-        const placed = state.assignments.filter(a => a.side && a.piece).length;
-        const complete = placed >= 10;
-        const homeLogo = state.teamLogos?.white || null;
-        const awayLogo = state.teamLogos?.black || null;
-
-        const header = document.createElement('div');
-        header.className = 'spiel-header';
-        header.innerHTML = `
-          <div class="team-block heim">
-            ${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}
-            <span class="team-name">${spiel.heim}</span>
-          </div>
-          <span class="score-display">${score.white} : ${score.black}</span>
-          <div class="team-block auswaerts">
-            <span class="team-name">${spiel.auswaerts}</span>
-            ${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}
-          </div>
-          <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
-        `;
-        item.appendChild(header);
-
-        const meta = document.createElement('div');
-        meta.className = 'spiel-meta';
-        const statusText = complete ? 'gespielt' : 'offen';
-        meta.innerHTML = `
-          <span class="status ${complete ? 'done' : ''}">${statusText}</span>
-        `;
-        item.appendChild(meta);
-
-        const boardContainer = document.createElement('div');
-        boardContainer.className = 'spiel-board-container';
-        item.appendChild(boardContainer);
-
-        container.appendChild(item);
-
-        const toggleBtn = header.querySelector('.toggle-btn');
-        let isOpen = false;
-        toggleBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          isOpen = !isOpen;
-          toggleBtn.classList.toggle('open', isOpen);
-          boardContainer.classList.toggle('open', isOpen);
-          if (isOpen && !boardContainer.hasChildNodes()) {
-            renderBoard(boardContainer, index, idx, spiel.heim, spiel.auswaerts, state);
-          }
-        });
-      });
-
-      // Tabs aktualisieren
-      renderTabs(index + 1);
-    }
-
-    // ============================
-    //  TAB-LEISTE — 5 Positionen: 1 · Spieltag-1 · aktuell · Spieltag+1 · letzter
-    // ============================
-    function computeTabNumbers(total, current) {
-      if (total <= 5) {
-        return Array.from({ length: total }, (_, i) => i + 1);
-      }
-      const raw = [1, current - 1, current, current + 1, total];
-      const seen = new Set();
-      const result = [];
-      raw.forEach(n => {
-        if (n < 1 || n > total) return;
-        if (seen.has(n)) return;
-        seen.add(n);
-        result.push(n);
-      });
-      result.sort((a, b) => a - b);
-      return result;
-    }
-
-    function renderTabs(current) {
-      const total = spielplan.spieltage.length;
-      const tabsContainer = document.getElementById('spieltagTabs');
-      tabsContainer.innerHTML = '';
-      computeTabNumbers(total, current).forEach(n => {
-        const btn = document.createElement('button');
-        btn.textContent = `${n}. Spieltag`;
-        btn.dataset.index = n - 1;
-        btn.classList.toggle('active', n === current);
-        btn.addEventListener('click', () => renderSpieltag(n - 1));
-        tabsContainer.appendChild(btn);
-      });
-    }
-
-    // ============================
     //  INIT
     // ============================
     async function init() {
       try {
-        // 1. Spielplan laden
         const res = await fetch(SPIELPLAN_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         spielplan = await res.json();
         teams = spielplan.teams;
 
-        // 2. Daten parallel laden (nur vorhandene Dateien)
         allGameData = await loadAllGameData();
 
-        // 3. Tabelle berechnen
-        buildTable();
+        // Tabellen rendern
+        renderTables();
 
-        // 4. Spieltag anzeigen: den, der am nächsten am letzten Spieltag liegt
-        //    und schon mindestens eine Datei erhalten hat (sonst Spieltag 1)
+        // Home: letzten verfügbaren Spieltag finden
         let startIndex = 0;
         for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
           const spiele = spielplan.spieltage[i];
@@ -1264,10 +1461,20 @@
           if (hasData) { startIndex = i; break; }
         }
         if (spielplan.spieltage.length > 0) {
-          renderSpieltag(startIndex);
+          renderHome(startIndex);
         }
+
+        // "Spiele"-View vorbereiten (wird bei Klick gerendert)
+
+        // Header-Navigation
+        document.querySelectorAll('.header-nav button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            switchView(btn.dataset.view);
+          });
+        });
+
       } catch (err) {
-        console.error('Fehler beim Laden des Spielplans:', err);
+        console.error('Fehler beim Laden:', err);
         document.getElementById('spieleContainer').innerHTML =
           '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
       }
