@@ -657,7 +657,7 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN — Top 5, untereinander, große Bilder
+       STATISTIKEN — ohne Emojis, mit besseren Bildern
        ============================ */
     .stats-container {
       display: flex;
@@ -735,9 +735,10 @@
       height: 48px;
       border-radius: 4px;
       object-fit: cover;
-      background: rgba(0,0,0,0.3);
       flex-shrink: 0;
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
     .stat-entry .stat-info {
       flex: 1;
@@ -1200,7 +1201,7 @@
   }
 
   // ============================
-  //  STATISTIKEN — Top 5, untereinander, ohne Emojis
+  //  STATISTIKEN — NUR ABSOLUTE PUNKTE, KEINE NEGATIVEN MEHR
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
@@ -1220,7 +1221,8 @@
         const row = a.side === 'white' ? 'top' : 'bottom';
         const slot = `${row}-${a.piece}`;
         if (!slotPoints[slot]) slotPoints[slot] = 0;
-        slotPoints[slot] += getAssignmentScore(a, state);
+        // NUR ABSOLUTE PUNKTE (Betrag) – keine negativen Werte mehr
+        slotPoints[slot] += Math.abs(getAssignmentScore(a, state));
       });
 
       for (const [slot, points] of Object.entries(slotPoints)) {
