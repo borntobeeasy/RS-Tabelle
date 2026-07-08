@@ -657,43 +657,86 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN — GLOBAL PRO FIGUR
+       STATISTIKEN — TOP 5 PRO FIGUR
        ============================ */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 24px;
       margin-top: 12px;
     }
     .stat-card {
       background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
       border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 14px 16px;
+      border-radius: 8px;
+      padding: 16px 18px;
       box-shadow: var(--shadow);
     }
     .stat-card h3 {
       font-family: var(--headline-font);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 400;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       color: var(--gold);
-      margin: 0 0 10px 0;
-      border-bottom: 1px solid var(--line-strong);
-      padding-bottom: 6px;
+      margin: 0 0 12px 0;
+      border-bottom: 2px solid var(--line-strong);
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-card h3 .badge {
+      font-family: var(--mono-font);
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--steel);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+    .stat-section {
+      margin: 10px 0 6px 0;
+    }
+    .stat-section .section-title {
+      font-family: var(--mono-font);
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--steel);
+      margin: 0 0 4px 0;
+      padding-left: 2px;
+      border-left: 3px solid var(--red);
+      padding-left: 8px;
     }
     .stat-entry {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 10px;
+      padding: 3px 4px 3px 8px;
+      border-radius: 4px;
+      transition: background 0.1s;
     }
-    .stat-entry:last-child { border-bottom: none; }
+    .stat-entry:hover {
+      background: rgba(255,255,255,0.04);
+    }
+    .stat-entry .rank {
+      font-family: var(--mono-font);
+      font-size: 0.55rem;
+      font-weight: 800;
+      color: var(--steel);
+      width: 18px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .stat-entry .rank.gold { color: var(--gold); }
+    .stat-entry .rank.silver { color: #c0c0c0; }
+    .stat-entry .rank.bronze { color: #cd7f32; }
     .stat-entry .player-img {
-      width: 42px;
-      height: 42px;
+      width: 32px;
+      height: 32px;
       border-radius: 4px;
       object-fit: cover;
       background: rgba(0,0,0,0.3);
@@ -705,32 +748,34 @@
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
-      gap: 4px 12px;
+      gap: 2px 10px;
       font-family: var(--mono-font);
       font-size: 0.7rem;
-    }
-    .stat-entry .stat-info .label {
-      color: var(--steel);
-      font-weight: 700;
-      font-size: 0.55rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      min-width: 50px;
     }
     .stat-entry .stat-info .highlight {
       color: #2be08a;
       font-weight: 800;
     }
     .stat-entry .stat-info .value {
-      font-weight: 800;
+      font-weight: 700;
       color: var(--gold);
     }
     .stat-entry .stat-info .team-tag {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--chalk);
       background: rgba(255,255,255,0.08);
       padding: 1px 8px;
       border-radius: 3px;
+    }
+    .stat-entry .stat-info .detail {
+      font-size: 0.55rem;
+      color: var(--steel);
+    }
+    .no-data {
+      color: var(--steel);
+      font-size: 0.7rem;
+      font-family: var(--mono-font);
+      padding: 4px 8px;
     }
 
     /* ============================
@@ -746,7 +791,7 @@
       .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
       .spiel-header .team-logo-small { width: 26px; height: 26px; }
       .stats-grid { grid-template-columns: 1fr; }
-      .stat-entry .player-img { width: 32px; height: 32px; }
+      .stat-entry .player-img { width: 28px; height: 28px; }
       .stat-entry .stat-info { font-size: 0.6rem; }
     }
     @media (max-width: 500px) {
@@ -830,11 +875,11 @@
   //  HILFSFUNKTIONEN
   // ============================
   const PIECES = [
-    { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
-    { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
-    { id: 'knight', name: 'Springer',value: '?',    base: 1 },
-    { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
-    { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
+    { id: 'rook',   name: 'Turm' },
+    { id: 'bishop', name: 'Läufer' },
+    { id: 'knight', name: 'Springer' },
+    { id: 'queen',  name: 'Dame' },
+    { id: 'king',   name: 'König' },
   ];
   const PIECE_IDS = PIECES.map(p => p.id);
   const SIDES = ['white', 'black'];
@@ -1158,12 +1203,12 @@
   }
 
   // ============================
-  //  STATISTIKEN — GLOBAL PRO FIGUR (mit korrekten Slots top/bottom)
+  //  STATISTIKEN — TOP 5
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
     PIECES.forEach(p => {
-      pieceStats[p.id] = { players: {} }; // players: { image: { games, totalPoints, maxPoints, maxGameKey, maxGameTeam, maxGameSide } }
+      pieceStats[p.id] = { players: {} };
     });
 
     for (const [key, state] of Object.entries(allGameData)) {
@@ -1172,7 +1217,6 @@
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
-      // Punktzahl pro Slot (mit top/bottom)
       const slotPoints = {};
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
@@ -1185,8 +1229,8 @@
       for (const [slot, points] of Object.entries(slotPoints)) {
         const image = state.figureImages?.[slot];
         if (!image) continue;
-        const piece = slot.split('-')[1]; // z.B. "rook"
-        const side = slot.split('-')[0]; // "top" oder "bottom"
+        const piece = slot.split('-')[1];
+        const side = slot.split('-')[0];
         const teamName = side === 'top' ? spiel.heim : spiel.auswaerts;
 
         const playerData = pieceStats[piece].players;
@@ -1208,39 +1252,22 @@
     const result = {};
     for (const [piece, data] of Object.entries(pieceStats)) {
       const players = data.players;
-      let bestSingle = null;
-      let bestAvg = null;
+      const entries = Object.entries(players).map(([image, stats]) => ({
+        image,
+        games: stats.games,
+        totalPoints: stats.totalPoints,
+        maxPoints: stats.maxPoints,
+        avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
+        team: stats.maxGameTeam,
+        side: stats.maxGameSide,
+      }));
 
-      for (const [image, stats] of Object.entries(players)) {
-        if (stats.games === 0) continue;
-        // Single
-        if (!bestSingle || stats.maxPoints > bestSingle.maxPoints) {
-          bestSingle = {
-            image,
-            points: stats.maxPoints,
-            gameKey: stats.maxGameKey,
-            team: stats.maxGameTeam,
-            side: stats.maxGameSide,
-            games: stats.games,
-            totalPoints: stats.totalPoints,
-          };
-        }
-        // Avg (mindestens 2 Spiele)
-        if (stats.games >= 2) {
-          const avg = stats.totalPoints / stats.games;
-          if (!bestAvg || avg > bestAvg.avg) {
-            bestAvg = {
-              image,
-              avg,
-              games: stats.games,
-              totalPoints: stats.totalPoints,
-              team: stats.maxGameTeam,
-              side: stats.maxGameSide,
-            };
-          }
-        }
-      }
-      result[piece] = { bestSingle, bestAvg };
+      // Top 5 nach Einzelpunktzahl (maxPoints)
+      const bySingle = [...entries].sort((a, b) => b.maxPoints - a.maxPoints).slice(0, 5);
+      // Top 5 nach Durchschnitt (mind. 2 Spiele)
+      const byAvg = [...entries].filter(e => e.games >= 2).sort((a, b) => b.avg - a.avg).slice(0, 5);
+
+      result[piece] = { bySingle, byAvg };
     }
     return result;
   }
@@ -1256,50 +1283,66 @@
     PIECES.forEach(p => {
       const card = document.createElement('div');
       card.className = 'stat-card';
+
       const title = document.createElement('h3');
-      title.textContent = p.name;
+      title.innerHTML = `${p.name} <span class="badge">${stats[p.id].bySingle.length} Spieler</span>`;
       card.appendChild(title);
 
-      const data = stats[p.id];
-      const bestSingle = data?.bestSingle;
-      const bestAvg = data?.bestAvg;
-
-      // Einmalig
-      const singleDiv = document.createElement('div');
-      singleDiv.className = 'stat-entry';
-      if (bestSingle) {
-        singleDiv.innerHTML = `
-          <img class="player-img" src="${bestSingle.image}" alt="Spieler" />
-          <div class="stat-info">
-            <span class="label">Einmalig</span>
-            <span class="highlight">${formatNumber(bestSingle.points)} Pkt</span>
-            <span class="value">${bestSingle.games} Einsätze</span>
-            <span class="team-tag">${bestSingle.team}</span>
-          </div>
-        `;
+      // Einmalig (höchste Einzelpunktzahl)
+      const sectionSingle = document.createElement('div');
+      sectionSingle.className = 'stat-section';
+      sectionSingle.innerHTML = `<div class="section-title">🔹 Höchste Einzelpunktzahl</div>`;
+      const listSingle = document.createElement('div');
+      if (stats[p.id].bySingle.length === 0) {
+        listSingle.innerHTML = '<div class="no-data">Keine Daten</div>';
       } else {
-        singleDiv.innerHTML = `<div class="stat-info" style="color:var(--steel);font-size:0.7rem;">keine Daten</div>`;
+        stats[p.id].bySingle.forEach((entry, idx) => {
+          const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+          const div = document.createElement('div');
+          div.className = 'stat-entry';
+          div.innerHTML = `
+            <span class="rank ${rankClass}">${idx + 1}</span>
+            <img class="player-img" src="${entry.image}" alt="Spieler" />
+            <div class="stat-info">
+              <span class="highlight">${formatNumber(entry.maxPoints)} Pkt</span>
+              <span class="value">${entry.games} Einsätze</span>
+              <span class="team-tag">${entry.team || '?'}</span>
+              <span class="detail">total ${formatNumber(entry.totalPoints)}</span>
+            </div>
+          `;
+          listSingle.appendChild(div);
+        });
       }
-      card.appendChild(singleDiv);
+      sectionSingle.appendChild(listSingle);
+      card.appendChild(sectionSingle);
 
-      // Durchschnitt
-      const avgDiv = document.createElement('div');
-      avgDiv.className = 'stat-entry';
-      if (bestAvg) {
-        avgDiv.innerHTML = `
-          <img class="player-img" src="${bestAvg.image}" alt="Spieler" />
-          <div class="stat-info">
-            <span class="label">Ø</span>
-            <span class="highlight">${bestAvg.avg.toFixed(1)} Pkt</span>
-            <span class="value">${bestAvg.games} Spiele</span>
-            <span class="value">${formatNumber(bestAvg.totalPoints)} total</span>
-            <span class="team-tag">${bestAvg.team}</span>
-          </div>
-        `;
+      // Durchschnitt (bester Ø, mind. 2 Spiele)
+      const sectionAvg = document.createElement('div');
+      sectionAvg.className = 'stat-section';
+      sectionAvg.innerHTML = `<div class="section-title">📊 Bester Durchschnitt (≥ 2 Spiele)</div>`;
+      const listAvg = document.createElement('div');
+      if (stats[p.id].byAvg.length === 0) {
+        listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mind. 2)</div>';
       } else {
-        avgDiv.innerHTML = `<div class="stat-info" style="color:var(--steel);font-size:0.7rem;">nicht genug Einsätze (mind. 2)</div>`;
+        stats[p.id].byAvg.forEach((entry, idx) => {
+          const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+          const div = document.createElement('div');
+          div.className = 'stat-entry';
+          div.innerHTML = `
+            <span class="rank ${rankClass}">${idx + 1}</span>
+            <img class="player-img" src="${entry.image}" alt="Spieler" />
+            <div class="stat-info">
+              <span class="highlight">${entry.avg.toFixed(1)} Ø</span>
+              <span class="value">${entry.games} Spiele</span>
+              <span class="team-tag">${entry.team || '?'}</span>
+              <span class="detail">total ${formatNumber(entry.totalPoints)}</span>
+            </div>
+          `;
+          listAvg.appendChild(div);
+        });
       }
-      card.appendChild(avgDiv);
+      sectionAvg.appendChild(listAvg);
+      card.appendChild(sectionAvg);
 
       grid.appendChild(card);
     });
