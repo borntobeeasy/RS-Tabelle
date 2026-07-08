@@ -215,7 +215,7 @@
        TABELLE — Anzeigetafel-Stil
        ============================ */
     .table-wrap {
-      overflow-x: auto;
+      overflow-x: hidden;
       background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
       border: 1px solid var(--line);
       border-top: 2px solid var(--red);
@@ -225,10 +225,18 @@
     }
     .liga-table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
       font-size: 0.75rem;
-      min-width: 360px;
     }
+    .liga-table th:nth-child(1) { width: 7%; }
+    .liga-table th:nth-child(3) { width: 8%; }
+    .liga-table th:nth-child(4),
+    .liga-table th:nth-child(5),
+    .liga-table th:nth-child(6) { width: 7%; }
+    .liga-table th:nth-child(7) { width: 15%; }
+    .liga-table th:nth-child(8) { width: 10%; }
+    .liga-table th:nth-child(9) { width: 10%; }
     .liga-table th {
       text-align: left;
       padding: 10px 10px 8px;
@@ -241,10 +249,13 @@
       font-family: var(--mono-font);
     }
     .liga-table td {
-      padding: 7px 10px;
+      padding: 7px 8px;
       border-bottom: 1px solid rgba(255,255,255,0.045);
       vertical-align: middle;
       font-family: var(--mono-font);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .liga-table td.team { font-family: var(--event-font); }
     .liga-table tbody tr {
@@ -279,6 +290,8 @@
     .liga-table .team {
       font-weight: 700;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: var(--chalk);
     }
     .liga-table .pts {
@@ -294,32 +307,22 @@
     }
 
     /* ============================
-       SPIELTAG-NAVIGATION — durchgehende Bar
+       SPIELTAG-NAVIGATION — 5 Positionen, keine Scrollbar
        ============================ */
     .liga-tabs {
       display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: 2px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
       margin-bottom: 22px;
-      padding: 4px;
+      padding: 6px;
       background: rgba(0, 0, 0, 0.35);
       border: 1px solid var(--line);
       border-radius: 8px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--red) transparent;
-    }
-    .liga-tabs::-webkit-scrollbar {
-      height: 6px;
-    }
-    .liga-tabs::-webkit-scrollbar-thumb {
-      background: var(--red);
-      border-radius: 4px;
     }
     .liga-tabs button {
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      padding: 8px 16px;
+      flex: 0 1 auto;
+      padding: 8px 14px;
       border-radius: 5px;
       border: 1px solid transparent;
       background: transparent;
@@ -346,7 +349,6 @@
       opacity: 0.3;
       cursor: not-allowed;
     }
-    .liga-tabs { scroll-snap-type: x proximity; }
 
     /* ============================
        SPIELE — VERTIKALE LISTE
@@ -1239,8 +1241,40 @@
       });
 
       // Tabs aktualisieren
-      document.querySelectorAll('.liga-tabs button').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
+      renderTabs(index + 1);
+    }
+
+    // ============================
+    //  TAB-LEISTE — 5 Positionen: 1 · Spieltag-1 · aktuell · Spieltag+1 · letzter
+    // ============================
+    function computeTabNumbers(total, current) {
+      if (total <= 5) {
+        return Array.from({ length: total }, (_, i) => i + 1);
+      }
+      const raw = [1, current - 1, current, current + 1, total];
+      const seen = new Set();
+      const result = [];
+      raw.forEach(n => {
+        if (n < 1 || n > total) return;
+        if (seen.has(n)) return;
+        seen.add(n);
+        result.push(n);
+      });
+      result.sort((a, b) => a - b);
+      return result;
+    }
+
+    function renderTabs(current) {
+      const total = spielplan.spieltage.length;
+      const tabsContainer = document.getElementById('spieltagTabs');
+      tabsContainer.innerHTML = '';
+      computeTabNumbers(total, current).forEach(n => {
+        const btn = document.createElement('button');
+        btn.textContent = `${n}. Spieltag`;
+        btn.dataset.index = n - 1;
+        btn.classList.toggle('active', n === current);
+        btn.addEventListener('click', () => renderSpieltag(n - 1));
+        tabsContainer.appendChild(btn);
       });
     }
 
@@ -1256,25 +1290,22 @@
         teams = spielplan.teams;
         document.getElementById('ligaInfo').textContent = `${spielplan.spieltage.length} Spieltage · ${teams.length} Teams`;
 
-        // 2. Tabs erstellen
-        const tabsContainer = document.getElementById('spieltagTabs');
-        spielplan.spieltage.forEach((_, i) => {
-          const btn = document.createElement('button');
-          btn.textContent = `${i + 1}. Spieltag`;
-          btn.dataset.index = i;
-          btn.addEventListener('click', () => renderSpieltag(i));
-          tabsContainer.appendChild(btn);
-        });
-
-        // 3. Daten parallel laden (nur vorhandene Dateien)
+        // 2. Daten parallel laden (nur vorhandene Dateien)
         allGameData = await loadAllGameData();
 
-        // 4. Tabelle berechnen
+        // 3. Tabelle berechnen
         buildTable();
 
-        // 5. Ersten Spieltag anzeigen (auch wenn keine Daten – dann wird "nicht verfügbar" gezeigt)
+        // 4. Spieltag anzeigen: den, der am nächsten am letzten Spieltag liegt
+        //    und schon mindestens eine Datei erhalten hat (sonst Spieltag 1)
+        let startIndex = 0;
+        for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
+          const spiele = spielplan.spieltage[i];
+          const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
+          if (hasData) { startIndex = i; break; }
+        }
         if (spielplan.spieltage.length > 0) {
-          renderSpieltag(0);
+          renderSpieltag(startIndex);
         }
       } catch (err) {
         console.error('Fehler beim Laden des Spielplans:', err);
