@@ -13,21 +13,20 @@
        ============================ */
     :root {
       color-scheme: dark;
-      --night: #06090a;
-      --night-2: #0b1210;
-      --pitch: #0c1f16;
-      --red: #e2001a;
-      --red-deep: #7a0010;
-      --gold: #ffbe3d;
-      --gold-dim: #b8862a;
-      --chalk: #f4f2ea;
-      --steel: #7c8794;
-      --line: rgba(244, 242, 234, 0.10);
-      --line-strong: rgba(244, 242, 234, 0.18);
-      --green: #22c383;
-      --green-dark: #0f7a4f;
-      --loss: #ff3b3b;
-      --zero: #b39dff;
+      --night: #0a0a0a;
+      --night-2: #111111;
+      --red: #D3010C;
+      --red-deep: #8B0000;
+      --gold: #F5C518;
+      --gold-dim: #b8952f;
+      --chalk: #FFFFFF;
+      --steel: #a0a8b8;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-strong: rgba(255, 255, 255, 0.2);
+      --green: #00b050;
+      --green-dark: #00843d;
+      --loss: #ff1a1a;
+      --zero: #a89fcc;
 
       --ink: var(--chalk);
       --muted: var(--steel);
@@ -35,7 +34,7 @@
       --yellow: var(--gold);
 
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
-      --shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --shadow: 0 28px 75px rgba(0, 0, 0, 0.46);
       --event-font: "Sora", "Segoe UI", Arial, sans-serif;
       --headline-font: "Anton", "Arial Narrow", Impact, sans-serif;
       --mono-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
@@ -50,47 +49,53 @@
       min-height: 100vh;
       background-color: var(--night);
       background-image:
-        radial-gradient(ellipse 900px 500px at 12% -6%, rgba(226, 0, 26, 0.16) 0%, transparent 55%),
-        radial-gradient(ellipse 700px 500px at 100% 8%, rgba(255, 190, 61, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse 900px 700px at 90% 100%, rgba(12, 31, 22, 0.9) 0%, transparent 60%),
-        repeating-linear-gradient(90deg,
-          rgba(244, 242, 234, 0.012) 0px,
-          rgba(244, 242, 234, 0.012) 1px,
+        linear-gradient(145deg, rgba(211, 1, 12, 0.18) 0%, transparent 45%),
+        linear-gradient(215deg, rgba(211, 1, 12, 0.08) 0%, transparent 35%),
+        repeating-linear-gradient(45deg,
+          rgba(255, 255, 255, 0.015) 0px,
+          rgba(255, 255, 255, 0.015) 1px,
           transparent 1px,
-          transparent 46px
+          transparent 24px
         ),
+        radial-gradient(ellipse at 10% 5%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 95%, rgba(211, 1, 12, 0.08) 0%, transparent 40%),
         var(--night);
       color: var(--ink);
       font-family: var(--event-font);
       padding: 22px;
     }
 
-    /* Flutlicht-Wasserzeichen im Hintergrund */
+    /* Wasserzeichen im Hintergrund */
     body::after {
-      content: "RASENSCHACH";
+      content: "2. BUNDESLIGA 26/27";
       position: fixed;
-      bottom: -9vh;
-      right: -3vw;
+      bottom: -8vh;
+      right: -4vw;
       z-index: -3;
       font-family: var(--headline-font);
-      font-size: min(24vw, 15rem);
-      letter-spacing: 0.04em;
-      color: rgba(244, 242, 234, 0.022);
+      font-size: min(28vw, 18rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.025);
       white-space: nowrap;
       pointer-events: none;
-      transform: skewX(-8deg);
+      transform: rotate(-8deg);
+      text-shadow: 0 0 60px rgba(211, 1, 12, 0.04);
     }
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       z-index: -4;
-      background-image:
-        linear-gradient(rgba(244,242,234,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(244,242,234,0.02) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 0%, transparent 75%);
       pointer-events: none;
+      background: repeating-linear-gradient(45deg,
+          transparent 0px,
+          transparent 120px,
+          rgba(255, 255, 255, 0.012) 120px,
+          rgba(255, 255, 255, 0.012) 121px,
+          transparent 121px,
+          transparent 180px
+        );
     }
 
     .app-shell {
@@ -113,13 +118,13 @@
       margin-bottom: 22px;
       padding: 22px 30px 22px 34px;
       background:
-        linear-gradient(100deg, rgba(226, 0, 26, 0.22) 0%, transparent 38%),
-        linear-gradient(180deg, rgba(244,242,234,0.05), rgba(244,242,234,0.015)),
+        linear-gradient(100deg, rgba(211, 1, 12, 0.22) 0%, transparent 38%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)),
         var(--night-2);
       border: 1px solid var(--line-strong);
       border-left: 4px solid var(--red);
       clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(244,242,234,0.06);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.06);
       overflow: hidden;
     }
     .liga-header::before {
@@ -129,7 +134,7 @@
       left: -6%;
       width: 40%;
       height: 220%;
-      background: radial-gradient(ellipse, rgba(255,190,61,0.14) 0%, transparent 65%);
+      background: radial-gradient(ellipse, rgba(245,197,24,0.14) 0%, transparent 65%);
       transform: rotate(12deg);
       pointer-events: none;
     }
@@ -153,7 +158,7 @@
       text-transform: uppercase;
       margin: 0;
       color: var(--chalk);
-      text-shadow: 0 2px 0 var(--red-deep), 0 14px 30px rgba(226,0,26,0.2);
+      text-shadow: 0 2px 0 var(--red-deep), 0 14px 30px rgba(211,1,12,0.2);
     }
     .liga-header .sub {
       color: var(--muted);
@@ -189,10 +194,6 @@
       min-width: 0;
       position: sticky;
       top: 20px;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--line-strong) transparent;
     }
     .content-wrapper .right-col {
       flex: 1;
@@ -207,8 +208,6 @@
         flex: none;
         width: 100%;
         position: static;
-        max-height: none;
-        overflow-y: visible;
       }
     }
 
@@ -217,7 +216,7 @@
        ============================ */
     .table-wrap {
       overflow-x: auto;
-      background: linear-gradient(180deg, rgba(244,242,234,0.04), rgba(244,242,234,0.015));
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
       border: 1px solid var(--line);
       border-top: 2px solid var(--red);
       border-radius: 4px;
@@ -243,7 +242,7 @@
     }
     .liga-table td {
       padding: 7px 10px;
-      border-bottom: 1px solid rgba(244,242,234,0.045);
+      border-bottom: 1px solid rgba(255,255,255,0.045);
       vertical-align: middle;
       font-family: var(--mono-font);
     }
@@ -252,10 +251,10 @@
       transition: background 0.15s;
     }
     .liga-table tbody tr:nth-child(even) td {
-      background: rgba(244,242,234,0.018);
+      background: rgba(255,255,255,0.018);
     }
     .liga-table tr:hover td {
-      background: rgba(226, 0, 26, 0.08);
+      background: rgba(211, 1, 12, 0.08);
     }
     .liga-table .pos {
       font-weight: 800;
@@ -269,12 +268,12 @@
       color: var(--night);
       background: var(--gold);
       border-radius: 3px;
-      box-shadow: 0 0 12px rgba(255,190,61,0.4);
+      box-shadow: 0 0 12px rgba(245,197,24,0.4);
     }
     .liga-table tbody tr:nth-child(-n+2) td:first-child { position: relative; }
     .liga-table tbody tr:nth-last-child(-n+2) .pos {
       color: var(--chalk);
-      background: rgba(226, 0, 26, 0.55);
+      background: rgba(211, 1, 12, 0.55);
       border-radius: 3px;
     }
     .liga-table .team {
@@ -287,7 +286,7 @@
       font-size: 0.95rem;
       color: var(--chalk);
       text-align: center;
-      background: rgba(226,0,26,0.10);
+      background: rgba(211,1,12,0.10);
     }
     .liga-table .num {
       text-align: center;
@@ -295,47 +294,59 @@
     }
 
     /* ============================
-       SPIELTAG-NAVIGATION — Ticker
+       SPIELTAG-NAVIGATION — durchgehende Bar
        ============================ */
     .liga-tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--line);
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 2px;
+      margin-bottom: 22px;
+      padding: 4px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--red) transparent;
+    }
+    .liga-tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+    .liga-tabs::-webkit-scrollbar-thumb {
+      background: var(--red);
+      border-radius: 4px;
     }
     .liga-tabs button {
-      padding: 6px 14px;
-      border-radius: 2px;
-      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-      border: 1px solid var(--line-strong);
-      background: rgba(244,242,234,0.03);
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      background: transparent;
       color: var(--muted);
       font-weight: 700;
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       font-family: var(--mono-font);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       cursor: pointer;
       transition: all 0.15s;
       white-space: nowrap;
     }
     .liga-tabs button:hover {
-      background: rgba(244,242,234,0.1);
+      background: rgba(255,255,255,0.08);
       color: var(--chalk);
-      border-color: var(--line-strong);
     }
     .liga-tabs button.active {
       background: var(--red);
-      border-color: var(--red);
       color: var(--chalk);
-      box-shadow: 0 0 18px rgba(226,0,26,0.45);
+      box-shadow: 0 0 16px rgba(211,1,12,0.5);
     }
     .liga-tabs button:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
+    .liga-tabs { scroll-snap-type: x proximity; }
 
     /* ============================
        SPIELE — VERTIKALE LISTE
@@ -347,7 +358,7 @@
     }
 
     .spiel-item {
-      background: linear-gradient(180deg, rgba(244,242,234,0.035), rgba(244,242,234,0.012));
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
       border: 1px solid var(--line);
       border-left: 3px solid transparent;
       border-radius: 3px;
@@ -403,7 +414,7 @@
       padding: 4px 14px;
       border-radius: 2px;
       color: var(--gold);
-      text-shadow: 0 0 10px rgba(255,190,61,0.5);
+      text-shadow: 0 0 10px rgba(245,197,24,0.5);
       white-space: nowrap;
       flex-shrink: 0;
       letter-spacing: 0.04em;
@@ -424,12 +435,12 @@
       flex-shrink: 0;
     }
     .spiel-header .toggle-btn:hover {
-      background: rgba(226,0,26,0.2);
+      background: rgba(211,1,12,0.2);
       border-color: var(--red);
     }
     .spiel-header .toggle-btn.open {
       transform: rotate(180deg);
-      background: rgba(226,0,26,0.25);
+      background: rgba(211,1,12,0.25);
     }
 
     .spiel-meta {
@@ -440,7 +451,7 @@
       font-family: var(--mono-font);
       color: var(--muted);
       padding: 5px 16px 8px;
-      border-bottom: 1px solid rgba(244,242,234,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
@@ -457,7 +468,7 @@
       grid-template-rows: 0fr;
       opacity: 0;
       transition: grid-template-rows 0.32s ease, opacity 0.28s ease;
-      border-top: 0px solid rgba(244,242,234,0.06);
+      border-top: 0px solid rgba(255,255,255,0.06);
       background: rgba(0,0,0,0.25);
     }
     .spiel-board-container > * { overflow: hidden; }
@@ -465,7 +476,7 @@
       display: grid;
       grid-template-rows: 1fr;
       opacity: 1;
-      border-top: 1px solid rgba(244,242,234,0.06);
+      border-top: 1px solid rgba(255,255,255,0.06);
       padding: 12px 16px 16px;
     }
 
@@ -476,8 +487,8 @@
       position: relative;
       overflow: hidden;
       background:
-        radial-gradient(ellipse 500px 260px at 50% -20%, rgba(255,190,61,0.10) 0%, transparent 60%),
-        linear-gradient(160deg, rgba(12,31,22,0.55), rgba(6,9,10,0.9));
+        radial-gradient(ellipse 500px 260px at 50% -20%, rgba(245,197,24,0.10) 0%, transparent 60%),
+        linear-gradient(160deg, rgba(20,20,20,0.55), rgba(6,9,10,0.9));
       border: 1px solid var(--line-strong);
       border-radius: 4px;
       padding: 12px;
@@ -517,7 +528,7 @@
       font-family: var(--mono-font);
       border-radius: 2px;
       border: 1px solid var(--line-strong);
-      background: rgba(244,242,234,0.04);
+      background: rgba(255,255,255,0.04);
       color: var(--chalk);
       cursor: default;
       font-weight: 700;
@@ -535,9 +546,9 @@
       margin: 0 auto;
       border: 2px solid var(--red);
       border-radius: 3px;
-      outline: 1px solid rgba(244,242,234,0.06);
-      box-shadow: 0 0 0 3px var(--night), 0 0 34px rgba(226,0,26,0.14), inset 0 0 30px rgba(0,0,0,0.5), var(--shadow);
-      background: #10231a;
+      outline: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 0 0 3px var(--night), 0 0 34px rgba(211,1,12,0.14), inset 0 0 30px rgba(0,0,0,0.5), var(--shadow);
+      background: #1a1a1a;
       overflow: hidden;
     }
     .board-panel .grid-cell {
@@ -545,19 +556,19 @@
       border: none;
       padding: 0;
       overflow: hidden;
-      background: #142a1f;
+      background: #1f1f1f;
     }
     .board-panel .piece-cell {
       display: grid;
       place-items: center;
-      background: #0f2318;
+      background: #181818;
       color: var(--chalk);
       font-weight: 800;
       isolation: isolate;
-      box-shadow: inset 0 0 0 1px rgba(244,242,234,0.03);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
       position: relative;
     }
-    .board-panel .piece-cell.light { background: #17301f; }
+    .board-panel .piece-cell.light { background: #242424; }
     .board-panel .piece-cell .field-watermark {
       position: absolute;
       right: 4px;
@@ -581,7 +592,7 @@
       color: #c3aeff !important;
     }
     .board-panel .piece-cell .field-watermark.neutral {
-      color: rgba(244,242,234,0.15);
+      color: rgba(255,255,255,0.15);
     }
 
     .board-panel .piece-cell .piece-svg {
@@ -591,11 +602,11 @@
       width: 60%;
       max-width: 50px;
       height: auto;
-      filter: invert(1) sepia(1) saturate(0) brightness(1.65) drop-shadow(0 0 6px rgba(255,190,61,0.12)) drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.08)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
       opacity: 0.95;
     }
     .board-panel .piece-cell:not(.light) .piece-svg {
-      filter: invert(1) sepia(1) saturate(0) brightness(1.65) drop-shadow(0 0 6px rgba(226,0,26,0.18)) drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+      filter: invert(1) drop-shadow(0 0 6px rgba(211,1,12,0.15)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
     }
     .board-panel .piece-cell .player-photo {
       position: absolute;
@@ -631,14 +642,14 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: #0d1f16;
-      box-shadow: inset 0 0 0 1px rgba(244,242,234,0.02);
+      background: #1a1a1a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
     .board-panel .drop-cell .drop-value {
       font-family: var(--mono-font);
       font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
       font-weight: 800;
-      color: rgba(244,242,234,0.8);
+      color: rgba(255,255,255,0.8);
       text-shadow: 0 0 15px rgba(0,0,0,0.6);
       pointer-events: none;
     }
@@ -647,7 +658,7 @@
       top: 4px;
       left: 4px;
       font-size: clamp(0.4rem, calc(var(--cell-size)*0.08), 0.7rem);
-      color: rgba(244,242,234,0.5);
+      color: rgba(255,255,255,0.5);
     }
     .board-panel .drop-cell .drop-total {
       position: absolute;
@@ -656,7 +667,7 @@
       font-family: var(--mono-font);
       font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.3rem);
       font-weight: 800;
-      color: rgba(244,242,234,0.2);
+      color: rgba(255,255,255,0.2);
       pointer-events: none;
       display: none;
     }
