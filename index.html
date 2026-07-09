@@ -702,17 +702,8 @@
       height: 22px;
       filter: invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.15));
     }
-    .stat-card .piece-icon-wrap svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--chalk);
-      opacity: 0.85;
-    }
     .stat-card h3 {
       flex: 1;
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
       font-family: var(--headline-font);
       font-size: 1.05rem;
       font-weight: 400;
@@ -720,14 +711,6 @@
       text-transform: uppercase;
       color: var(--chalk);
       margin: 0;
-    }
-    .stat-card h3 .piece-value-tag {
-      font-family: var(--mono-font);
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      text-transform: none;
-      color: var(--steel);
     }
     .stat-section { margin: 12px 18px 8px; }
     .stat-section + .stat-section { margin-top: 18px; }
@@ -882,6 +865,7 @@
       font-family: var(--mono-font);
       padding: 6px 8px;
     }
+
 
     /* ============================
        ALLE SPIELE VIEW
@@ -1468,7 +1452,7 @@
     headApp.className = 'stat-card-head';
     headApp.innerHTML = `
       <div class="piece-icon-wrap" style="background:rgba(245,197,24,0.14);border-color:rgba(245,197,24,0.4);">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--gold);width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
       </div>
       <h3>Häufigste Einsätze</h3>
     `;
@@ -1518,7 +1502,7 @@
       head.className = 'stat-card-head';
       head.innerHTML = `
         <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
-        <h3>${p.name} <span class="piece-value-tag">${p.value}</span></h3>
+        <h3>${p.name}</h3>
       `;
       card.appendChild(head);
 
@@ -1544,10 +1528,10 @@
             </div>
             <div class="meta-col">
               <span class="meta-team">${entry.team || '?'}</span>
-              <span class="meta-detail">${entry.games} Einsätze · gesamt ${formatNumber(entry.totalPoints)}</span>
+              <span class="meta-detail">${entry.games} Einsätze · gesamt ${entry.totalPoints}</span>
             </div>
             <div class="value-chip">
-              <span class="value-num">${formatNumber(entry.maxPoints)}</span>
+              <span class="value-num">${entry.maxPoints}</span>
               <span class="value-unit">Punkte</span>
             </div>
           `;
@@ -1575,11 +1559,9 @@
             <div class="rank-badge ${rankClass}">${idx + 1}</div>
             <div class="avatar-wrap">
               <img class="player-img" src="${entry.image}" alt="Spieler" />
-              ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
             </div>
             <div class="meta-col">
-              <span class="meta-team">${entry.team || '?'}</span>
-              <span class="meta-detail">${entry.games} Spiele · gesamt ${formatNumber(entry.totalPoints)}</span>
+              <span class="meta-detail">${entry.games} Spiele · gesamt ${entry.totalPoints}</span>
             </div>
             <div class="value-chip">
               <span class="value-num">${entry.avg.toFixed(1)}</span>
