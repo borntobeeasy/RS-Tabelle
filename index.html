@@ -792,18 +792,7 @@
     .stat-entry.top1 .player-img { border-color: var(--gold); box-shadow: 0 0 16px rgba(245,197,24,0.45); }
     .stat-entry.top2 .player-img { border-color: #c7cbd1; }
     .stat-entry.top3 .player-img { border-color: #cd7f32; }
-    .stat-entry .avatar-wrap .team-badge-mini {
-      position: absolute;
-      right: -3px;
-      bottom: -3px;
-      width: 17px;
-      height: 17px;
-      border-radius: 50%;
-      object-fit: contain;
-      background: var(--chalk);
-      border: 1.5px solid var(--night);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
-    }
+    /* team-badge-mini wurde entfernt – kein Club-Logo mehr */
 
     .stat-entry .meta-col {
       flex: 1;
@@ -1324,7 +1313,7 @@
   //  STATISTIKEN
   // ============================
 
-  // 1. Häufigste Einsätze (Top 10)
+  // 1. Häufigste Einsätze (Top 10) – ohne Club-Logo und ohne "zuletzt eingesetzt"
   function computeAppearanceStats() {
     const players = {};
     for (const [key, state] of Object.entries(allGameData)) {
@@ -1342,20 +1331,18 @@
           const image = state.figureImages?.[slot];
           if (!image) return;
           const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
-          const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
           if (!players[image]) {
-            players[image] = { count: 0, lastTeam: null, lastTeamLogo: null };
+            players[image] = { count: 0, lastTeam: null };
           }
           players[image].count += 1;
           players[image].lastTeam = teamName || players[image].lastTeam;
-          players[image].lastTeamLogo = teamLogo || players[image].lastTeamLogo;
         });
       });
     }
     const sorted = Object.entries(players)
-      .map(([image, data]) => ({ image, count: data.count, team: data.lastTeam, teamLogo: data.lastTeamLogo }))
+      .map(([image, data]) => ({ image, count: data.count, team: data.lastTeam }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 10); // Top 10
+      .slice(0, 10);
     return sorted;
   }
 
@@ -1438,13 +1425,13 @@
   }
 
   // ============================
-  //  RENDER STATISTICS (alle drei Bereiche)
+  //  RENDER STATISTICS
   // ============================
   function renderStatistics() {
     const container = document.getElementById('statsContainer');
     container.innerHTML = '';
 
-    // 1. Häufigste Einsätze (Top 10)
+    // 1. Häufigste Einsätze (Top 10) – ohne Logo und ohne "zuletzt eingesetzt"
     const appearanceData = computeAppearanceStats();
     const appearanceCard = document.createElement('div');
     appearanceCard.className = 'stat-card';
@@ -1472,11 +1459,10 @@
           <div class="rank-badge ${rankClass}">${idx + 1}</div>
           <div class="avatar-wrap">
             <img class="player-img" src="${entry.image}" alt="Spieler" />
-            ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
           </div>
           <div class="meta-col">
             <span class="meta-team">${entry.team || '?'}</span>
-            <span class="meta-detail">zuletzt eingesetzt</span>
+            <!-- "zuletzt eingesetzt" wurde entfernt -->
           </div>
           <div class="value-chip">
             <span class="value-num">${entry.count}</span>
@@ -1492,7 +1478,6 @@
 
     // 2. Figuren-Statistiken (Einzel & Durchschnitt)
     const stats = computePlayerStats();
-    console.log('Figuren-Statistiken:', stats);
 
     PIECES.forEach(p => {
       const card = document.createElement('div');
