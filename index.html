@@ -704,9 +704,6 @@
     }
     .stat-card h3 {
       flex: 1;
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
       font-family: var(--headline-font);
       font-size: 1.05rem;
       font-weight: 400;
@@ -714,17 +711,6 @@
       text-transform: uppercase;
       color: var(--chalk);
       margin: 0;
-    }
-    .stat-card h3 .badge {
-      font-family: var(--mono-font);
-      font-size: 0.58rem;
-      font-weight: 800;
-      color: var(--night);
-      background: var(--gold);
-      padding: 3px 9px;
-      border-radius: 999px;
-      letter-spacing: 0.03em;
-      box-shadow: 0 0 10px rgba(245,197,24,0.35);
     }
     .stat-section { margin: 12px 18px 8px; }
     .stat-section + .stat-section { margin-top: 18px; }
@@ -810,7 +796,7 @@
     }
     .stat-entry .stat-primary {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
@@ -820,15 +806,12 @@
       color: #2be08a;
       font-weight: 800;
     }
-    .stat-entry .stat-info .team-tag {
-      font-family: var(--mono-font);
-      font-size: 0.55rem;
-      font-weight: 700;
-      color: var(--chalk);
-      background: rgba(255,255,255,0.08);
-      padding: 2px 9px;
-      border-radius: 3px;
-      letter-spacing: 0.03em;
+    .stat-entry .stat-info .team-logo-small {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
     }
     .stat-entry .stat-secondary {
       display: flex;
@@ -968,11 +951,11 @@
   //  PIECES MIT BASE
   // ============================
   const PIECES = [
-    { id: 'rook',   name: 'Turm',    value: '-/+3', base: 3 },
-    { id: 'bishop', name: 'Läufer',  value: '-1',   base: 1 },
-    { id: 'knight', name: 'Springer',value: '?',    base: 1 },
-    { id: 'queen',  name: 'Dame',    value: '+1',   base: 1 },
-    { id: 'king',   name: 'König',   value: '+/-3', base: 3 },
+    { id: 'rook',   name: 'Turm',    base: 3 },
+    { id: 'bishop', name: 'Läufer',  base: 1 },
+    { id: 'knight', name: 'Springer',base: 1 },
+    { id: 'queen',  name: 'Dame',    base: 1 },
+    { id: 'king',   name: 'König',   base: 3 },
   ];
   const PIECE_IDS = PIECES.map(p => p.id);
   const SIDES = ['white', 'black'];
@@ -1302,7 +1285,7 @@
   }
 
   // ============================
-  //  STATISTIKEN — KORREKT: NUR BILD-FELDER (top/bottom)
+  //  STATISTIKEN — NUR BILD-FELDER (top/bottom), Team-Logo gespeichert
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
@@ -1318,7 +1301,6 @@
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
-      // Nur die oberste und unterste Reihe (top und bottom) durchgehen
       const rows = ['top', 'bottom'];
       rows.forEach(row => {
         const side = row === 'top' ? 'white' : 'black';
@@ -1326,9 +1308,9 @@
           const slot = `${row}-${piece.id}`;
           const image = state.figureImages?.[slot];
           if (!image) return;
-          // Punktzahl aus results (das ist der Wert im Bild-Feld)
           const points = state.results[side]?.[piece.id] ?? 0;
           const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+          const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
 
           const playerData = pieceStats[piece.id].players;
           if (!playerData[image]) {
@@ -1337,6 +1319,7 @@
               totalPoints: 0,
               maxPoints: -Infinity,
               maxGameTeam: null,
+              maxGameTeamLogo: null,
               values: []
             };
           }
@@ -1347,12 +1330,12 @@
           if (points > p.maxPoints) {
             p.maxPoints = points;
             p.maxGameTeam = teamName;
+            p.maxGameTeamLogo = teamLogo;
           }
         });
       });
     }
 
-    // Top-5 für jede Figur extrahieren
     const result = {};
     for (const [piece, data] of Object.entries(pieceStats)) {
       const players = data.players;
@@ -1363,15 +1346,14 @@
         maxPoints: stats.maxPoints,
         avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
         team: stats.maxGameTeam,
+        teamLogo: stats.maxGameTeamLogo,
         values: stats.values || []
       }));
 
-      // Einzelstatistik: Top 5 nach maxPoints (höchster Wert)
       const bySingle = [...entries]
         .sort((a, b) => b.maxPoints - a.maxPoints)
         .slice(0, 5);
       
-      // Durchschnittsstatistik: nur Spieler mit games >= 3, sortiert nach avg
       const byAvg = [...entries]
         .filter(e => e.games >= 3)
         .sort((a, b) => b.avg - a.avg)
@@ -1387,7 +1369,6 @@
     container.innerHTML = '';
     const stats = computePlayerStats();
 
-    // Debug (kann in Konsole eingesehen werden)
     console.log('Statistiken:', stats);
 
     PIECES.forEach(p => {
@@ -1398,7 +1379,7 @@
       head.className = 'stat-card-head';
       head.innerHTML = `
         <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
-        <h3>${p.name} <span class="badge">${p.value}</span></h3>
+        <h3>${p.name}</h3>
       `;
       card.appendChild(head);
 
@@ -1422,7 +1403,7 @@
             <div class="stat-info">
               <div class="stat-primary">
                 <span class="highlight">${formatNumber(entry.maxPoints)} Pkt</span>
-                <span class="team-tag">${entry.team || '?'}</span>
+                ${entry.teamLogo ? `<img class="team-logo-small" src="${entry.teamLogo}" alt="${entry.team}" />` : ''}
               </div>
               <div class="stat-secondary">
                 <span class="value">${entry.games} Einsätze</span>
@@ -1456,7 +1437,6 @@
             <div class="stat-info">
               <div class="stat-primary">
                 <span class="highlight">${entry.avg.toFixed(1)} Ø</span>
-                <span class="team-tag">${entry.team || '?'}</span>
               </div>
               <div class="stat-secondary">
                 <span class="value">${entry.games} Spiele</span>
