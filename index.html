@@ -9,21 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================
-       TOKENS
+       TOKENS – Bundesliga Style
        ============================ */
     :root {
       color-scheme: dark;
       --night: #0a0a0a;
       --night-2: #111111;
-      --red: #D3010C;
-      --red-deep: #8B0000;
-      --gold: #F5C518;
+      --bundesliga-red: #E30613;
+      --bundesliga-red-dark: #9e0a12;
+      --bundesliga-gold: #FFD700;
       --chalk: #FFFFFF;
       --steel: #a0a8b8;
-      --line: rgba(255, 255, 255, 0.12);
-      --line-strong: rgba(255, 255, 255, 0.2);
+      --line: rgba(255, 255, 255, 0.10);
+      --line-strong: rgba(255, 255, 255, 0.18);
       --green: #00b050;
-      --zero: #a89fcc;
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
       --shadow: 0 28px 75px rgba(0, 0, 0, 0.46);
       --event-font: "Sora", "Segoe UI", Arial, sans-serif;
@@ -31,17 +30,17 @@
       --mono-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     }
     * { box-sizing: border-box; }
-    ::selection { background: var(--red); color: var(--chalk); }
+    ::selection { background: var(--bundesliga-red); color: var(--chalk); }
     body {
       margin: 0;
       min-height: 100vh;
       background-color: var(--night);
       background-image:
-        linear-gradient(145deg, rgba(211, 1, 12, 0.18) 0%, transparent 45%),
-        linear-gradient(215deg, rgba(211, 1, 12, 0.08) 0%, transparent 35%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 24px),
+        linear-gradient(145deg, rgba(227, 6, 19, 0.15) 0%, transparent 45%),
+        linear-gradient(215deg, rgba(227, 6, 19, 0.06) 0%, transparent 35%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 24px),
         radial-gradient(ellipse at 10% 5%, rgba(255,255,255,0.04) 0%, transparent 45%),
-        radial-gradient(ellipse at 90% 95%, rgba(211,1,12,0.08) 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 95%, rgba(227,6,19,0.08) 0%, transparent 40%),
         var(--night);
       color: var(--chalk);
       font-family: var(--event-font);
@@ -61,7 +60,7 @@
       white-space: nowrap;
       pointer-events: none;
       transform: rotate(-8deg);
-      text-shadow: 0 0 60px rgba(211,1,12,0.04);
+      text-shadow: 0 0 60px rgba(227,6,19,0.04);
     }
     body::before {
       content: "";
@@ -69,12 +68,12 @@
       inset: 0;
       z-index: -4;
       pointer-events: none;
-      background: repeating-linear-gradient(45deg, transparent 0px, transparent 120px, rgba(255,255,255,0.012) 120px, rgba(255,255,255,0.012) 121px, transparent 121px, transparent 180px);
+      background: repeating-linear-gradient(45deg, transparent 0px, transparent 120px, rgba(255,255,255,0.008) 120px, rgba(255,255,255,0.008) 121px, transparent 121px, transparent 180px);
     }
     .app-shell { max-width: 1440px; margin: 0 auto; position: relative; isolation: isolate; }
 
     /* ============================
-       KOPF
+       KOPF – Bundesliga Style
        ============================ */
     .liga-header {
       position: relative;
@@ -85,11 +84,10 @@
       gap: 16px;
       margin-bottom: 22px;
       padding: 22px 30px 22px 34px;
-      background: linear-gradient(100deg, rgba(211,1,12,0.22) 0%, transparent 38%), linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015)), var(--night-2);
+      background: linear-gradient(100deg, rgba(227,6,19,0.25) 0%, transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--night-2);
       border: 1px solid var(--line-strong);
-      border-left: 4px solid var(--red);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.06);
+      border-left: 6px solid var(--bundesliga-red);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.04);
       overflow: hidden;
     }
     .liga-header::before {
@@ -99,7 +97,7 @@
       left: -6%;
       width: 40%;
       height: 220%;
-      background: radial-gradient(ellipse, rgba(245,197,24,0.14) 0%, transparent 65%);
+      background: radial-gradient(ellipse, rgba(255,215,0,0.10) 0%, transparent 65%);
       transform: rotate(12deg);
       pointer-events: none;
     }
@@ -113,11 +111,11 @@
       font-family: var(--headline-font);
       font-size: clamp(1.6rem, 3.4vw, 2.9rem);
       font-weight: 400;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       margin: 0;
       color: var(--chalk);
-      text-shadow: 0 2px 0 var(--red-deep), 0 14px 30px rgba(211,1,12,0.2);
+      text-shadow: 0 2px 0 var(--bundesliga-red-dark), 0 14px 30px rgba(227,6,19,0.2);
     }
     .liga-header .sub {
       color: var(--steel);
@@ -127,20 +125,20 @@
       text-transform: uppercase;
       margin-top: 4px;
     }
-    .liga-header .sub strong { color: var(--gold); font-weight: 800; }
+    .liga-header .sub strong { color: var(--bundesliga-gold); font-weight: 800; }
 
     .header-nav {
       display: flex;
-      gap: 6px;
+      gap: 4px;
       flex-wrap: wrap;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.4);
       padding: 4px;
-      border-radius: 6px;
+      border-radius: 0;
       border: 1px solid var(--line);
     }
     .header-nav button {
       padding: 8px 20px;
-      border-radius: 4px;
+      border-radius: 0;
       border: none;
       background: transparent;
       color: var(--steel);
@@ -148,12 +146,12 @@
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       cursor: pointer;
       transition: all 0.15s;
     }
     .header-nav button:hover { color: var(--chalk); background: rgba(255,255,255,0.06); }
-    .header-nav button.active { background: var(--red); color: var(--chalk); box-shadow: 0 0 16px rgba(211,1,12,0.4); }
+    .header-nav button.active { background: var(--bundesliga-red); color: var(--chalk); box-shadow: 0 0 20px rgba(227,6,19,0.4); }
 
     /* ============================
        VIEWS
@@ -182,14 +180,13 @@
     }
 
     /* ============================
-       TABELLE
+       TABELLE – Bundesliga Style
        ============================ */
     .table-wrap {
       overflow-x: hidden;
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       border: 1px solid var(--line);
-      border-top: 2px solid var(--red);
-      border-radius: 4px;
+      border-top: 3px solid var(--bundesliga-red);
       padding: 4px 0 6px;
       box-shadow: var(--shadow);
     }
@@ -212,14 +209,14 @@
       font-weight: 700;
       font-size: 0.55rem;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       color: var(--steel);
-      border-bottom: 1px solid var(--line-strong);
+      border-bottom: 2px solid var(--line-strong);
       font-family: var(--mono-font);
     }
     .liga-table td {
       padding: 7px 8px;
-      border-bottom: 1px solid rgba(255,255,255,0.045);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       vertical-align: middle;
       font-family: var(--mono-font);
       overflow: hidden;
@@ -227,8 +224,8 @@
       text-overflow: ellipsis;
     }
     .liga-table td.team { font-family: var(--event-font); }
-    .liga-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.018); }
-    .liga-table tr:hover td { background: rgba(211,1,12,0.08); }
+    .liga-table tbody tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+    .liga-table tr:hover td { background: rgba(227,6,19,0.08); }
     .liga-table .pos {
       font-weight: 800;
       color: var(--steel);
@@ -237,14 +234,14 @@
     }
     .liga-table tbody tr:nth-child(-n+2) .pos {
       color: var(--night);
-      background: var(--gold);
-      border-radius: 3px;
-      box-shadow: 0 0 12px rgba(245,197,24,0.4);
+      background: var(--bundesliga-gold);
+      border-radius: 0;
+      box-shadow: 0 0 16px rgba(255,215,0,0.35);
     }
     .liga-table tbody tr:nth-last-child(-n+2) .pos {
       color: var(--chalk);
-      background: rgba(211,1,12,0.55);
-      border-radius: 3px;
+      background: rgba(227,6,19,0.6);
+      border-radius: 0;
     }
     .liga-table .team { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--chalk); }
     .liga-table .pts {
@@ -252,7 +249,7 @@
       font-size: 0.95rem;
       color: var(--chalk);
       text-align: center;
-      background: rgba(211,1,12,0.10);
+      background: rgba(227,6,19,0.12);
     }
     .liga-table .num { text-align: center; color: var(--steel); }
 
@@ -268,12 +265,12 @@
       padding: 6px;
       background: rgba(0,0,0,0.35);
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 0;
     }
     .liga-tabs button {
       flex: 0 1 auto;
       padding: 8px 14px;
-      border-radius: 5px;
+      border-radius: 0;
       border: 1px solid transparent;
       background: transparent;
       color: var(--steel);
@@ -281,13 +278,13 @@
       font-size: 0.68rem;
       font-family: var(--mono-font);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       cursor: pointer;
       transition: all 0.15s;
       white-space: nowrap;
     }
-    .liga-tabs button:hover { background: rgba(255,255,255,0.08); color: var(--chalk); }
-    .liga-tabs button.active { background: var(--red); color: var(--chalk); box-shadow: 0 0 16px rgba(211,1,12,0.5); }
+    .liga-tabs button:hover { background: rgba(255,255,255,0.06); color: var(--chalk); }
+    .liga-tabs button.active { background: var(--bundesliga-red); color: var(--chalk); box-shadow: 0 0 20px rgba(227,6,19,0.4); }
     .liga-tabs button:disabled { opacity: 0.3; cursor: not-allowed; }
 
     /* ============================
@@ -295,14 +292,14 @@
        ============================ */
     .spiel-liste { display: flex; flex-direction: column; gap: 10px; }
     .spiel-item {
-      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       border: 1px solid var(--line);
-      border-left: 3px solid transparent;
-      border-radius: 3px;
+      border-left: 4px solid transparent;
+      border-radius: 0;
       overflow: hidden;
       transition: border-color 0.2s, transform 0.15s;
     }
-    .spiel-item:hover { border-left-color: var(--red); transform: translateX(2px); }
+    .spiel-item:hover { border-left-color: var(--bundesliga-red); transform: translateX(2px); }
     .spiel-header {
       display: flex;
       align-items: center;
@@ -310,7 +307,7 @@
       padding: 12px 16px;
       gap: 10px;
       flex-wrap: wrap;
-      background: rgba(0,0,0,0.25);
+      background: rgba(0,0,0,0.2);
     }
     .spiel-header .team-block {
       display: flex;
@@ -346,9 +343,9 @@
       background: var(--night);
       border: 1px solid var(--line-strong);
       padding: 4px 14px;
-      border-radius: 2px;
-      color: var(--gold);
-      text-shadow: 0 0 10px rgba(245,197,24,0.5);
+      border-radius: 0;
+      color: var(--bundesliga-gold);
+      text-shadow: 0 0 10px rgba(255,215,0,0.4);
       white-space: nowrap;
       flex-shrink: 0;
       letter-spacing: 0.04em;
@@ -356,7 +353,7 @@
     .spiel-header .toggle-btn {
       background: none;
       border: 1px solid var(--line-strong);
-      border-radius: 50%;
+      border-radius: 0;
       width: 28px;
       height: 28px;
       color: var(--chalk);
@@ -368,8 +365,8 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    .spiel-header .toggle-btn:hover { background: rgba(211,1,12,0.2); border-color: var(--red); }
-    .spiel-header .toggle-btn.open { transform: rotate(180deg); background: rgba(211,1,12,0.25); }
+    .spiel-header .toggle-btn:hover { background: rgba(227,6,19,0.2); border-color: var(--bundesliga-red); }
+    .spiel-header .toggle-btn.open { transform: rotate(180deg); background: rgba(227,6,19,0.25); }
     .spiel-meta {
       display: flex;
       align-items: center;
@@ -382,7 +379,7 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    .spiel-meta .status { color: var(--gold); font-weight: 700; }
+    .spiel-meta .status { color: var(--bundesliga-gold); font-weight: 700; }
     .spiel-meta .status.done { color: var(--green); }
     .spiel-board-container {
       display: grid;
@@ -407,9 +404,9 @@
     .board-panel {
       position: relative;
       overflow: hidden;
-      background: radial-gradient(ellipse 500px 260px at 50% -20%, rgba(245,197,24,0.10) 0%, transparent 60%), linear-gradient(160deg, rgba(20,20,20,0.55), rgba(6,9,10,0.9));
+      background: radial-gradient(ellipse 500px 260px at 50% -20%, rgba(255,215,0,0.08) 0%, transparent 60%), linear-gradient(160deg, rgba(20,20,20,0.55), rgba(6,9,10,0.9));
       border: 1px solid var(--line-strong);
-      border-radius: 4px;
+      border-radius: 0;
       padding: 12px;
       box-shadow: var(--shadow);
     }
@@ -428,7 +425,7 @@
       font-family: var(--mono-font);
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      color: var(--gold);
+      color: var(--bundesliga-gold);
       opacity: 0.85;
     }
     .board-panel .topbar h3 {
@@ -448,7 +445,7 @@
       gap: 12px;
       background: #f4f2ee;
       padding: 6px 16px;
-      border-radius: 999px;
+      border-radius: 0;
       max-width: 700px;
       width: 100%;
     }
@@ -477,10 +474,10 @@
       width: calc(var(--cell-size) * 5);
       height: calc(var(--cell-size) * 4);
       margin: 0 auto;
-      border: 2px solid var(--red);
-      border-radius: 3px;
+      border: 2px solid var(--bundesliga-red);
+      border-radius: 0;
       outline: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 0 3px var(--night), 0 0 34px rgba(211,1,12,0.14), inset 0 0 30px rgba(0,0,0,0.5), var(--shadow);
+      box-shadow: 0 0 0 3px var(--night), 0 0 34px rgba(227,6,19,0.14), inset 0 0 30px rgba(0,0,0,0.5), var(--shadow);
       background: #1a1a1a;
       overflow: hidden;
     }
@@ -530,7 +527,7 @@
       opacity: 0.95;
     }
     .board-panel .piece-cell:not(.light) .piece-svg {
-      filter: invert(1) drop-shadow(0 0 6px rgba(211,1,12,0.15)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+      filter: invert(1) drop-shadow(0 0 6px rgba(227,6,19,0.15)) drop-shadow(0 8px 12px rgba(0,0,0,0.5));
     }
     .board-panel .piece-cell .player-photo {
       position: absolute;
@@ -538,7 +535,7 @@
       z-index: 1;
       width: calc(100% - 8px);
       height: calc(100% - 8px);
-      border-radius: 4px;
+      border-radius: 0;
       background: rgba(0,0,0,0.3);
       object-fit: contain;
       object-position: center bottom;
@@ -553,7 +550,7 @@
       width: 24%;
       max-width: 22px;
       padding: 2px;
-      border-radius: 3px;
+      border-radius: 0;
       background: rgba(0,0,0,0.55);
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       filter: none !important;
@@ -614,7 +611,7 @@
       width: 100%;
       height: 100%;
       border: 1px solid rgba(0,0,0,0.15);
-      border-radius: 3px;
+      border-radius: 0;
       background: var(--chalk);
       color: var(--night);
       font-size: clamp(0.25rem, 0.4vw, 0.45rem);
@@ -657,7 +654,7 @@
     .board-panel .placed-chip .chip-watermark.neutral { color: rgba(6,9,10,0.15); }
 
     /* ============================
-       STATISTIKEN
+       STATISTIKEN – Bundesliga Style
        ============================ */
     .stats-container {
       display: grid;
@@ -670,11 +667,11 @@
       position: relative;
       overflow: hidden;
       background:
-        radial-gradient(ellipse 320px 160px at 100% -10%, rgba(245,197,24,0.10) 0%, transparent 60%),
-        linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012));
+        radial-gradient(ellipse 320px 160px at 100% -10%, rgba(255,215,0,0.08) 0%, transparent 60%),
+        linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
       border: 1px solid var(--line);
-      border-top: 2px solid var(--red);
-      border-radius: 6px;
+      border-top: 3px solid var(--bundesliga-red);
+      border-radius: 0;
       padding: 0 0 14px;
       box-shadow: var(--shadow);
     }
@@ -684,8 +681,8 @@
       gap: 12px;
       padding: 14px 18px;
       margin-bottom: 4px;
-      border-bottom: 1px solid var(--line-strong);
-      background: linear-gradient(100deg, rgba(211,1,12,0.16) 0%, transparent 60%);
+      border-bottom: 2px solid var(--line-strong);
+      background: linear-gradient(100deg, rgba(227,6,19,0.14) 0%, transparent 60%);
     }
     .stat-card .piece-icon-wrap {
       flex-shrink: 0;
@@ -695,7 +692,7 @@
       place-items: center;
       background: rgba(0,0,0,0.35);
       border: 1px solid var(--line-strong);
-      border-radius: 5px;
+      border-radius: 0;
     }
     .stat-card .piece-icon-wrap img {
       width: 22px;
@@ -707,7 +704,7 @@
       font-family: var(--headline-font);
       font-size: 1.05rem;
       font-weight: 400;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       color: var(--chalk);
       margin: 0;
@@ -719,10 +716,10 @@
       font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       color: var(--steel);
       margin: 0 0 8px 0;
-      border-left: 3px solid var(--red);
+      border-left: 3px solid var(--bundesliga-red);
       padding-left: 10px;
     }
     .stat-entry {
@@ -730,15 +727,15 @@
       align-items: center;
       gap: 12px;
       padding: 7px 8px;
-      border-radius: 5px;
+      border-radius: 0;
       transition: background 0.12s;
     }
-    .stat-entry:hover { background: rgba(255,255,255,0.045); }
+    .stat-entry:hover { background: rgba(255,255,255,0.04); }
     .stat-entry.top1 {
-      background: linear-gradient(90deg, rgba(245,197,24,0.14), transparent 75%);
-      border: 1px solid rgba(245,197,24,0.25);
+      background: linear-gradient(90deg, rgba(255,215,0,0.12), transparent 75%);
+      border: 1px solid rgba(255,215,0,0.2);
     }
-    .stat-entry.top1:hover { background: linear-gradient(90deg, rgba(245,197,24,0.2), transparent 75%); }
+    .stat-entry.top1:hover { background: linear-gradient(90deg, rgba(255,215,0,0.18), transparent 75%); }
 
     .stat-entry .rank-badge {
       flex-shrink: 0;
@@ -746,7 +743,7 @@
       height: 22px;
       display: grid;
       place-items: center;
-      border-radius: 50%;
+      border-radius: 0;
       font-family: var(--mono-font);
       font-size: 0.65rem;
       font-weight: 800;
@@ -756,19 +753,19 @@
     }
     .stat-entry .rank-badge.gold {
       color: var(--night);
-      background: linear-gradient(145deg, #ffe28a, var(--gold));
+      background: var(--bundesliga-gold);
       border-color: transparent;
-      box-shadow: 0 0 14px rgba(245,197,24,0.55);
+      box-shadow: 0 0 14px rgba(255,215,0,0.45);
     }
     .stat-entry .rank-badge.silver {
       color: var(--night);
-      background: linear-gradient(145deg, #f0f0f0, #b8bcc4);
+      background: #c0c0c0;
       border-color: transparent;
-      box-shadow: 0 0 10px rgba(255,255,255,0.25);
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
     }
     .stat-entry .rank-badge.bronze {
       color: var(--night);
-      background: linear-gradient(145deg, #e0a468, #ab6a34);
+      background: #cd7f32;
       border-color: transparent;
       box-shadow: 0 0 10px rgba(205,127,50,0.3);
     }
@@ -782,25 +779,24 @@
     .stat-entry .player-img {
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: 0;
       object-fit: cover;
       display: block;
       background: var(--night-2);
       border: 2px solid var(--line-strong);
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
-    .stat-entry.top1 .player-img { border-color: var(--gold); box-shadow: 0 0 16px rgba(245,197,24,0.45); }
+    .stat-entry.top1 .player-img { border-color: var(--bundesliga-gold); box-shadow: 0 0 16px rgba(255,215,0,0.4); }
     .stat-entry.top2 .player-img { border-color: #c7cbd1; }
     .stat-entry.top3 .player-img { border-color: #cd7f32; }
 
-    /* kleines Club-Logo in der rechten unteren Ecke des Avatars (nur für Einzelstatistik) */
     .stat-entry .team-badge-mini {
       position: absolute;
       right: -3px;
       bottom: -3px;
       width: 17px;
       height: 17px;
-      border-radius: 50%;
+      border-radius: 0;
       object-fit: contain;
       background: var(--chalk);
       border: 1.5px solid var(--night);
@@ -845,12 +841,12 @@
       font-family: var(--mono-font);
       font-weight: 800;
       font-size: 0.92rem;
-      color: var(--gold);
+      color: var(--bundesliga-gold);
       background: var(--night);
       border: 1px solid var(--line-strong);
       padding: 3px 10px;
-      border-radius: 3px;
-      text-shadow: 0 0 8px rgba(245,197,24,0.4);
+      border-radius: 0;
+      text-shadow: 0 0 8px rgba(255,215,0,0.3);
       white-space: nowrap;
       line-height: 1.3;
     }
@@ -880,7 +876,7 @@
       font-size: 1.1rem;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--gold);
+      color: var(--bundesliga-gold);
       margin-bottom: 12px;
       padding-bottom: 6px;
       border-bottom: 2px solid var(--line-strong);
@@ -1142,7 +1138,7 @@
         <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
         <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--red),var(--red-deep));padding:3px 12px;border-radius:8px;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
+      <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--bundesliga-red),var(--bundesliga-red-dark));padding:3px 12px;border-radius:0;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
         <span>${score.white}</span><span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span><span>${score.black}</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
@@ -1451,8 +1447,8 @@
     const headApp = document.createElement('div');
     headApp.className = 'stat-card-head';
     headApp.innerHTML = `
-      <div class="piece-icon-wrap" style="background:rgba(245,197,24,0.14);border-color:rgba(245,197,24,0.4);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--gold);width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
+      <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.12);border-color:rgba(255,215,0,0.3);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--bundesliga-gold);width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
       </div>
       <h3>Häufigste Einsätze</h3>
     `;
