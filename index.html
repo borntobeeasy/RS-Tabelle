@@ -922,7 +922,7 @@
   function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
   // ============================
-  //  KORRIGIERTE getAssignmentScore
+  //  getAssignmentScore (korrekt)
   // ============================
   function getAssignmentScore(assignment, state) {
     if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
@@ -932,7 +932,6 @@
     
     switch (assignment.piece) {
       case 'knight':
-        // Der Springer-Wert kommt aus questionValue
         const knightVal = state.questionValue ?? 1;
         return (assignment.polarity === 'positive') ? knightVal : 0;
       case 'bishop':
@@ -1231,7 +1230,7 @@
   }
 
   // ============================
-  //  STATISTIKEN — KORRIGIERT
+  //  STATISTIKEN — KORRIGIERT (ohne Betrag, Filter games >= 3)
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
@@ -1247,15 +1246,14 @@
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
-      // Für jeden Slot die absoluten Punkte berechnen
+      // Für jeden Slot die tatsächlichen Punkte (inkl. Vorzeichen) berechnen
       const slotPoints = {};
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
         const row = a.side === 'white' ? 'top' : 'bottom';
         const slot = `${row}-${a.piece}`;
         if (!slotPoints[slot]) slotPoints[slot] = 0;
-        // WICHTIG: Absoluten Wert nehmen, da es um die Stärke der These geht
-        slotPoints[slot] += Math.abs(getAssignmentScore(a, state));
+        slotPoints[slot] += getAssignmentScore(a, state); // KEIN Math.abs!
       });
 
       // Für jeden Slot mit Bild -> zur Figur aggregieren
@@ -1273,13 +1271,13 @@
             totalPoints: 0, 
             maxPoints: -Infinity, 
             maxGameTeam: null,
-            pointsPerGame: []
+            values: [] // alle Einzelwerte für Durchschnitt
           };
         }
         const p = playerData[image];
         p.games += 1;
         p.totalPoints += points;
-        p.pointsPerGame.push(points);
+        p.values.push(points);
         if (points > p.maxPoints) {
           p.maxPoints = points;
           p.maxGameTeam = teamName;
@@ -1298,17 +1296,17 @@
         maxPoints: stats.maxPoints,
         avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
         team: stats.maxGameTeam,
-        pointsPerGame: stats.pointsPerGame || []
+        values: stats.values || []
       }));
 
-      // Sortiere nach maximaler Einzelpunktzahl (höchste zuerst)
+      // Einzelstatistik: Top 5 nach maxPoints (höchster Wert)
       const bySingle = [...entries]
         .sort((a, b) => b.maxPoints - a.maxPoints)
         .slice(0, 5);
       
-      // Sortiere nach Durchschnitt (mind. 2 Spiele)
+      // Durchschnittsstatistik: nur Spieler mit games >= 3, sortiert nach avg
       const byAvg = [...entries]
-        .filter(e => e.games >= 2)
+        .filter(e => e.games >= 3)
         .sort((a, b) => b.avg - a.avg)
         .slice(0, 5);
       
@@ -1322,7 +1320,7 @@
     container.innerHTML = '';
     const stats = computePlayerStats();
 
-    // Debug: Logge die Statistiken
+    // Debug (kann in Konsole eingesehen werden)
     console.log('Statistiken:', stats);
 
     PIECES.forEach(p => {
@@ -1363,15 +1361,15 @@
       sectionSingle.appendChild(listSingle);
       card.appendChild(sectionSingle);
 
-      // Bester Durchschnitt
+      // Bester Durchschnitt (min. 3 Spiele)
       const sectionAvg = document.createElement('div');
       sectionAvg.className = 'stat-section';
-      sectionAvg.innerHTML = `<div class="section-title">📊 Bester Durchschnitt (min. 2 Spiele)</div>`;
+      sectionAvg.innerHTML = `<div class="section-title">📊 Bester Durchschnitt (min. 3 Spiele)</div>`;
       const listAvg = document.createElement('div');
       
       const avgData = stats[p.id]?.byAvg || [];
       if (avgData.length === 0) {
-        listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 2)</div>';
+        listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 3)</div>';
       } else {
         avgData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
