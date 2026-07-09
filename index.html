@@ -792,7 +792,20 @@
     .stat-entry.top1 .player-img { border-color: var(--gold); box-shadow: 0 0 16px rgba(245,197,24,0.45); }
     .stat-entry.top2 .player-img { border-color: #c7cbd1; }
     .stat-entry.top3 .player-img { border-color: #cd7f32; }
-    /* team-badge-mini wurde entfernt – kein Club-Logo mehr */
+
+    /* kleines Club-Logo in der rechten unteren Ecke des Avatars (nur für Einzelstatistik) */
+    .stat-entry .team-badge-mini {
+      position: absolute;
+      right: -3px;
+      bottom: -3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: var(--chalk);
+      border: 1.5px solid var(--night);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
 
     .stat-entry .meta-col {
       flex: 1;
@@ -895,6 +908,7 @@
       .stat-entry .avatar-wrap { width: 34px; height: 34px; }
       .stat-entry .player-img { width: 34px; height: 34px; }
       .stat-entry .value-chip .value-num { font-size: 0.8rem; padding: 2px 8px; }
+      .stat-entry .team-badge-mini { width: 14px; height: 14px; right: -2px; bottom: -2px; }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
@@ -903,6 +917,7 @@
       .spiel-header .team-logo-small { width: 22px; height: 22px; }
       .stat-entry .avatar-wrap { width: 30px; height: 30px; }
       .stat-entry .player-img { width: 30px; height: 30px; }
+      .stat-entry .team-badge-mini { width: 12px; height: 12px; right: -2px; bottom: -2px; }
     }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
@@ -1313,7 +1328,7 @@
   //  STATISTIKEN
   // ============================
 
-  // 1. Häufigste Einsätze (Top 10) – ohne Club-Logo und ohne "zuletzt eingesetzt"
+  // 1. Häufigste Einsätze (Top 10) – ohne Team-Namen
   function computeAppearanceStats() {
     const players = {};
     for (const [key, state] of Object.entries(allGameData)) {
@@ -1330,17 +1345,15 @@
           const slot = `${row}-${piece.id}`;
           const image = state.figureImages?.[slot];
           if (!image) return;
-          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
           if (!players[image]) {
-            players[image] = { count: 0, lastTeam: null };
+            players[image] = { count: 0 };
           }
           players[image].count += 1;
-          players[image].lastTeam = teamName || players[image].lastTeam;
         });
       });
     }
     const sorted = Object.entries(players)
-      .map(([image, data]) => ({ image, count: data.count, team: data.lastTeam }))
+      .map(([image, data]) => ({ image, count: data.count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
     return sorted;
@@ -1431,7 +1444,7 @@
     const container = document.getElementById('statsContainer');
     container.innerHTML = '';
 
-    // 1. Häufigste Einsätze (Top 10) – ohne Logo und ohne "zuletzt eingesetzt"
+    // 1. Häufigste Einsätze (Top 10) – ohne Team-Name
     const appearanceData = computeAppearanceStats();
     const appearanceCard = document.createElement('div');
     appearanceCard.className = 'stat-card';
@@ -1458,13 +1471,9 @@
         div.innerHTML = `
           <div class="rank-badge ${rankClass}">${idx + 1}</div>
           <div class="avatar-wrap">
-            <img class="player-img" src="${entry.image}" alt="Spieler" />
+            <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
           </div>
-          <div class="meta-col">
-            <span class="meta-team">${entry.team || '?'}</span>
-            <!-- "zuletzt eingesetzt" wurde entfernt -->
-          </div>
-          <div class="value-chip">
+          <div class="value-chip" style="margin-left:0;flex:1;align-items:flex-start;">
             <span class="value-num">${entry.count}</span>
             <span class="value-unit">Einsätze</span>
           </div>
@@ -1508,7 +1517,7 @@
           div.innerHTML = `
             <div class="rank-badge ${rankClass}">${idx + 1}</div>
             <div class="avatar-wrap">
-              <img class="player-img" src="${entry.image}" alt="Spieler" />
+              <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
               ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
             </div>
             <div class="meta-col">
@@ -1543,7 +1552,7 @@
           div.innerHTML = `
             <div class="rank-badge ${rankClass}">${idx + 1}</div>
             <div class="avatar-wrap">
-              <img class="player-img" src="${entry.image}" alt="Spieler" />
+              <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
             </div>
             <div class="meta-col">
               <span class="meta-detail">${entry.games} Spiele · gesamt ${entry.totalPoints}</span>
