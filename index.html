@@ -702,8 +702,17 @@
       height: 22px;
       filter: invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.15));
     }
+    .stat-card .piece-icon-wrap svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--chalk);
+      opacity: 0.85;
+    }
     .stat-card h3 {
       flex: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
       font-family: var(--headline-font);
       font-size: 1.05rem;
       font-weight: 400;
@@ -711,6 +720,14 @@
       text-transform: uppercase;
       color: var(--chalk);
       margin: 0;
+    }
+    .stat-card h3 .piece-value-tag {
+      font-family: var(--mono-font);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--steel);
     }
     .stat-section { margin: 12px 18px 8px; }
     .stat-section + .stat-section { margin-top: 18px; }
@@ -742,13 +759,13 @@
 
     .stat-entry .rank-badge {
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       display: grid;
       place-items: center;
       border-radius: 50%;
       font-family: var(--mono-font);
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
       color: var(--steel);
       background: rgba(255,255,255,0.06);
@@ -773,12 +790,18 @@
       box-shadow: 0 0 10px rgba(205,127,50,0.3);
     }
 
+    .stat-entry .avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+    }
     .stat-entry .player-img {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       object-fit: cover;
-      flex-shrink: 0;
+      display: block;
       background: var(--night-2);
       border: 2px solid var(--line-strong);
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
@@ -786,46 +809,73 @@
     .stat-entry.top1 .player-img { border-color: var(--gold); box-shadow: 0 0 16px rgba(245,197,24,0.45); }
     .stat-entry.top2 .player-img { border-color: #c7cbd1; }
     .stat-entry.top3 .player-img { border-color: #cd7f32; }
+    .stat-entry .avatar-wrap .team-badge-mini {
+      position: absolute;
+      right: -3px;
+      bottom: -3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: var(--chalk);
+      border: 1.5px solid var(--night);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
 
-    .stat-entry .stat-info {
+    .stat-entry .meta-col {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 2px;
     }
-    .stat-entry .stat-primary {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .stat-entry .stat-info .highlight {
+    .stat-entry .meta-col .meta-team {
       font-family: var(--mono-font);
-      font-size: 0.95rem;
-      color: #2be08a;
-      font-weight: 800;
-    }
-    .stat-entry .stat-info .team-name-tag {
-      font-family: var(--mono-font);
-      font-size: 0.6rem;
-      font-weight: 600;
+      font-size: 0.62rem;
+      font-weight: 700;
       color: var(--chalk);
-      background: rgba(255,255,255,0.08);
-      padding: 2px 9px;
-      border-radius: 3px;
-      letter-spacing: 0.03em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: 0.02em;
     }
-    .stat-entry .stat-secondary {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .stat-entry .meta-col .meta-detail {
       font-family: var(--mono-font);
-      font-size: 0.6rem;
+      font-size: 0.56rem;
       color: var(--steel);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .stat-entry .stat-info .value { font-weight: 700; color: var(--steel); }
-    .stat-entry .stat-info .detail { color: var(--steel); opacity: 0.75; }
+
+    .stat-entry .value-chip {
+      flex-shrink: 0;
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+    }
+    .stat-entry .value-chip .value-num {
+      font-family: var(--mono-font);
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: var(--gold);
+      background: var(--night);
+      border: 1px solid var(--line-strong);
+      padding: 3px 10px;
+      border-radius: 3px;
+      text-shadow: 0 0 8px rgba(245,197,24,0.4);
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+    .stat-entry .value-chip .value-unit {
+      font-family: var(--mono-font);
+      font-size: 0.5rem;
+      color: var(--steel);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
     .no-data {
       color: var(--steel);
       font-size: 0.7rem;
@@ -869,15 +919,17 @@
       .spiel-header .score-display { font-size: 0.95rem; padding: 3px 10px; }
       .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
       .spiel-header .team-logo-small { width: 26px; height: 26px; }
-      .stat-entry .player-img { width: 40px; height: 40px; }
-      .stat-entry .stat-info { font-size: 0.6rem; gap: 2px 10px; }
+      .stat-entry .avatar-wrap { width: 34px; height: 34px; }
+      .stat-entry .player-img { width: 34px; height: 34px; }
+      .stat-entry .value-chip .value-num { font-size: 0.8rem; padding: 2px 8px; }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
       .spiel-header .score-display { font-size: 0.8rem; padding: 2px 8px; }
       .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px); }
       .spiel-header .team-logo-small { width: 22px; height: 22px; }
-      .stat-entry .player-img { width: 36px; height: 36px; }
+      .stat-entry .avatar-wrap { width: 30px; height: 30px; }
+      .stat-entry .player-img { width: 30px; height: 30px; }
     }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
@@ -1306,16 +1358,18 @@
           const image = state.figureImages?.[slot];
           if (!image) return;
           const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+          const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
           if (!players[image]) {
-            players[image] = { count: 0, lastTeam: null };
+            players[image] = { count: 0, lastTeam: null, lastTeamLogo: null };
           }
           players[image].count += 1;
           players[image].lastTeam = teamName || players[image].lastTeam;
+          players[image].lastTeamLogo = teamLogo || players[image].lastTeamLogo;
         });
       });
     }
     const sorted = Object.entries(players)
-      .map(([image, data]) => ({ image, count: data.count, team: data.lastTeam }))
+      .map(([image, data]) => ({ image, count: data.count, team: data.lastTeam, teamLogo: data.lastTeamLogo }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10); // Top 10
     return sorted;
@@ -1413,8 +1467,8 @@
     const headApp = document.createElement('div');
     headApp.className = 'stat-card-head';
     headApp.innerHTML = `
-      <div class="piece-icon-wrap" style="background:rgba(245,197,24,0.2);border-color:var(--gold);">
-        <span style="font-size:1.2rem;">🏃</span>
+      <div class="piece-icon-wrap" style="background:rgba(245,197,24,0.14);border-color:rgba(245,197,24,0.4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
       </div>
       <h3>Häufigste Einsätze</h3>
     `;
@@ -1432,16 +1486,17 @@
         div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
         div.innerHTML = `
           <div class="rank-badge ${rankClass}">${idx + 1}</div>
-          <img class="player-img" src="${entry.image}" alt="Spieler" />
-          <div class="stat-info">
-            <div class="stat-primary">
-              <span class="highlight">${entry.count}</span>
-              <span style="font-size:0.7rem;color:var(--steel);">Einsätze</span>
-              <span class="team-name-tag">${entry.team || '?'}</span>
-            </div>
-            <div class="stat-secondary">
-              <span class="detail">zuletzt für ${entry.team || '?'}</span>
-            </div>
+          <div class="avatar-wrap">
+            <img class="player-img" src="${entry.image}" alt="Spieler" />
+            ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
+          </div>
+          <div class="meta-col">
+            <span class="meta-team">${entry.team || '?'}</span>
+            <span class="meta-detail">zuletzt eingesetzt</span>
+          </div>
+          <div class="value-chip">
+            <span class="value-num">${entry.count}</span>
+            <span class="value-unit">Einsätze</span>
           </div>
         `;
         listApp.appendChild(div);
@@ -1463,7 +1518,7 @@
       head.className = 'stat-card-head';
       head.innerHTML = `
         <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
-        <h3>${p.name}</h3>
+        <h3>${p.name} <span class="piece-value-tag">${p.value}</span></h3>
       `;
       card.appendChild(head);
 
@@ -1483,16 +1538,17 @@
           div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
           div.innerHTML = `
             <div class="rank-badge ${rankClass}">${idx + 1}</div>
-            <img class="player-img" src="${entry.image}" alt="Spieler" />
-            <div class="stat-info">
-              <div class="stat-primary">
-                <span class="highlight">${formatNumber(entry.maxPoints)} Pkt</span>
-                ${entry.teamLogo ? `<img class="team-logo-small" src="${entry.teamLogo}" alt="${entry.team}" />` : ''}
-              </div>
-              <div class="stat-secondary">
-                <span class="value">${entry.games} Einsätze</span>
-                <span class="detail">gesamt ${formatNumber(entry.totalPoints)}</span>
-              </div>
+            <div class="avatar-wrap">
+              <img class="player-img" src="${entry.image}" alt="Spieler" />
+              ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
+            </div>
+            <div class="meta-col">
+              <span class="meta-team">${entry.team || '?'}</span>
+              <span class="meta-detail">${entry.games} Einsätze · gesamt ${formatNumber(entry.totalPoints)}</span>
+            </div>
+            <div class="value-chip">
+              <span class="value-num">${formatNumber(entry.maxPoints)}</span>
+              <span class="value-unit">Punkte</span>
             </div>
           `;
           listSingle.appendChild(div);
@@ -1517,15 +1573,17 @@
           div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
           div.innerHTML = `
             <div class="rank-badge ${rankClass}">${idx + 1}</div>
-            <img class="player-img" src="${entry.image}" alt="Spieler" />
-            <div class="stat-info">
-              <div class="stat-primary">
-                <span class="highlight">${entry.avg.toFixed(1)} Ø</span>
-              </div>
-              <div class="stat-secondary">
-                <span class="value">${entry.games} Spiele</span>
-                <span class="detail">gesamt ${formatNumber(entry.totalPoints)}</span>
-              </div>
+            <div class="avatar-wrap">
+              <img class="player-img" src="${entry.image}" alt="Spieler" />
+              ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
+            </div>
+            <div class="meta-col">
+              <span class="meta-team">${entry.team || '?'}</span>
+              <span class="meta-detail">${entry.games} Spiele · gesamt ${formatNumber(entry.totalPoints)}</span>
+            </div>
+            <div class="value-chip">
+              <span class="value-num">${entry.avg.toFixed(1)}</span>
+              <span class="value-unit">Ø Punkte</span>
             </div>
           `;
           listAvg.appendChild(div);
