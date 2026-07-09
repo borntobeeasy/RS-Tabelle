@@ -948,18 +948,15 @@
   let currentSpieltag = 0;
 
   // ============================
-  //  PIECES MIT BASE
+  //  PIECES (nur für Anzeige)
   // ============================
   const PIECES = [
-    { id: 'rook',   name: 'Turm',    base: 3 },
-    { id: 'bishop', name: 'Läufer',  base: 1 },
-    { id: 'knight', name: 'Springer',base: 1 },
-    { id: 'queen',  name: 'Dame',    base: 1 },
-    { id: 'king',   name: 'König',   base: 3 },
+    { id: 'rook',   name: 'Turm' },
+    { id: 'bishop', name: 'Läufer' },
+    { id: 'knight', name: 'Springer' },
+    { id: 'queen',  name: 'Dame' },
+    { id: 'king',   name: 'König' },
   ];
-  const PIECE_IDS = PIECES.map(p => p.id);
-  const SIDES = ['white', 'black'];
-
   const PIECE_SVG_URLS = {
     rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
     bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
@@ -977,26 +974,26 @@
   function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
   // ============================
-  //  getAssignmentScore (nur für die Brett-Anzeige)
+  //  getAssignmentScore (nur für Brett)
   // ============================
   function getAssignmentScore(assignment, state) {
     if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
     const piece = getPieceById(assignment.piece);
     if (!piece) return 0;
     const sign = assignment.polarity === 'positive' ? 1 : -1;
-    
+    const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
     switch (assignment.piece) {
       case 'knight':
         const knightVal = state.questionValue ?? 1;
         return (assignment.polarity === 'positive') ? knightVal : 0;
       case 'bishop':
-        return (assignment.polarity === 'positive') ? -piece.base : 0;
+        return (assignment.polarity === 'positive') ? -base : 0;
       case 'queen':
-        return (assignment.polarity === 'positive') ? piece.base : 0;
+        return (assignment.polarity === 'positive') ? base : 0;
       case 'rook':
-        return piece.base * sign * -1;
+        return base * sign * -1;
       default:
-        return piece.base * sign;
+        return base * sign;
     }
   }
 
@@ -1285,8 +1282,45 @@
   }
 
   // ============================
-  //  STATISTIKEN — NUR BILD-FELDER (top/bottom), Team-Logo gespeichert
+  //  STATISTIKEN — HÄUFIGSTE EINSÄTZE + FIGUREN-STATS
   // ============================
+
+  // 1. Häufigste Einsätze (alle Spieler, unabhängig von Figur)
+  function computeAppearanceStats() {
+    const players = {}; // key: bild-URL, value: { count, lastTeamLogo, lastTeam }
+    for (const [key, state] of Object.entries(allGameData)) {
+      if (!state) continue;
+      if (!isGameComplete(state)) continue;
+      const [stIdx, spIdx] = key.split('-').map(Number);
+      const spiel = spielplan.spieltage[stIdx]?.[spIdx];
+      if (!spiel) continue;
+
+      const rows = ['top', 'bottom'];
+      rows.forEach(row => {
+        const side = row === 'top' ? 'white' : 'black';
+        PIECES.forEach(piece => {
+          const slot = `${row}-${piece.id}`;
+          const image = state.figureImages?.[slot];
+          if (!image) return;
+          const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
+          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+          if (!players[image]) {
+            players[image] = { count: 0, lastTeamLogo: null, lastTeam: null };
+          }
+          players[image].count += 1;
+          players[image].lastTeamLogo = teamLogo || players[image].lastTeamLogo;
+          players[image].lastTeam = teamName || players[image].lastTeam;
+        });
+      });
+    }
+    const sorted = Object.entries(players)
+      .map(([image, data]) => ({ image, count: data.count, teamLogo: data.lastTeamLogo, team: data.lastTeam }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+    return sorted;
+  }
+
+  // 2. Figuren-statistiken (pro Figur: Einzel & Durchschnitt)
   function computePlayerStats() {
     const pieceStats = {};
     PIECES.forEach(p => {
@@ -1309,8 +1343,8 @@
           const image = state.figureImages?.[slot];
           if (!image) return;
           const points = state.results[side]?.[piece.id] ?? 0;
-          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
           const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
+          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
 
           const playerData = pieceStats[piece.id].players;
           if (!playerData[image]) {
@@ -1364,12 +1398,61 @@
     return result;
   }
 
+  // ============================
+  //  RENDER STATISTICS (alle drei Bereiche)
+  // ============================
   function renderStatistics() {
     const container = document.getElementById('statsContainer');
     container.innerHTML = '';
-    const stats = computePlayerStats();
 
-    console.log('Statistiken:', stats);
+    // 1. Häufigste Einsätze (als erste Karte)
+    const appearanceData = computeAppearanceStats();
+    const appearanceCard = document.createElement('div');
+    appearanceCard.className = 'stat-card';
+    const headApp = document.createElement('div');
+    headApp.className = 'stat-card-head';
+    headApp.innerHTML = `
+      <div class="piece-icon-wrap" style="background:rgba(245,197,24,0.2);border-color:var(--gold);">
+        <span style="font-size:1.2rem;">🏃</span>
+      </div>
+      <h3>Häufigste Einsätze</h3>
+    `;
+    appearanceCard.appendChild(headApp);
+
+    const sectionApp = document.createElement('div');
+    sectionApp.className = 'stat-section';
+    const listApp = document.createElement('div');
+    if (appearanceData.length === 0) {
+      listApp.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
+    } else {
+      appearanceData.forEach((entry, idx) => {
+        const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+        const div = document.createElement('div');
+        div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
+        div.innerHTML = `
+          <div class="rank-badge ${rankClass}">${idx + 1}</div>
+          <img class="player-img" src="${entry.image}" alt="Spieler" />
+          <div class="stat-info">
+            <div class="stat-primary">
+              <span class="highlight">${entry.count}</span>
+              <span style="font-size:0.7rem;color:var(--steel);">Einsätze</span>
+              ${entry.teamLogo ? `<img class="team-logo-small" src="${entry.teamLogo}" alt="${entry.team}" />` : ''}
+            </div>
+            <div class="stat-secondary">
+              <span class="detail">zuletzt ${entry.team || '?'}</span>
+            </div>
+          </div>
+        `;
+        listApp.appendChild(div);
+      });
+    }
+    sectionApp.appendChild(listApp);
+    appearanceCard.appendChild(sectionApp);
+    container.appendChild(appearanceCard);
+
+    // 2. Figuren-Statistiken (Einzel & Durchschnitt)
+    const stats = computePlayerStats();
+    console.log('Figuren-Statistiken:', stats);
 
     PIECES.forEach(p => {
       const card = document.createElement('div');
