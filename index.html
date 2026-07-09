@@ -660,119 +660,191 @@
        STATISTIKEN
        ============================ */
     .stats-container {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 18px;
       margin-top: 12px;
+      align-items: start;
     }
     .stat-card {
-      background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 320px 160px at 100% -10%, rgba(245,197,24,0.10) 0%, transparent 60%),
+        linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.012));
       border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 18px 20px;
+      border-top: 2px solid var(--red);
+      border-radius: 6px;
+      padding: 0 0 14px;
       box-shadow: var(--shadow);
     }
+    .stat-card .stat-card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid var(--line-strong);
+      background: linear-gradient(100deg, rgba(211,1,12,0.16) 0%, transparent 60%);
+    }
+    .stat-card .piece-icon-wrap {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+    }
+    .stat-card .piece-icon-wrap img {
+      width: 22px;
+      height: 22px;
+      filter: invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.15));
+    }
     .stat-card h3 {
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
       font-family: var(--headline-font);
-      font-size: 1.2rem;
+      font-size: 1.05rem;
       font-weight: 400;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin: 0 0 12px 0;
-      border-bottom: 2px solid var(--line-strong);
-      padding-bottom: 8px;
+      color: var(--chalk);
+      margin: 0;
     }
     .stat-card h3 .badge {
       font-family: var(--mono-font);
-      font-size: 0.55rem;
-      font-weight: 700;
-      color: var(--steel);
-      background: rgba(255,255,255,0.06);
-      padding: 2px 10px;
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: var(--night);
+      background: var(--gold);
+      padding: 3px 9px;
       border-radius: 999px;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 10px rgba(245,197,24,0.35);
     }
-    .stat-section {
-      margin: 10px 0 6px 0;
-    }
+    .stat-section { margin: 12px 18px 8px; }
+    .stat-section + .stat-section { margin-top: 18px; }
     .stat-section .section-title {
       font-family: var(--mono-font);
       font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: var(--steel);
-      margin: 0 0 4px 0;
+      margin: 0 0 8px 0;
       border-left: 3px solid var(--red);
       padding-left: 10px;
     }
     .stat-entry {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 6px 8px;
-      border-radius: 4px;
-      transition: background 0.1s;
+      gap: 12px;
+      padding: 7px 8px;
+      border-radius: 5px;
+      transition: background 0.12s;
     }
-    .stat-entry:hover {
-      background: rgba(255,255,255,0.04);
+    .stat-entry:hover { background: rgba(255,255,255,0.045); }
+    .stat-entry.top1 {
+      background: linear-gradient(90deg, rgba(245,197,24,0.14), transparent 75%);
+      border: 1px solid rgba(245,197,24,0.25);
     }
-    .stat-entry .rank {
+    .stat-entry.top1:hover { background: linear-gradient(90deg, rgba(245,197,24,0.2), transparent 75%); }
+
+    .stat-entry .rank-badge {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
       font-family: var(--mono-font);
-      font-size: 0.65rem;
+      font-size: 0.68rem;
       font-weight: 800;
       color: var(--steel);
-      width: 22px;
-      text-align: center;
-      flex-shrink: 0;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--line-strong);
     }
-    .stat-entry .rank.gold { color: var(--gold); }
-    .stat-entry .rank.silver { color: #c0c0c0; }
-    .stat-entry .rank.bronze { color: #cd7f32; }
+    .stat-entry .rank-badge.gold {
+      color: var(--night);
+      background: linear-gradient(145deg, #ffe28a, var(--gold));
+      border-color: transparent;
+      box-shadow: 0 0 14px rgba(245,197,24,0.55);
+    }
+    .stat-entry .rank-badge.silver {
+      color: var(--night);
+      background: linear-gradient(145deg, #f0f0f0, #b8bcc4);
+      border-color: transparent;
+      box-shadow: 0 0 10px rgba(255,255,255,0.25);
+    }
+    .stat-entry .rank-badge.bronze {
+      color: var(--night);
+      background: linear-gradient(145deg, #e0a468, #ab6a34);
+      border-color: transparent;
+      box-shadow: 0 0 10px rgba(205,127,50,0.3);
+    }
+
     .stat-entry .player-img {
-      width: 48px;
-      height: 48px;
-      border-radius: 4px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: transparent;
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      background: var(--night-2);
+      border: 2px solid var(--line-strong);
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
+    .stat-entry.top1 .player-img { border-color: var(--gold); box-shadow: 0 0 16px rgba(245,197,24,0.45); }
+    .stat-entry.top2 .player-img { border-color: #c7cbd1; }
+    .stat-entry.top3 .player-img { border-color: #cd7f32; }
+
     .stat-entry .stat-info {
       flex: 1;
+      min-width: 0;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .stat-entry .stat-primary {
+      display: flex;
       align-items: baseline;
-      gap: 4px 14px;
-      font-family: var(--mono-font);
-      font-size: 0.7rem;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .stat-entry .stat-info .highlight {
+      font-family: var(--mono-font);
+      font-size: 0.95rem;
       color: #2be08a;
       font-weight: 800;
     }
-    .stat-entry .stat-info .value {
-      font-weight: 700;
-      color: var(--gold);
-    }
     .stat-entry .stat-info .team-tag {
+      font-family: var(--mono-font);
       font-size: 0.55rem;
+      font-weight: 700;
       color: var(--chalk);
       background: rgba(255,255,255,0.08);
-      padding: 2px 10px;
+      padding: 2px 9px;
       border-radius: 3px;
+      letter-spacing: 0.03em;
     }
-    .stat-entry .stat-info .detail {
-      font-size: 0.55rem;
+    .stat-entry .stat-secondary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono-font);
+      font-size: 0.6rem;
       color: var(--steel);
     }
+    .stat-entry .stat-info .value { font-weight: 700; color: var(--steel); }
+    .stat-entry .stat-info .detail { color: var(--steel); opacity: 0.75; }
     .no-data {
       color: var(--steel);
       font-size: 0.7rem;
       font-family: var(--mono-font);
-      padding: 4px 8px;
+      padding: 6px 8px;
     }
 
     /* ============================
@@ -1322,14 +1394,18 @@
       const card = document.createElement('div');
       card.className = 'stat-card';
 
-      const title = document.createElement('h3');
-      title.innerHTML = `${p.name} <span class="badge">${p.value}</span>`;
-      card.appendChild(title);
+      const head = document.createElement('div');
+      head.className = 'stat-card-head';
+      head.innerHTML = `
+        <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
+        <h3>${p.name} <span class="badge">${p.value}</span></h3>
+      `;
+      card.appendChild(head);
 
       // Höchste Einzelpunktzahl
       const sectionSingle = document.createElement('div');
       sectionSingle.className = 'stat-section';
-      sectionSingle.innerHTML = `<div class="section-title">🏆 Höchste Einzelpunktzahl</div>`;
+      sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
       const listSingle = document.createElement('div');
       
       const singleData = stats[p.id]?.bySingle || [];
@@ -1339,15 +1415,19 @@
         singleData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
           const div = document.createElement('div');
-          div.className = 'stat-entry';
+          div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
           div.innerHTML = `
-            <span class="rank ${rankClass}">${idx + 1}</span>
+            <div class="rank-badge ${rankClass}">${idx + 1}</div>
             <img class="player-img" src="${entry.image}" alt="Spieler" />
             <div class="stat-info">
-              <span class="highlight">${formatNumber(entry.maxPoints)} Pkt</span>
-              <span class="value">${entry.games} Einsätze</span>
-              <span class="team-tag">${entry.team || '?'}</span>
-              <span class="detail">total ${formatNumber(entry.totalPoints)}</span>
+              <div class="stat-primary">
+                <span class="highlight">${formatNumber(entry.maxPoints)} Pkt</span>
+                <span class="team-tag">${entry.team || '?'}</span>
+              </div>
+              <div class="stat-secondary">
+                <span class="value">${entry.games} Einsätze</span>
+                <span class="detail">gesamt ${formatNumber(entry.totalPoints)}</span>
+              </div>
             </div>
           `;
           listSingle.appendChild(div);
@@ -1359,7 +1439,7 @@
       // Bester Durchschnitt (min. 3 Spiele)
       const sectionAvg = document.createElement('div');
       sectionAvg.className = 'stat-section';
-      sectionAvg.innerHTML = `<div class="section-title">📊 Bester Durchschnitt (min. 3 Spiele)</div>`;
+      sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (min. 3 Spiele)</div>`;
       const listAvg = document.createElement('div');
       
       const avgData = stats[p.id]?.byAvg || [];
@@ -1369,15 +1449,19 @@
         avgData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
           const div = document.createElement('div');
-          div.className = 'stat-entry';
+          div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
           div.innerHTML = `
-            <span class="rank ${rankClass}">${idx + 1}</span>
+            <div class="rank-badge ${rankClass}">${idx + 1}</div>
             <img class="player-img" src="${entry.image}" alt="Spieler" />
             <div class="stat-info">
-              <span class="highlight">${entry.avg.toFixed(1)} Ø</span>
-              <span class="value">${entry.games} Spiele</span>
-              <span class="team-tag">${entry.team || '?'}</span>
-              <span class="detail">total ${formatNumber(entry.totalPoints)}</span>
+              <div class="stat-primary">
+                <span class="highlight">${entry.avg.toFixed(1)} Ø</span>
+                <span class="team-tag">${entry.team || '?'}</span>
+              </div>
+              <div class="stat-secondary">
+                <span class="value">${entry.games} Spiele</span>
+                <span class="detail">gesamt ${formatNumber(entry.totalPoints)}</span>
+              </div>
             </div>
           `;
           listAvg.appendChild(div);
