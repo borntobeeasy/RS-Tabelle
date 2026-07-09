@@ -922,7 +922,7 @@
   function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
   // ============================
-  //  getAssignmentScore (korrekt)
+  //  getAssignmentScore (nur für die Brett-Anzeige)
   // ============================
   function getAssignmentScore(assignment, state) {
     if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
@@ -1230,7 +1230,7 @@
   }
 
   // ============================
-  //  STATISTIKEN — KORRIGIERT (ohne Betrag, Filter games >= 3)
+  //  STATISTIKEN — KORREKT: NUR BILD-FELDER (top/bottom)
   // ============================
   function computePlayerStats() {
     const pieceStats = {};
@@ -1246,43 +1246,38 @@
       const spiel = spielplan.spieltage[stIdx]?.[spIdx];
       if (!spiel) continue;
 
-      // Für jeden Slot die tatsächlichen Punkte (inkl. Vorzeichen) berechnen
-      const slotPoints = {};
-      state.assignments.forEach(a => {
-        if (!a.side || !a.piece) return;
-        const row = a.side === 'white' ? 'top' : 'bottom';
-        const slot = `${row}-${a.piece}`;
-        if (!slotPoints[slot]) slotPoints[slot] = 0;
-        slotPoints[slot] += getAssignmentScore(a, state); // KEIN Math.abs!
+      // Nur die oberste und unterste Reihe (top und bottom) durchgehen
+      const rows = ['top', 'bottom'];
+      rows.forEach(row => {
+        const side = row === 'top' ? 'white' : 'black';
+        PIECES.forEach(piece => {
+          const slot = `${row}-${piece.id}`;
+          const image = state.figureImages?.[slot];
+          if (!image) return;
+          // Punktzahl aus results (das ist der Wert im Bild-Feld)
+          const points = state.results[side]?.[piece.id] ?? 0;
+          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+
+          const playerData = pieceStats[piece.id].players;
+          if (!playerData[image]) {
+            playerData[image] = {
+              games: 0,
+              totalPoints: 0,
+              maxPoints: -Infinity,
+              maxGameTeam: null,
+              values: []
+            };
+          }
+          const p = playerData[image];
+          p.games += 1;
+          p.totalPoints += points;
+          p.values.push(points);
+          if (points > p.maxPoints) {
+            p.maxPoints = points;
+            p.maxGameTeam = teamName;
+          }
+        });
       });
-
-      // Für jeden Slot mit Bild -> zur Figur aggregieren
-      for (const [slot, points] of Object.entries(slotPoints)) {
-        const image = state.figureImages?.[slot];
-        if (!image) continue;
-        const piece = slot.split('-')[1];
-        const side = slot.split('-')[0];
-        const teamName = side === 'top' ? spiel.heim : spiel.auswaerts;
-
-        const playerData = pieceStats[piece].players;
-        if (!playerData[image]) {
-          playerData[image] = { 
-            games: 0, 
-            totalPoints: 0, 
-            maxPoints: -Infinity, 
-            maxGameTeam: null,
-            values: [] // alle Einzelwerte für Durchschnitt
-          };
-        }
-        const p = playerData[image];
-        p.games += 1;
-        p.totalPoints += points;
-        p.values.push(points);
-        if (points > p.maxPoints) {
-          p.maxPoints = points;
-          p.maxGameTeam = teamName;
-        }
-      }
     }
 
     // Top-5 für jede Figur extrahieren
