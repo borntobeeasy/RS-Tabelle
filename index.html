@@ -4,13 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2. Bundesliga · Rasenschach 26/27</title>
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
-       TOKENS – BUNDESLIGA PREMIUM
+       TOKENS – BUNDESLIGA PREMIUM (reduziert, nur zweite View)
        ============================================================ */
     :root {
       --bl-red: #E30613;
@@ -54,7 +53,7 @@
     }
 
     /* ============================================================
-       TOPBAR – wie bundesliga.de
+       TOPBAR – nur Logo links oben, keine Fußzeile
        ============================================================ */
     .bl-topbar {
       background: var(--bl-dark);
@@ -73,31 +72,17 @@
     .bl-topbar .brand {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
     .bl-topbar .brand .logo-svg {
-      height: 32px;
+      height: 36px;
       width: auto;
     }
     .bl-topbar .brand .logo-text {
-      font-family: var(--font-headline);
-      font-size: 1.3rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--bl-white);
-      line-height: 1;
+      display: none; /* Text ausgeblendet, nur Logo sichtbar */
     }
-    .bl-topbar .brand .logo-text .red { color: var(--bl-red); }
-    .bl-topbar .brand .logo-text .gold { color: var(--bl-gold); }
     .bl-topbar .brand .badge {
-      background: rgba(227,6,19,0.15);
-      border: 1px solid rgba(227,6,19,0.3);
-      padding: 4px 12px;
-      font-size: 0.6rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--bl-steel-light);
+      display: none; /* Badge entfernt */
     }
     .bl-topbar .nav-links {
       display: flex;
@@ -141,7 +126,7 @@
     }
 
     /* ============================================================
-       HERO – Stadionatmosphäre
+       HERO – Stadionatmosphäre (beibehalten)
        ============================================================ */
     .bl-hero {
       position: relative;
@@ -246,33 +231,18 @@
     }
 
     /* ============================================================
-       VIEWS
+       VIEWS – nur zweite View (Tabelle) standardmäßig aktiv
        ============================================================ */
-    .view { display: none; animation: fadeUp 0.25s ease; }
-    .view.active { display: block; }
+    .view {
+      display: none;
+      animation: fadeUp 0.25s ease;
+    }
+    .view.active {
+      display: block;
+    }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ============================================================
-       LAYOUT HOME
-       ============================================================ */
-    .content-wrapper {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-    }
-    .content-wrapper .left-col {
-      flex: 0 0 500px;
-      min-width: 0;
-      position: sticky;
-      top: 80px;
-    }
-    .content-wrapper .right-col { flex: 1; min-width: 0; }
-    @media (max-width: 1100px) {
-      .content-wrapper { flex-direction: column; }
-      .content-wrapper .left-col { flex: none; width: 100%; position: static; }
     }
 
     /* ============================================================
@@ -302,7 +272,10 @@
       color: var(--bl-gold);
       font-weight: 700;
     }
-    .table-wrap.centered { max-width: 900px; margin: 0 auto; }
+    .table-wrap.centered {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
     .liga-table {
       width: 100%;
@@ -339,7 +312,6 @@
       text-align: center;
       font-size: 0.7rem;
     }
-    /* Top 3 goldener Balken */
     .liga-table tbody tr:nth-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-gold);
       background: rgba(255,215,0,0.06);
@@ -351,7 +323,6 @@
       border-radius: 4px;
       font-weight: 900;
     }
-    /* Abstiegsplätze roter Balken */
     .liga-table tbody tr:nth-last-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-red);
       background: rgba(227,6,19,0.06);
@@ -371,7 +342,7 @@
     .liga-table .num { text-align: center; color: var(--bl-steel); }
 
     /* ============================================================
-       SPIELTAG TABS
+       SPIELTAG TABS (für Home-View, falls benötigt)
        ============================================================ */
     .liga-tabs {
       display: flex;
@@ -408,7 +379,7 @@
     }
 
     /* ============================================================
-       SPIELKARTEN – Live-Spielcenter
+       SPIELKARTEN – Live-Spielcenter (für Home-View)
        ============================================================ */
     .spiel-liste {
       display: flex;
@@ -518,7 +489,7 @@
     }
     .spiel-meta .status.done { color: #00b050; }
 
-    /* Brettcontainer */
+    /* Brettcontainer – zentriert */
     .spiel-board-container {
       display: grid;
       grid-template-rows: 0fr;
@@ -531,16 +502,21 @@
       grid-template-rows: 1fr;
       opacity: 1;
       padding: 16px;
+      display: flex;
+      justify-content: center; /* Brett zentrieren */
     }
 
     /* ============================================================
-       BRETT – Premium
+       BRETT – Premium, zentriert
        ============================================================ */
     .board-panel {
       background: var(--bl-gray);
       border-radius: var(--bl-radius);
       padding: 16px;
       box-shadow: inset 0 0 0 1px var(--bl-line);
+      max-width: fit-content; /* nur so breit wie nötig */
+      margin: 0 auto; /* Zentrierung */
+      width: 100%; /* für responsives Verhalten */
     }
     .board-panel .topbar {
       display: flex;
@@ -609,6 +585,7 @@
       overflow: hidden;
       box-shadow: 0 0 0 1px var(--bl-line), var(--bl-shadow);
       background: var(--bl-black);
+      width: fit-content;
     }
     .board-panel .grid-cell {
       position: relative;
@@ -745,7 +722,7 @@
     .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6; }
 
     /* ============================================================
-       STATISTIKEN – Insights
+       STATISTIKEN (für dritte View)
        ============================================================ */
     .stats-container {
       display: grid;
@@ -913,7 +890,7 @@
     }
 
     /* ============================================================
-       ALLE SPIELE
+       ALLE SPIELE (für dritte View)
        ============================================================ */
     .spieltag-group {
       margin-bottom: 32px;
@@ -946,40 +923,11 @@
     }
 
     /* ============================================================
-       FOOTER
-       ============================================================ */
-    .bl-footer {
-      margin-top: 48px;
-      padding: 24px 0 16px;
-      border-top: 1px solid var(--bl-line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 0.6rem;
-      color: var(--bl-steel);
-      font-family: var(--font-mono);
-      letter-spacing: 0.04em;
-    }
-    .bl-footer .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .bl-footer .footer-brand svg {
-      height: 20px;
-      width: auto;
-    }
-    .bl-footer .footer-brand span { color: var(--bl-red); font-weight: 800; }
-
-    /* ============================================================
        RESPONSIVE
        ============================================================ */
     @media (max-width: 700px) {
       .bl-topbar { padding: 0 16px; height: 52px; flex-wrap: wrap; gap: 6px; }
-      .bl-topbar .brand .logo-text { font-size: 1rem; }
-      .bl-topbar .brand .badge { display: none; }
+      .bl-topbar .brand .logo-svg { height: 28px; }
       .bl-topbar .nav-links button { padding: 4px 10px; font-size: 0.55rem; }
       .bl-topbar .nav-links button svg { width: 14px; height: 14px; }
       .bl-hero { padding: 24px 16px; }
@@ -997,7 +945,6 @@
       .liga-table { font-size: 0.65rem; }
       .liga-table th { font-size: 0.5rem; padding: 6px 8px; }
       .liga-table td { padding: 6px 8px; }
-      .bl-footer { flex-direction: column; text-align: center; }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
@@ -1016,7 +963,7 @@
 <body>
 
   <!-- ============================================================
-  TOPBAR
+  TOPBAR – nur Logo links oben, keine Fußzeile
   ============================================================ -->
   <header class="bl-topbar">
     <div class="brand">
@@ -1026,15 +973,14 @@
         <circle cx="30" cy="30" r="8" fill="white"/>
         <path d="M30 24 L33 30 L39 30 L35 34 L36 40 L30 36 L24 40 L25 34 L21 30 L27 30 L30 24Z" fill="#E30613"/>
       </svg>
-      <span class="logo-text"><span class="red">Bundes</span><span class="gold">liga</span></span>
-      <span class="badge">2. Liga</span>
+      <!-- Text und Badge ausgeblendet, nur Logo sichtbar -->
     </div>
     <div class="nav-links" id="headerNav">
-      <button class="active" data-view="home">
+      <button data-view="home">
         <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         Home
       </button>
-      <button data-view="table">
+      <button class="active" data-view="table">
         <svg viewBox="0 0 24 24"><path d="M3 10h18M3 14h18M3 18h18M3 6h18"/></svg>
         Tabelle
       </button>
@@ -1050,7 +996,7 @@
   </header>
 
   <!-- ============================================================
-  HERO
+  HERO (beibehalten)
   ============================================================ -->
   <section class="bl-hero">
     <div class="hero-inner">
@@ -1082,8 +1028,8 @@
   ============================================================ -->
   <div class="app-shell" id="app">
 
-    <!-- HOME -->
-    <div class="view active" id="homeView">
+    <!-- HOME (nicht mehr Standard) -->
+    <div class="view" id="homeView">
       <div class="liga-tabs" id="spieltagTabs"></div>
       <div class="content-wrapper">
         <div class="left-col">
@@ -1104,8 +1050,8 @@
       </div>
     </div>
 
-    <!-- TABLE -->
-    <div class="view" id="tableView">
+    <!-- TABELLE (zweite View – standardmäßig aktiv) -->
+    <div class="view active" id="tableView">
       <div class="table-wrap centered">
         <div class="table-title">
           <span>⚽ Tabelle</span>
@@ -1118,33 +1064,20 @@
       </div>
     </div>
 
-    <!-- GAMES -->
+    <!-- SPIELE (dritte View) -->
     <div class="view" id="gamesView">
       <div id="allGamesContainer"></div>
     </div>
 
-    <!-- STATS -->
+    <!-- STATISTIKEN (vierte View) -->
     <div class="view" id="statsView">
       <div id="statsContainer" class="stats-container"></div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="bl-footer">
-      <div class="footer-brand">
-        <svg viewBox="0 0 60 60" fill="none" style="height:20px;">
-          <rect x="4" y="4" width="52" height="52" rx="0" fill="#E30613" stroke="#FFD700" stroke-width="2"/>
-          <path d="M30 12 L36 28 L52 28 L40 38 L44 54 L30 44 L16 54 L20 38 L8 28 L24 28 L30 12Z" fill="#FFD700"/>
-          <circle cx="30" cy="30" r="8" fill="white"/>
-          <path d="M30 24 L33 30 L39 30 L35 34 L36 40 L30 36 L24 40 L25 34 L21 30 L27 30 L30 24Z" fill="#E30613"/>
-        </svg>
-        <span><span style="color:var(--bl-red);font-weight:800;">Rasenschach</span> · 2. Bundesliga 26/27</span>
-      </div>
-      <div>Daten · Simulation · <span style="color:var(--bl-gold);">⚡</span></div>
-    </footer>
-  </div>
+  </div> <!-- Ende app-shell -->
 
   <!-- ============================================================
-  SCRIPT – unveränderte Logik, nur Templates angepasst
+  SCRIPT – unveränderte Logik, Start auf TableView
   ============================================================ -->
   <script>
     // ============================
@@ -1156,7 +1089,7 @@
     let spielplan = null;
     let teams = [];
     let allGameData = {};
-    let currentView = 'home';
+    let currentView = 'table'; // Standard auf 'table'
     let currentSpieltag = 0;
 
     // ============================
@@ -1301,7 +1234,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER (angepasstes Template)
+    //  BRETT-RENDERER (zentriert)
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1395,7 +1328,7 @@
     }
 
     // ============================
-    //  SPIEL-LISTE (angepasstes Template)
+    //  SPIEL-LISTE
     // ============================
     function createSpielItem(stIdx, spIdx, spiel, state) {
       const item = document.createElement('div');
@@ -1442,7 +1375,7 @@
     }
 
     // ============================
-    //  HOME
+    //  HOME (für Home-View, aber nicht mehr Standard)
     // ============================
     function renderHome(spieltagIndex) {
       currentSpieltag = spieltagIndex;
@@ -1514,7 +1447,7 @@
     }
 
     // ============================
-    //  STATISTIKEN (angepasstes Template)
+    //  STATISTIKEN
     // ============================
     function computeAppearanceStats() {
       const players = {};
@@ -1616,7 +1549,6 @@
       const container = document.getElementById('statsContainer');
       container.innerHTML = '';
 
-      // Appearance
       const appearanceData = computeAppearanceStats();
       const appearanceCard = document.createElement('div');
       appearanceCard.className = 'stat-card';
@@ -1657,7 +1589,6 @@
       appearanceCard.appendChild(sectionApp);
       container.appendChild(appearanceCard);
 
-      // Piece stats
       const stats = computePlayerStats();
       PIECES.forEach(p => {
         const card = document.createElement('div');
@@ -1670,7 +1601,6 @@
           `;
         card.appendChild(head);
 
-        // Single
         const sectionSingle = document.createElement('div');
         sectionSingle.className = 'stat-section';
         sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
@@ -1705,7 +1635,6 @@
         sectionSingle.appendChild(listSingle);
         card.appendChild(sectionSingle);
 
-        // Avg
         const sectionAvg = document.createElement('div');
         sectionAvg.className = 'stat-section';
         sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (min. 3 Spiele)</div>`;
@@ -1753,6 +1682,7 @@
       document.getElementById(`${view}View`).classList.add('active');
       if (view === 'games') renderAllGames();
       if (view === 'stats') renderStatistics();
+      // Bei table und home wird nichts zusätzlich gerendert, da bereits initialisiert
     }
 
     // ============================
@@ -1820,13 +1750,20 @@
         allGameData = await loadAllGameData();
         renderTables();
 
+        // Standardmäßig auf Tabelle (zweite View) wechseln
+        // Aber vorher noch Home initialisieren für den Fall, dass jemand wechselt
         let startIndex = 0;
         for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
           const spiele = spielplan.spieltage[i];
           const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
           if (hasData) { startIndex = i; break; }
         }
-        if (spielplan.spieltage.length > 0) renderHome(startIndex);
+        if (spielplan.spieltage.length > 0) {
+          renderHome(startIndex); // für Home-View vorbereiten
+        }
+
+        // Nun auf TableView wechseln (zweite View)
+        switchView('table');
 
         document.querySelectorAll('.nav-links button').forEach(btn => {
           btn.addEventListener('click', () => switchView(btn.dataset.view));
@@ -1840,5 +1777,6 @@
 
     init();
   </script>
+
 </body>
 </html>
