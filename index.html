@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
-       TOKENS – BUNDESLIGA PREMIUM (reduziert, nur zweite View)
+       TOKENS – BUNDESLIGA PREMIUM
        ============================================================ */
     :root {
       --bl-red: #E30613;
@@ -53,7 +53,7 @@
     }
 
     /* ============================================================
-       TOPBAR – nur Logo links oben, keine Fußzeile
+       TOPBAR – nur Logo links oben
        ============================================================ */
     .bl-topbar {
       background: var(--bl-dark);
@@ -74,15 +74,12 @@
       align-items: center;
       gap: 12px;
     }
-    .bl-topbar .brand .logo-svg {
+    .bl-topbar .brand .logo-img {
       height: 36px;
       width: auto;
-    }
-    .bl-topbar .brand .logo-text {
-      display: none; /* Text ausgeblendet, nur Logo sichtbar */
-    }
-    .bl-topbar .brand .badge {
-      display: none; /* Badge entfernt */
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
     }
     .bl-topbar .nav-links {
       display: flex;
@@ -126,7 +123,7 @@
     }
 
     /* ============================================================
-       HERO – Stadionatmosphäre (beibehalten)
+       HERO – Stadionatmosphäre
        ============================================================ */
     .bl-hero {
       position: relative;
@@ -231,7 +228,7 @@
     }
 
     /* ============================================================
-       VIEWS – nur zweite View (Tabelle) standardmäßig aktiv
+       VIEWS – nur noch drei Views (Tabelle, Spiele, Statistiken)
        ============================================================ */
     .view {
       display: none;
@@ -243,6 +240,35 @@
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       TABELLE + SPIELE (Hauptansicht) – Layout wie Home
+       ============================================================ */
+    .content-wrapper {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .content-wrapper .left-col {
+      flex: 0 0 500px;
+      min-width: 0;
+      position: sticky;
+      top: 80px;
+    }
+    .content-wrapper .right-col {
+      flex: 1;
+      min-width: 0;
+    }
+    @media (max-width: 1100px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+      .content-wrapper .left-col {
+        flex: none;
+        width: 100%;
+        position: static;
+      }
     }
 
     /* ============================================================
@@ -271,10 +297,6 @@
     .table-wrap .table-title .badge {
       color: var(--bl-gold);
       font-weight: 700;
-    }
-    .table-wrap.centered {
-      max-width: 900px;
-      margin: 0 auto;
     }
 
     .liga-table {
@@ -342,7 +364,7 @@
     .liga-table .num { text-align: center; color: var(--bl-steel); }
 
     /* ============================================================
-       SPIELTAG TABS (für Home-View, falls benötigt)
+       SPIELTAG TABS
        ============================================================ */
     .liga-tabs {
       display: flex;
@@ -379,7 +401,7 @@
     }
 
     /* ============================================================
-       SPIELKARTEN – Live-Spielcenter (für Home-View)
+       SPIELKARTEN – Live-Spielcenter
        ============================================================ */
     .spiel-liste {
       display: flex;
@@ -503,7 +525,7 @@
       opacity: 1;
       padding: 16px;
       display: flex;
-      justify-content: center; /* Brett zentrieren */
+      justify-content: center;
     }
 
     /* ============================================================
@@ -514,9 +536,9 @@
       border-radius: var(--bl-radius);
       padding: 16px;
       box-shadow: inset 0 0 0 1px var(--bl-line);
-      max-width: fit-content; /* nur so breit wie nötig */
-      margin: 0 auto; /* Zentrierung */
-      width: 100%; /* für responsives Verhalten */
+      max-width: fit-content;
+      margin: 0 auto;
+      width: 100%;
     }
     .board-panel .topbar {
       display: flex;
@@ -722,7 +744,7 @@
     .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6; }
 
     /* ============================================================
-       STATISTIKEN (für dritte View)
+       STATISTIKEN
        ============================================================ */
     .stats-container {
       display: grid;
@@ -890,7 +912,7 @@
     }
 
     /* ============================================================
-       ALLE SPIELE (für dritte View)
+       ALLE SPIELE (Games-View)
        ============================================================ */
     .spieltag-group {
       margin-bottom: 32px;
@@ -927,7 +949,7 @@
        ============================================================ */
     @media (max-width: 700px) {
       .bl-topbar { padding: 0 16px; height: 52px; flex-wrap: wrap; gap: 6px; }
-      .bl-topbar .brand .logo-svg { height: 28px; }
+      .bl-topbar .brand .logo-img { height: 28px; }
       .bl-topbar .nav-links button { padding: 4px 10px; font-size: 0.55rem; }
       .bl-topbar .nav-links button svg { width: 14px; height: 14px; }
       .bl-hero { padding: 24px 16px; }
@@ -967,19 +989,10 @@
   ============================================================ -->
   <header class="bl-topbar">
     <div class="brand">
-      <svg class="logo-svg" viewBox="0 0 60 60" fill="none">
-        <rect x="4" y="4" width="52" height="52" rx="0" fill="#E30613" stroke="#FFD700" stroke-width="2"/>
-        <path d="M30 12 L36 28 L52 28 L40 38 L44 54 L30 44 L16 54 L20 38 L8 28 L24 28 L30 12Z" fill="#FFD700"/>
-        <circle cx="30" cy="30" r="8" fill="white"/>
-        <path d="M30 24 L33 30 L39 30 L35 34 L36 40 L30 36 L24 40 L25 34 L21 30 L27 30 L30 24Z" fill="#E30613"/>
-      </svg>
-      <!-- Text und Badge ausgeblendet, nur Logo sichtbar -->
+      <!-- Logo als 16:9 Bild -->
+      <img class="logo-img" src="logo.png" alt="Logo" />
     </div>
     <div class="nav-links" id="headerNav">
-      <button data-view="home">
-        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        Home
-      </button>
       <button class="active" data-view="table">
         <svg viewBox="0 0 24 24"><path d="M3 10h18M3 14h18M3 18h18M3 6h18"/></svg>
         Tabelle
@@ -996,7 +1009,7 @@
   </header>
 
   <!-- ============================================================
-  HERO (beibehalten)
+  HERO
   ============================================================ -->
   <section class="bl-hero">
     <div class="hero-inner">
@@ -1028,9 +1041,11 @@
   ============================================================ -->
   <div class="app-shell" id="app">
 
-    <!-- HOME (nicht mehr Standard) -->
-    <div class="view" id="homeView">
+    <!-- TABELLE + SPIELE (Hauptansicht) -->
+    <div class="view active" id="tableView">
+      <!-- Spieltag-Tabs -->
       <div class="liga-tabs" id="spieltagTabs"></div>
+      <!-- Content: Tabelle links, Spiele rechts -->
       <div class="content-wrapper">
         <div class="left-col">
           <div class="table-wrap" id="tableWrap">
@@ -1038,9 +1053,9 @@
               <span>⚽ Tabelle</span>
               <span class="badge">2. Bundesliga 26/27</span>
             </div>
-            <table class="liga-table" id="ligaTable">
+            <table class="liga-table" id="tableOnly">
               <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
-              <tbody id="tableBody"></tbody>
+              <tbody id="tableOnlyBody"></tbody>
             </table>
           </div>
         </div>
@@ -1050,26 +1065,12 @@
       </div>
     </div>
 
-    <!-- TABELLE (zweite View – standardmäßig aktiv) -->
-    <div class="view active" id="tableView">
-      <div class="table-wrap centered">
-        <div class="table-title">
-          <span>⚽ Tabelle</span>
-          <span class="badge">2. Bundesliga 26/27</span>
-        </div>
-        <table class="liga-table" id="tableOnly">
-          <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
-          <tbody id="tableOnlyBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- SPIELE (dritte View) -->
+    <!-- SPIELE (alle) -->
     <div class="view" id="gamesView">
       <div id="allGamesContainer"></div>
     </div>
 
-    <!-- STATISTIKEN (vierte View) -->
+    <!-- STATISTIKEN -->
     <div class="view" id="statsView">
       <div id="statsContainer" class="stats-container"></div>
     </div>
@@ -1077,7 +1078,7 @@
   </div> <!-- Ende app-shell -->
 
   <!-- ============================================================
-  SCRIPT – unveränderte Logik, Start auf TableView
+  SCRIPT – angepasst: keine Home-View mehr, Tabelle+Spiele als Start
   ============================================================ -->
   <script>
     // ============================
@@ -1089,7 +1090,7 @@
     let spielplan = null;
     let teams = [];
     let allGameData = {};
-    let currentView = 'table'; // Standard auf 'table'
+    let currentView = 'table';
     let currentSpieltag = 0;
 
     // ============================
@@ -1216,20 +1217,14 @@
 
     function renderTables() {
       const data = buildTableData();
-      const tbody1 = document.getElementById('tableBody');
-      const tbody2 = document.getElementById('tableOnlyBody');
-      tbody1.innerHTML = '';
-      tbody2.innerHTML = '';
+      const tbody = document.getElementById('tableOnlyBody');
+      tbody.innerHTML = '';
       data.forEach(row => {
         const diff = row.diff;
-        const tr1 = document.createElement('tr');
-        tr1.innerHTML =
+        const tr = document.createElement('tr');
+        tr.innerHTML =
           `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
-        tbody1.appendChild(tr1);
-        const tr2 = document.createElement('tr');
-        tr2.innerHTML =
-          `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
-        tbody2.appendChild(tr2);
+        tbody.appendChild(tr);
       });
     }
 
@@ -1375,9 +1370,9 @@
     }
 
     // ============================
-    //  HOME (für Home-View, aber nicht mehr Standard)
+    //  RENDER SPIELE FÜR HAUPTANSICHT
     // ============================
-    function renderHome(spieltagIndex) {
+    function renderMainSpiele(spieltagIndex) {
       currentSpieltag = spieltagIndex;
       const container = document.getElementById('spieleContainer');
       container.innerHTML = '';
@@ -1414,13 +1409,13 @@
         btn.textContent = `${n}. Spieltag`;
         btn.dataset.index = n - 1;
         btn.classList.toggle('active', n === current);
-        btn.addEventListener('click', () => renderHome(n - 1));
+        btn.addEventListener('click', () => renderMainSpiele(n - 1));
         tabsContainer.appendChild(btn);
       });
     }
 
     // ============================
-    //  ALLE SPIELE
+    //  ALLE SPIELE (Games-View)
     // ============================
     function renderAllGames() {
       const container = document.getElementById('allGamesContainer');
@@ -1682,7 +1677,6 @@
       document.getElementById(`${view}View`).classList.add('active');
       if (view === 'games') renderAllGames();
       if (view === 'stats') renderStatistics();
-      // Bei table und home wird nichts zusätzlich gerendert, da bereits initialisiert
     }
 
     // ============================
@@ -1750,8 +1744,7 @@
         allGameData = await loadAllGameData();
         renderTables();
 
-        // Standardmäßig auf Tabelle (zweite View) wechseln
-        // Aber vorher noch Home initialisieren für den Fall, dass jemand wechselt
+        // Starte mit dem letzten verfügbaren Spieltag
         let startIndex = 0;
         for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
           const spiele = spielplan.spieltage[i];
@@ -1759,12 +1752,10 @@
           if (hasData) { startIndex = i; break; }
         }
         if (spielplan.spieltage.length > 0) {
-          renderHome(startIndex); // für Home-View vorbereiten
+          renderMainSpiele(startIndex);
         }
 
-        // Nun auf TableView wechseln (zweite View)
-        switchView('table');
-
+        // Navigation initialisieren (Tabelle ist bereits aktiv)
         document.querySelectorAll('.nav-links button').forEach(btn => {
           btn.addEventListener('click', () => switchView(btn.dataset.view));
         });
