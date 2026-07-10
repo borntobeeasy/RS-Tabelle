@@ -9,24 +9,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
-       DESIGN SYSTEM – angelehnt an bundesliga.com
+       DESIGN SYSTEM – bundesliga.com Style
        ============================================================ */
     :root {
-      --bl-red: #E30613;
+      --bl-red: #D71920; /* Authentisches Bundesliga Rot */
       --bl-red-dark: #b00510;
       --bl-gold: #FFD700;
       --bl-white: #FFFFFF;
-      --bl-black: #0A0C0E;
-      --bl-dark: #14181C;
-      --bl-gray: #1A2026;
-      --bl-gray-light: #2A3138;
+      --bl-black: #080A0C;
+      --bl-dark: #111518;
+      --bl-gray: #191E23;
+      --bl-gray-light: #252D35;
       --bl-steel: #8899AA;
       --bl-steel-light: #B0C0D0;
-      --bl-line: rgba(255,255,255,0.08);
-      --bl-line-strong: rgba(255,255,255,0.15);
-      --bl-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      --bl-shadow-soft: 0 4px 20px rgba(0,0,0,0.25);
-      --bl-radius: 16px;
+      --bl-line: rgba(255,255,255,0.06);
+      --bl-line-strong: rgba(255,255,255,0.12);
+      --bl-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      --bl-shadow-soft: 0 4px 12px rgba(0,0,0,0.3);
+      --bl-radius: 4px; /* Eckigere, sportlichere Kanten */
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
       --font-headline: 'Anton', 'Arial Narrow', Impact, sans-serif;
       --font-text: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -41,9 +41,6 @@
       margin: 0;
       min-height: 100vh;
       background: var(--bl-black);
-      background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(227,6,19,0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(227,6,19,0.03) 0%, transparent 40%);
       color: var(--bl-white);
       font-family: var(--font-text);
       font-weight: 400;
@@ -52,21 +49,20 @@
     }
 
     /* ============================================================
-       TOPBAR – wie bundesliga.com
+       TOPBAR
        ============================================================ */
     .bl-topbar {
       background: var(--bl-dark);
-      border-bottom: 1px solid var(--bl-line);
+      border-bottom: 2px solid var(--bl-red);
       padding: 0 32px;
-      height: 60px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
     .bl-topbar .brand {
       display: flex;
@@ -74,38 +70,38 @@
       gap: 12px;
     }
     .bl-topbar .brand .logo-img {
-      height: 36px;
+      height: 40px;
       width: auto;
       aspect-ratio: 16 / 9;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
     }
     .bl-topbar .nav-links {
       display: flex;
-      gap: 4px;
+      gap: 8px;
       align-items: center;
+      height: 100%;
     }
     .bl-topbar .nav-links button {
-      padding: 6px 16px;
+      height: 100%;
+      padding: 0 20px;
       border: none;
       background: transparent;
       color: var(--bl-steel);
       font-family: var(--font-text);
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       cursor: pointer;
-      transition: color var(--transition), border-bottom var(--transition);
-      border-bottom: 2px solid transparent;
-      border-radius: 0;
+      transition: color var(--transition), background var(--transition);
+      border-bottom: 4px solid transparent;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .bl-topbar .nav-links button svg {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       fill: none;
       stroke: currentColor;
       stroke-width: 2;
@@ -114,39 +110,30 @@
     }
     .bl-topbar .nav-links button:hover {
       color: var(--bl-white);
-      border-bottom-color: var(--bl-red);
+      background: rgba(255,255,255,0.03);
     }
     .bl-topbar .nav-links button.active {
       color: var(--bl-white);
       border-bottom-color: var(--bl-red);
+      background: rgba(255,255,255,0.05);
     }
 
     /* ============================================================
-       HERO – dezentes Stadionfeeling
+       HERO
        ============================================================ */
     .bl-hero {
       position: relative;
-      padding: 32px 32px 24px;
-      margin-bottom: 20px;
-      background: var(--bl-black);
+      padding: 40px 32px 32px;
+      margin-bottom: 24px;
+      background: var(--bl-dark);
       border-bottom: 1px solid var(--bl-line);
       overflow: hidden;
-    }
-    .bl-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80') center/cover no-repeat;
-      opacity: 0.10;
-      filter: brightness(0.5) saturate(0.6);
-      z-index: 0;
     }
     .bl-hero::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 20%, rgba(0,0,0,0.3) 0%, rgba(10,12,14,0.85) 80%);
+      background: linear-gradient(90deg, rgba(8,10,12,0.9) 0%, rgba(8,10,12,0.4) 100%);
       z-index: 1;
     }
     .bl-hero .hero-inner {
@@ -156,41 +143,37 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
     }
     .bl-hero .hero-left {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
     .bl-hero .hero-left .league-name {
       font-family: var(--font-headline);
-      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 400;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
       color: var(--bl-white);
       line-height: 1;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.6);
     }
-    .bl-hero .hero-left .league-name .gold { color: var(--bl-gold); }
     .bl-hero .hero-left .sub {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--bl-steel-light);
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
-    .bl-hero .hero-left .sub strong { color: var(--bl-gold); }
     .bl-hero .hero-right {
       display: flex;
       align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(4px);
-      padding: 10px 20px;
+      gap: 24px;
+      background: var(--bl-gray);
+      padding: 16px 24px;
       border-radius: var(--bl-radius);
       border: 1px solid var(--bl-line);
     }
@@ -201,20 +184,21 @@
     }
     .bl-hero .hero-right .stat-item .num {
       font-family: var(--font-mono);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: var(--bl-white);
     }
     .bl-hero .hero-right .stat-item .label {
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--bl-steel);
+      font-weight: 600;
     }
     .bl-hero .hero-right .divider {
       width: 1px;
-      height: 28px;
-      background: var(--bl-line);
+      height: 32px;
+      background: var(--bl-line-strong);
     }
 
     /* ============================================================
@@ -223,7 +207,7 @@
     .app-shell {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px 40px;
+      padding: 0 32px 48px;
     }
 
     /* ============================================================
@@ -231,29 +215,29 @@
        ============================================================ */
     .view {
       display: none;
-      animation: fadeUp 0.25s ease;
+      animation: fadeUp 0.3s ease;
     }
     .view.active {
       display: block;
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     /* ============================================================
-       LAYOUT: Tabelle links, Spiele rechts
+       LAYOUT
        ============================================================ */
     .content-wrapper {
       display: flex;
-      gap: 24px;
+      gap: 32px;
       align-items: flex-start;
     }
     .content-wrapper .left-col {
-      flex: 0 0 520px;
+      flex: 0 0 540px;
       min-width: 0;
       position: sticky;
-      top: 80px;
+      top: 96px;
     }
     .content-wrapper .right-col {
       flex: 1;
@@ -271,51 +255,50 @@
     }
 
     /* ============================================================
-       TABELLE – puristisch, wie bundesliga.com
+       TABELLE
        ============================================================ */
     .table-wrap {
-      background: var(--bl-gray);
+      background: var(--bl-dark);
       border-radius: var(--bl-radius);
       overflow: hidden;
-      box-shadow: var(--bl-shadow);
       border: 1px solid var(--bl-line);
     }
     .table-wrap .table-title {
-      padding: 14px 20px;
-      font-size: 0.6rem;
+      padding: 16px 24px;
+      font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--bl-steel);
-      font-weight: 600;
-      border-bottom: 1px solid var(--bl-line);
-      background: var(--bl-dark);
+      letter-spacing: 0.05em;
+      color: var(--bl-white);
+      font-weight: 800;
+      border-bottom: 2px solid var(--bl-line-strong);
+      background: var(--bl-gray);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .table-wrap .table-title .badge {
-      color: var(--bl-gold);
-      font-weight: 700;
+      color: var(--bl-steel-light);
+      font-weight: 600;
+      font-size: 0.65rem;
     }
 
     .liga-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
     }
     .liga-table th {
       text-align: left;
-      padding: 10px 12px;
+      padding: 12px 16px;
       font-weight: 700;
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       color: var(--bl-steel);
-      border-bottom: 2px solid var(--bl-line-strong);
-      font-family: var(--font-mono);
+      border-bottom: 1px solid var(--bl-line-strong);
     }
     .liga-table td {
-      padding: 10px 12px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--bl-line);
       vertical-align: middle;
       font-family: var(--font-mono);
@@ -323,48 +306,33 @@
     }
     .liga-table td.team {
       font-family: var(--font-text);
-      font-weight: 600;
+      font-weight: 700;
       color: var(--bl-white);
     }
     .liga-table tbody tr:hover td {
-      background: rgba(227,6,19,0.04);
+      background: var(--bl-gray);
     }
     .liga-table .pos {
       font-weight: 800;
       color: var(--bl-steel);
       text-align: center;
-      font-size: 0.7rem;
+      font-size: 0.8rem;
     }
     .liga-table tbody tr:nth-child(-n+2) td:first-child {
-      border-left: 4px solid var(--bl-gold);
-      background: rgba(255,215,0,0.05);
-    }
-    .liga-table tbody tr:nth-child(-n+2) .pos {
-      color: var(--bl-black);
-      background: var(--bl-gold);
-      padding: 2px 0;
-      border-radius: 4px;
-      font-weight: 900;
+      border-left: 4px solid var(--bl-steel-light);
     }
     .liga-table tbody tr:nth-last-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-red);
-      background: rgba(227,6,19,0.05);
-    }
-    .liga-table tbody tr:nth-last-child(-n+2) .pos {
-      color: var(--bl-white);
-      background: var(--bl-red);
-      padding: 2px 0;
-      border-radius: 4px;
     }
     .liga-table .pts {
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: var(--bl-white);
       text-align: center;
     }
     .liga-table .num {
       text-align: center;
-      color: var(--bl-steel);
+      color: var(--bl-steel-light);
     }
 
     /* ============================================================
@@ -373,147 +341,147 @@
     .liga-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 20px;
-      padding: 4px;
-      background: var(--bl-dark);
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 8px;
+      background: var(--bl-gray);
       border-radius: var(--bl-radius);
       border: 1px solid var(--bl-line);
     }
     .liga-tabs button {
-      padding: 8px 16px;
-      border: none;
-      background: transparent;
-      color: var(--bl-steel);
-      font-weight: 600;
-      font-size: 0.65rem;
+      padding: 10px 20px;
+      border: 1px solid var(--bl-line);
+      background: var(--bl-dark);
+      color: var(--bl-steel-light);
+      font-weight: 700;
+      font-size: 0.75rem;
       font-family: var(--font-text);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       cursor: pointer;
       transition: all var(--transition);
-      border-radius: 8px;
+      border-radius: 4px;
     }
     .liga-tabs button:hover {
-      background: rgba(255,255,255,0.04);
+      background: var(--bl-gray-light);
       color: var(--bl-white);
     }
     .liga-tabs button.active {
-      background: var(--bl-red);
-      color: var(--bl-white);
-      box-shadow: 0 4px 12px rgba(227,6,19,0.2);
+      background: var(--bl-white);
+      color: var(--bl-black);
+      border-color: var(--bl-white);
     }
 
     /* ============================================================
-       SPIELKARTEN – Live-Spielcenter Stil
+       SPIELKARTEN
        ============================================================ */
     .spiel-liste {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
     .spiel-item {
-      background: var(--bl-gray);
+      background: var(--bl-dark);
       border-radius: var(--bl-radius);
-      box-shadow: var(--bl-shadow-soft);
       border: 1px solid var(--bl-line);
-      transition: transform var(--transition), box-shadow var(--transition);
+      transition: border-color var(--transition);
       overflow: hidden;
     }
     .spiel-item:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--bl-shadow);
+      border-color: var(--bl-line-strong);
     }
     .spiel-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 20px;
-      gap: 12px;
+      padding: 16px 24px;
+      gap: 16px;
       flex-wrap: wrap;
-      background: var(--bl-dark);
-      border-bottom: 1px solid var(--bl-line);
+      background: var(--bl-gray);
     }
     .spiel-header .team-block {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       flex: 1;
       min-width: 0;
     }
     .spiel-header .team-block.heim { justify-content: flex-start; }
-    .spiel-header .team-block.auswaerts { justify-content: flex-end; }
+    .spiel-header .team-block.auswaerts { justify-content: flex-end; text-align: right; }
     .spiel-header .team-logo-small {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       flex-shrink: 0;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
     }
     .spiel-header .team-name {
-      font-weight: 700;
-      font-size: 0.9rem;
+      font-weight: 800;
+      font-size: 1rem;
       color: var(--bl-white);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-transform: uppercase;
     }
     .spiel-header .score-display {
-      font-family: var(--font-mono);
-      font-size: 1.3rem;
-      font-weight: 800;
+      font-family: var(--font-headline);
+      font-size: 1.8rem;
+      font-weight: 400;
       background: var(--bl-black);
-      border: 2px solid var(--bl-red);
-      padding: 4px 16px;
-      border-radius: 8px;
+      padding: 4px 20px;
+      border-radius: 4px;
       color: var(--bl-white);
       white-space: nowrap;
       flex-shrink: 0;
-      min-width: 72px;
+      min-width: 80px;
       text-align: center;
+      border: 1px solid var(--bl-line);
     }
     .spiel-header .toggle-btn {
-      background: transparent;
+      background: var(--bl-dark);
       border: 1px solid var(--bl-line-strong);
-      border-radius: 8px;
-      width: 32px;
-      height: 32px;
+      border-radius: 4px;
+      width: 36px;
+      height: 36px;
       color: var(--bl-white);
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: transform var(--transition), background var(--transition);
+      transition: background var(--transition);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .spiel-header .toggle-btn:hover {
-      background: rgba(227,6,19,0.15);
-      border-color: var(--bl-red);
+      background: var(--bl-gray-light);
     }
     .spiel-header .toggle-btn.open {
-      transform: rotate(180deg);
-      background: rgba(227,6,19,0.2);
+      background: var(--bl-red);
       border-color: var(--bl-red);
+    }
+    .spiel-header .toggle-btn.open svg {
+      transform: rotate(180deg);
     }
     .spiel-meta {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 6px 20px;
-      font-size: 0.55rem;
-      font-family: var(--font-mono);
+      gap: 24px;
+      padding: 10px 24px;
+      font-size: 0.65rem;
+      font-weight: 700;
       color: var(--bl-steel);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: var(--bl-gray-light);
+      letter-spacing: 0.05em;
+      background: var(--bl-dark);
+      border-top: 1px solid var(--bl-line);
       border-bottom: 1px solid var(--bl-line);
     }
     .spiel-meta .status {
-      font-weight: 700;
-      color: var(--bl-gold);
+      color: var(--bl-steel-light);
     }
-    .spiel-meta .status.done { color: #00b050; }
+    .spiel-meta .status.done { 
+      color: var(--bl-white); 
+    }
 
     .spiel-board-container {
       display: grid;
@@ -526,60 +494,57 @@
     .spiel-board-container.open {
       grid-template-rows: 1fr;
       opacity: 1;
-      padding: 16px;
+      padding: 24px;
       display: flex;
       justify-content: center;
     }
 
     /* ============================================================
-       BRETT – wie Taktik-Tafel
+       BRETT
        ============================================================ */
     .board-panel {
-      background: var(--bl-gray);
+      background: var(--bl-dark);
       border-radius: var(--bl-radius);
-      padding: 16px;
-      box-shadow: inset 0 0 0 1px var(--bl-line);
+      padding: 24px;
+      border: 1px solid var(--bl-line);
       max-width: fit-content;
       margin: 0 auto;
       width: 100%;
     }
     .board-panel .topbar {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
-    }
-    .board-panel .topbar .eyebrow {
-      font-size: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--bl-steel);
+      text-align: center;
     }
     .board-panel .topbar h3 {
-      font-family: var(--font-headline);
+      font-family: var(--font-text);
       font-size: 0.85rem;
-      font-weight: 400;
-      color: var(--bl-white);
+      font-weight: 700;
+      color: var(--bl-steel-light);
       margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .board-panel .scoreboard {
       display: flex;
       justify-content: center;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
     .board-panel .scoreboard>div {
       display: flex;
       align-items: center;
-      gap: 20px;
-      background: var(--bl-black);
-      padding: 8px 20px;
+      gap: 24px;
+      background: var(--bl-gray);
+      padding: 12px 24px;
       border-radius: var(--bl-radius);
-      border: 1px solid var(--bl-line-strong);
+      border: 1px solid var(--bl-line);
     }
     .board-panel .team-logo-wrapper {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
@@ -589,15 +554,15 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
     }
     .board-panel .scoreboard .score-box {
       font-family: var(--font-headline);
-      background: var(--bl-red);
-      padding: 4px 16px;
-      border-radius: 8px;
-      color: white;
-      font-size: 1.3rem;
+      background: var(--bl-black);
+      border: 1px solid var(--bl-line);
+      padding: 6px 20px;
+      border-radius: 4px;
+      color: var(--bl-white);
+      font-size: 1.5rem;
       font-weight: 400;
     }
     .board-panel .chess-grid {
@@ -605,10 +570,7 @@
       grid-template-columns: repeat(5, var(--cell-size));
       grid-template-rows: repeat(4, var(--cell-size));
       margin: 0 auto;
-      border: 2px solid var(--bl-red);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 0 1px var(--bl-line), var(--bl-shadow);
+      border: 1px solid var(--bl-line-strong);
       background: var(--bl-black);
       width: fit-content;
     }
@@ -620,34 +582,34 @@
     .board-panel .piece-cell {
       display: grid;
       place-items: center;
-      background: var(--bl-gray);
+      background: var(--bl-dark);
       color: var(--bl-white);
-      font-weight: 800;
       position: relative;
     }
-    .board-panel .piece-cell.light { background: var(--bl-gray-light); }
+    .board-panel .piece-cell.light { background: var(--bl-gray); }
     .board-panel .piece-cell .field-watermark {
       position: absolute;
-      right: 4px;
-      bottom: 4px;
+      right: 6px;
+      bottom: 6px;
       font-family: var(--font-mono);
-      font-size: clamp(0.5rem, calc(var(--cell-size)*0.12), 0.9rem);
+      font-size: clamp(0.6rem, calc(var(--cell-size)*0.15), 1rem);
       font-weight: 800;
       pointer-events: none;
-      opacity: 0.7;
-    }
-    .board-panel .piece-cell .field-watermark.positive { color: #2be08a; }
-    .board-panel .piece-cell .field-watermark.negative { color: #ff4d4d; }
-    .board-panel .piece-cell .field-watermark.zero { color: #c3aeff; }
-    .board-panel .piece-cell .piece-svg {
-      width: 55%;
-      max-width: 44px;
-      height: auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
       opacity: 0.9;
     }
+    .board-panel .piece-cell .field-watermark.positive { color: #2be08a; }
+    .board-panel .piece-cell .field-watermark.negative { color: var(--bl-red); }
+    .board-panel .piece-cell .field-watermark.zero { color: var(--bl-steel); }
+    
+    .board-panel .piece-cell .piece-svg {
+      width: 50%;
+      max-width: 40px;
+      height: auto;
+      opacity: 0.7;
+    }
     .board-panel .piece-cell:not(.light) .piece-svg {
-      filter: invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+      filter: invert(1);
+      opacity: 0.5;
     }
     .board-panel .piece-cell .player-photo {
       position: absolute;
@@ -656,20 +618,20 @@
       height: calc(100% - 8px);
       object-fit: contain;
       object-position: center bottom;
-      padding: 2px;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
     }
     .board-panel .piece-cell .piece-corner {
       position: absolute;
-      top: 4px;
-      left: 4px;
-      width: 22%;
-      max-width: 20px;
-      background: rgba(0,0,0,0.5);
-      padding: 2px;
+      top: 6px;
+      left: 6px;
+      width: 20%;
+      max-width: 18px;
+      background: var(--bl-black);
+      padding: 4px;
       border-radius: 4px;
+      border: 1px solid var(--bl-line);
     }
     .board-panel .piece-cell.has-player-image .piece-svg { display: none; }
+    
     .board-panel .drop-cell {
       display: flex;
       align-items: center;
@@ -678,26 +640,25 @@
     }
     .board-panel .drop-cell .drop-value {
       font-family: var(--font-mono);
-      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.1rem);
-      font-weight: 800;
-      color: var(--bl-white);
-      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.2rem);
+      font-weight: 700;
+      color: var(--bl-steel-light);
     }
     .board-panel .drop-cell.has-theses .drop-value {
       position: absolute;
-      top: 4px;
-      left: 4px;
-      font-size: clamp(0.35rem, calc(var(--cell-size)*0.07), 0.55rem);
+      top: 6px;
+      left: 6px;
+      font-size: clamp(0.4rem, calc(var(--cell-size)*0.08), 0.6rem);
       color: var(--bl-steel);
     }
     .board-panel .drop-cell .drop-total {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
+      bottom: 6px;
+      right: 6px;
       font-family: var(--font-mono);
-      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.1rem);
+      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.2rem);
       font-weight: 800;
-      color: var(--bl-steel);
+      color: var(--bl-white);
       display: none;
     }
     .board-panel .drop-cell.has-theses .drop-total { display: block; }
@@ -708,7 +669,7 @@
       grid-template-columns: 1fr;
       grid-auto-rows: 1fr;
       gap: 2px;
-      padding: 2px;
+      padding: 4px;
       pointer-events: none;
       z-index: 2;
     }
@@ -717,12 +678,11 @@
       place-items: center;
       background: var(--bl-white);
       color: var(--bl-black);
-      font-size: clamp(0.2rem, 0.35vw, 0.4rem);
+      font-size: clamp(0.3rem, 0.4vw, 0.5rem);
       font-weight: 700;
-      padding: 2px 4px;
-      border-radius: 4px;
+      padding: 2px 6px;
+      border-radius: 2px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       position: relative;
     }
     .board-panel .placed-chip .chip-field-badge {
@@ -731,8 +691,8 @@
       left: 4px;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.7em;
-      color: rgba(0,0,0,0.4);
+      font-size: 0.8em;
+      color: rgba(0,0,0,0.5);
     }
     .board-panel .placed-chip .chip-watermark {
       position: absolute;
@@ -740,105 +700,103 @@
       bottom: 2px;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 1.1em;
+      font-size: 1.2em;
     }
     .board-panel .placed-chip .chip-watermark.positive { color: #0f9d5c; }
-    .board-panel .placed-chip .chip-watermark.negative { color: #d81e1e; }
-    .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6; }
+    .board-panel .placed-chip .chip-watermark.negative { color: var(--bl-red); }
+    .board-panel .placed-chip .chip-watermark.zero { color: #555; }
 
     /* ============================================================
-       STATISTIKEN – Insights
+       STATISTIKEN
        ============================================================ */
     .stats-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 20px;
+      gap: 24px;
       margin-top: 8px;
     }
     .stat-card {
-      background: var(--bl-gray);
+      background: var(--bl-dark);
       border-radius: var(--bl-radius);
-      box-shadow: var(--bl-shadow-soft);
       border: 1px solid var(--bl-line);
       overflow: hidden;
-      transition: transform var(--transition);
     }
-    .stat-card:hover { transform: translateY(-2px); }
     .stat-card .stat-card-head {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 20px;
-      background: var(--bl-dark);
-      border-bottom: 1px solid var(--bl-line);
+      gap: 16px;
+      padding: 16px 24px;
+      background: var(--bl-gray);
+      border-bottom: 2px solid var(--bl-line-strong);
     }
     .stat-card .piece-icon-wrap {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: grid;
       place-items: center;
       background: var(--bl-black);
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid var(--bl-line);
     }
-    .stat-card .piece-icon-wrap img {
-      width: 22px;
-      height: 22px;
-      filter: invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    .stat-card .piece-icon-wrap img, .stat-card .piece-icon-wrap svg {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+      opacity: 0.8;
     }
     .stat-card h3 {
-      font-family: var(--font-headline);
-      font-size: 1rem;
-      font-weight: 400;
+      font-family: var(--font-text);
+      font-size: 0.9rem;
+      font-weight: 800;
       color: var(--bl-white);
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
     .stat-section {
-      padding: 12px 20px 16px;
+      padding: 16px 24px 24px;
     }
     .stat-section .section-title {
-      font-family: var(--font-mono);
-      font-size: 0.5rem;
+      font-family: var(--font-text);
+      font-size: 0.65rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.05em;
       color: var(--bl-steel);
-      margin-bottom: 8px;
-      border-left: 3px solid var(--bl-red);
-      padding-left: 10px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--bl-red);
+      padding-left: 12px;
     }
     .stat-entry {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 6px 0;
+      gap: 16px;
+      padding: 10px 0;
       border-bottom: 1px solid var(--bl-line);
     }
     .stat-entry:last-child { border-bottom: none; }
     .stat-entry.top1 {
-      background: rgba(255,215,0,0.05);
-      border-left: 3px solid var(--bl-gold);
-      padding-left: 8px;
-      border-radius: 4px;
+      background: rgba(255,255,255,0.02);
+      border-left: 4px solid var(--bl-white);
+      padding-left: 12px;
     }
     .stat-entry .rank-badge {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       display: grid;
       place-items: center;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.65rem;
-      color: var(--bl-steel);
+      font-size: 0.75rem;
+      color: var(--bl-steel-light);
       background: var(--bl-black);
-      border-radius: 4px;
+      border-radius: 2px;
       border: 1px solid var(--bl-line);
     }
     .stat-entry .rank-badge.gold {
-      background: var(--bl-gold);
+      background: var(--bl-white);
       color: var(--bl-black);
-      border-color: var(--bl-gold);
+      border-color: var(--bl-white);
     }
     .stat-entry .rank-badge.silver {
       background: #c0c0c0;
@@ -850,43 +808,43 @@
     }
     .stat-entry .avatar-wrap {
       position: relative;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       flex-shrink: 0;
     }
     .stat-entry .player-img {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       object-fit: cover;
-      border-radius: 4px;
+      border-radius: 2px;
       background: var(--bl-black);
       border: 1px solid var(--bl-line);
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
     }
     .stat-entry .team-badge-mini {
       position: absolute;
-      right: -4px;
-      bottom: -4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
+      right: -6px;
+      bottom: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 2px;
       object-fit: contain;
       background: var(--bl-white);
       border: 1px solid var(--bl-black);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .stat-entry .meta-col {
       flex: 1;
       min-width: 0;
     }
     .stat-entry .meta-col .meta-team {
-      font-weight: 700;
-      font-size: 0.75rem;
+      font-weight: 800;
+      font-size: 0.8rem;
       color: var(--bl-white);
+      text-transform: uppercase;
     }
     .stat-entry .meta-col .meta-detail {
-      font-size: 0.6rem;
+      font-size: 0.65rem;
       color: var(--bl-steel);
+      font-weight: 600;
     }
     .stat-entry .value-chip {
       flex-shrink: 0;
@@ -895,101 +853,94 @@
     .stat-entry .value-chip .value-num {
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.85rem;
-      color: var(--bl-gold);
+      font-size: 1rem;
+      color: var(--bl-white);
       background: var(--bl-black);
-      padding: 2px 10px;
-      border-radius: 4px;
+      padding: 4px 12px;
+      border-radius: 2px;
       border: 1px solid var(--bl-line);
     }
     .stat-entry .value-chip .value-unit {
-      font-size: 0.45rem;
+      font-size: 0.5rem;
+      font-weight: 700;
       text-transform: uppercase;
       color: var(--bl-steel);
       display: block;
+      margin-top: 4px;
     }
     .no-data {
       color: var(--bl-steel);
-      font-size: 0.75rem;
-      padding: 8px 0;
+      font-size: 0.8rem;
+      padding: 12px 0;
     }
 
     /* ============================================================
        ALLE SPIELE
        ============================================================ */
     .spieltag-group {
-      margin-bottom: 32px;
+      margin-bottom: 40px;
     }
     .spieltag-headline {
-      font-family: var(--font-headline);
-      font-size: 1.1rem;
-      color: var(--bl-gold);
-      margin-bottom: 14px;
-      padding-bottom: 6px;
+      font-family: var(--font-text);
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--bl-white);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
       border-bottom: 2px solid var(--bl-line-strong);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
     .spieltag-headline small {
       font-family: var(--font-mono);
-      font-size: 0.55rem;
+      font-size: 0.65rem;
       color: var(--bl-steel);
-      font-weight: 400;
+      font-weight: 600;
     }
     .spieltag-headline .badge-count {
-      background: var(--bl-red);
-      padding: 2px 10px;
-      border-radius: 12px;
-      font-size: 0.55rem;
-      font-weight: 700;
-      color: white;
-      font-family: var(--font-mono);
+      background: var(--bl-gray-light);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      color: var(--bl-white);
+      font-family: var(--font-text);
+      text-transform: uppercase;
     }
 
     /* ============================================================
        RESPONSIVE
        ============================================================ */
     @media (max-width: 700px) {
-      .bl-topbar { padding: 0 16px; height: 52px; flex-wrap: wrap; gap: 6px; }
-      .bl-topbar .brand .logo-img { height: 28px; }
-      .bl-topbar .nav-links button { padding: 4px 10px; font-size: 0.5rem; }
-      .bl-topbar .nav-links button svg { width: 14px; height: 14px; }
-      .bl-hero { padding: 20px 16px; }
-      .bl-hero .hero-right { padding: 8px 14px; gap: 10px; }
-      .bl-hero .hero-right .stat-item .num { font-size: 1rem; }
-      .app-shell { padding: 0 12px 24px; }
+      .bl-topbar { padding: 0 16px; height: auto; flex-wrap: wrap; gap: 8px; padding-bottom: 8px; }
+      .bl-topbar .brand { padding-top: 8px; }
+      .bl-topbar .nav-links button { padding: 8px 12px; font-size: 0.65rem; }
+      .bl-hero { padding: 24px 16px; }
+      .bl-hero .hero-right { padding: 12px 16px; gap: 16px; }
+      .app-shell { padding: 0 16px 32px; }
       .content-wrapper { flex-direction: column; }
       .content-wrapper .left-col { flex: none; width: 100%; position: static; }
-      .spiel-header { padding: 10px 12px; }
-      .spiel-header .team-name { font-size: 0.7rem; }
-      .spiel-header .score-display { font-size: 1rem; padding: 2px 12px; min-width: 56px; }
-      .spiel-header .team-logo-small { width: 32px; height: 32px; }
-      .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
+      .spiel-header { padding: 12px 16px; gap: 12px; }
+      .spiel-header .team-name { font-size: 0.8rem; }
+      .spiel-header .score-display { font-size: 1.4rem; padding: 4px 12px; min-width: 64px; }
+      .spiel-header .team-logo-small { width: 36px; height: 36px; }
+      .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 40px)/5), 64px); }
       .stats-container { grid-template-columns: 1fr; }
-      .liga-table { font-size: 0.6rem; }
-      .liga-table th { font-size: 0.45rem; padding: 6px 8px; }
-      .liga-table td { padding: 6px 8px; }
+      .liga-table { font-size: 0.7rem; }
     }
     @media (max-width: 500px) {
-      .spiel-header .team-name { font-size: 0.6rem; }
-      .spiel-header .score-display { font-size: 0.85rem; min-width: 48px; }
-      .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px); }
-      .spiel-header .team-logo-small { width: 28px; height: 28px; }
-      .bl-hero .hero-left .league-name { font-size: 1.6rem; }
-      .bl-topbar .nav-links button { font-size: 0.45rem; padding: 4px 8px; }
-      .bl-topbar .nav-links button svg { width: 12px; height: 12px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; animation: none !important; }
+      .spiel-header .team-name { font-size: 0.7rem; }
+      .spiel-header .score-display { font-size: 1.2rem; min-width: 56px; }
+      .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 20px)/5), 46px); }
+      .spiel-header .team-logo-small { width: 32px; height: 32px; }
+      .bl-hero .hero-left .league-name { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ============================================================
-  TOPBAR
-  ============================================================ -->
   <header class="bl-topbar">
     <div class="brand">
       <img class="logo-img" src="logo.png" alt="Logo" />
@@ -1010,14 +961,11 @@
     </div>
   </header>
 
-  <!-- ============================================================
-  HERO
-  ============================================================ -->
   <section class="bl-hero">
     <div class="hero-inner">
       <div class="hero-left">
-        <div class="league-name">2. <span class="gold">Bundesliga</span></div>
-        <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
+        <div class="league-name">2. Bundesliga</div>
+        <div class="sub">Rasenschach · Saison 26/27</div>
       </div>
       <div class="hero-right">
         <div class="stat-item">
@@ -1038,12 +986,8 @@
     </div>
   </section>
 
-  <!-- ============================================================
-  APP
-  ============================================================ -->
   <div class="app-shell" id="app">
 
-    <!-- TABELLE + SPIELE (Hauptansicht) -->
     <div class="view active" id="tableView">
       <div class="liga-tabs" id="spieltagTabs"></div>
       <div class="content-wrapper">
@@ -1065,21 +1009,16 @@
       </div>
     </div>
 
-    <!-- SPIELE (alle) -->
     <div class="view" id="gamesView">
       <div id="allGamesContainer"></div>
     </div>
 
-    <!-- STATISTIKEN -->
     <div class="view" id="statsView">
       <div id="statsContainer" class="stats-container"></div>
     </div>
 
   </div>
 
-  <!-- ============================================================
-  SCRIPT – unveränderte Logik
-  ============================================================ -->
   <script>
     // ============================
     //  KONFIGURATION
@@ -1237,7 +1176,7 @@
       const topbar = document.createElement('div');
       topbar.className = 'topbar';
       topbar.innerHTML =
-        `<div><span class="eyebrow">${homeTeam} vs ${awayTeam}</span><h3>Rasenschach · Spieltag ${stIdx+1}</h3></div>`;
+        `<h3>Spieltag ${stIdx+1}</h3>`;
       board.appendChild(topbar);
 
       const score = getGameScore(state);
@@ -1246,14 +1185,14 @@
       const sb = document.createElement('div');
       sb.className = 'scoreboard';
       sb.innerHTML = `<div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
-            <span style="font-weight:700;color:var(--bl-white);font-size:0.95rem;font-family:var(--font-text);">${homeTeam}</span>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : `<span style="font-family:var(--font-text);font-weight:800;color:var(--bl-steel);">${homeTeam[0]}</span>`}</div>
+            <span style="font-weight:800;color:var(--bl-white);font-size:1.1rem;font-family:var(--font-text);text-transform:uppercase;">${homeTeam}</span>
           </div>
           <div class="score-box">${score.white} : ${score.black}</div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-weight:700;color:var(--bl-white);font-size:0.95rem;font-family:var(--font-text);">${awayTeam}</span>
-            <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <span style="font-weight:800;color:var(--bl-white);font-size:1.1rem;font-family:var(--font-text);text-transform:uppercase;">${awayTeam}</span>
+            <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : `<span style="font-family:var(--font-text);font-weight:800;color:var(--bl-steel);">${awayTeam[0]}</span>`}</div>
           </div>
         </div>`;
       board.appendChild(sb);
@@ -1278,7 +1217,7 @@
             if (image) {
               cell.classList.add('has-player-image');
               html += `<img class="player-photo" src="${image}" alt="" />`;
-              html += `<img class="piece-corner" src="${pieceSvg}" alt="" />`;
+              html += `<div class="piece-corner"><img style="width:100%;height:100%;object-fit:contain;opacity:0.8;" src="${pieceSvg}" alt="" /></div>`;
             } else {
               html += `<img class="piece-svg" src="${pieceSvg}" alt="" />`;
             }
@@ -1330,7 +1269,7 @@
       item.className = 'spiel-item';
       if (!state) {
         item.innerHTML =
-          `<div class="spiel-header" style="opacity:0.4;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--bl-steel);font-size:0.55rem;">nicht verfügbar</span></div>`;
+          `<div class="spiel-header" style="opacity:0.4;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--bl-steel);font-size:0.65rem;text-transform:uppercase;font-weight:700;">Nicht verfügbar</span></div>`;
         return item;
       }
       const score = getGameScore(state);
@@ -1344,13 +1283,15 @@
           <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
           <span class="score-display">${score.white} : ${score.black}</span>
           <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
-          <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
+          <button class="toggle-btn" aria-label="Details">
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
         `;
       item.appendChild(header);
       const meta = document.createElement('div');
       meta.className = 'spiel-meta';
       meta.innerHTML =
-        `<span class="status ${complete ? 'done' : ''}">${complete ? '✓ gespielt' : '⏳ offen'}</span><span>${placed}/10 Figuren</span>`;
+        `<span class="status ${complete ? 'done' : ''}">${complete ? 'Beendet' : 'Anstehend'}</span><span>${placed}/10 Figuren platziert</span>`;
       item.appendChild(meta);
       const boardContainer = document.createElement('div');
       boardContainer.className = 'spiel-board-container';
@@ -1378,7 +1319,7 @@
       container.innerHTML = '';
       const spiele = spielplan.spieltage[spieltagIndex];
       if (!spiele) { container.innerHTML =
-          '<p style="color:var(--bl-steel);font-size:0.75rem;">Spieltag nicht gefunden.</p>'; return; }
+          '<p style="color:var(--bl-steel);font-size:0.8rem;">Spieltag nicht gefunden.</p>'; return; }
       spiele.forEach((spiel, idx) => {
         const key = `${spieltagIndex}-${idx}`;
         const state = allGameData[key];
@@ -1426,7 +1367,7 @@
         const headline = document.createElement('div');
         headline.className = 'spieltag-headline';
         headline.innerHTML =
-          `Spieltag ${stIdx+1} <small>${spiele.length} Partien</small> <span class="badge-count">⚡</span>`;
+          `Spieltag ${stIdx+1} <small>${spiele.length} Partien</small> <span class="badge-count">Alle Spiele</span>`;
         group.appendChild(headline);
         const list = document.createElement('div');
         list.className = 'spiel-liste';
@@ -1550,8 +1491,8 @@
       const headApp = document.createElement('div');
       headApp.className = 'stat-card-head';
       headApp.innerHTML = `
-          <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.06);border-color:rgba(255,215,0,0.15);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--bl-gold)" stroke-width="2" style="width:18px;height:18px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
+          <div class="piece-icon-wrap" style="background:var(--bl-white);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--bl-black)" stroke-width="2" style="width:20px;height:20px;filter:none;opacity:1;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
           </div>
           <h3>Häufigste Einsätze</h3>
         `;
@@ -1636,7 +1577,7 @@
         const listAvg = document.createElement('div');
         const avgData = stats[p.id]?.byAvg || [];
         if (avgData.length === 0) {
-          listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 3)</div>';
+          listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mind. 3)</div>';
         } else {
           avgData.forEach((entry, idx) => {
             const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
