@@ -6,10 +6,10 @@
   <title>2. Bundesliga · Rasenschach 26/27</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
-       TOKENS – angelehnt an bundesliga.com
+       DESIGN SYSTEM – angelehnt an bundesliga.com
        ============================================================ */
     :root {
       --bl-red: #E30613;
@@ -29,7 +29,7 @@
       --bl-radius: 16px;
       --cell-size: clamp(56px, min(6.5vw, 14vh), 100px);
       --font-headline: 'Anton', 'Arial Narrow', Impact, sans-serif;
-      --font-text: 'Inter', 'Sora', 'Segoe UI', Arial, sans-serif;
+      --font-text: 'Inter', 'Segoe UI', Arial, sans-serif;
       --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
       --transition: 0.2s ease;
     }
@@ -52,7 +52,7 @@
     }
 
     /* ============================================================
-       TOPBAR – wie bundesliga.com (nur Logo)
+       TOPBAR – wie bundesliga.com
        ============================================================ */
     .bl-topbar {
       background: var(--bl-dark);
@@ -122,7 +122,7 @@
     }
 
     /* ============================================================
-       HERO – reduziert, wie bundesliga.com
+       HERO – dezentes Stadionfeeling
        ============================================================ */
     .bl-hero {
       position: relative;
@@ -130,6 +130,7 @@
       margin-bottom: 20px;
       background: var(--bl-black);
       border-bottom: 1px solid var(--bl-line);
+      overflow: hidden;
     }
     .bl-hero::before {
       content: '';
@@ -137,7 +138,7 @@
       inset: 0;
       background:
         url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80') center/cover no-repeat;
-      opacity: 0.12;
+      opacity: 0.10;
       filter: brightness(0.5) saturate(0.6);
       z-index: 0;
     }
@@ -145,7 +146,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 20%, rgba(0,0,0,0.3) 0%, rgba(10,12,14,0.8) 80%);
+      background: radial-gradient(ellipse at 30% 20%, rgba(0,0,0,0.3) 0%, rgba(10,12,14,0.85) 80%);
       z-index: 1;
     }
     .bl-hero .hero-inner {
@@ -270,7 +271,7 @@
     }
 
     /* ============================================================
-       TABELLE – wie bundesliga.com
+       TABELLE – puristisch, wie bundesliga.com
        ============================================================ */
     .table-wrap {
       background: var(--bl-gray);
@@ -334,7 +335,6 @@
       text-align: center;
       font-size: 0.7rem;
     }
-    /* Top 3 – goldener Balken */
     .liga-table tbody tr:nth-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-gold);
       background: rgba(255,215,0,0.05);
@@ -346,7 +346,6 @@
       border-radius: 4px;
       font-weight: 900;
     }
-    /* Abstiegsplätze – roter Balken */
     .liga-table tbody tr:nth-last-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-red);
       background: rgba(227,6,19,0.05);
@@ -369,7 +368,7 @@
     }
 
     /* ============================================================
-       SPIELTAG-TABS – wie bundesliga.com
+       SPIELTAG-TABS
        ============================================================ */
     .liga-tabs {
       display: flex;
@@ -406,7 +405,7 @@
     }
 
     /* ============================================================
-       SPIELKARTEN – wie bundesliga.com Live-Spielcenter
+       SPIELKARTEN – Live-Spielcenter Stil
        ============================================================ */
     .spiel-liste {
       display: flex;
@@ -516,7 +515,6 @@
     }
     .spiel-meta .status.done { color: #00b050; }
 
-    /* Brettcontainer – zentriert */
     .spiel-board-container {
       display: grid;
       grid-template-rows: 0fr;
@@ -534,7 +532,7 @@
     }
 
     /* ============================================================
-       BRETT – wie bundesliga.com Taktik-Tafel
+       BRETT – wie Taktik-Tafel
        ============================================================ */
     .board-panel {
       background: var(--bl-gray);
@@ -749,7 +747,7 @@
     .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6; }
 
     /* ============================================================
-       STATISTIKEN – wie bundesliga.com Insights
+       STATISTIKEN – Insights
        ============================================================ */
     .stats-container {
       display: grid;
@@ -917,7 +915,7 @@
     }
 
     /* ============================================================
-       ALLE SPIELE (Games-View)
+       ALLE SPIELE
        ============================================================ */
     .spieltag-group {
       margin-bottom: 32px;
@@ -950,7 +948,7 @@
     }
 
     /* ============================================================
-       RESPONSIVE – wie bundesliga.com
+       RESPONSIVE
        ============================================================ */
     @media (max-width: 700px) {
       .bl-topbar { padding: 0 16px; height: 52px; flex-wrap: wrap; gap: 6px; }
@@ -990,7 +988,7 @@
 <body>
 
   <!-- ============================================================
-  TOPBAR – nur Logo
+  TOPBAR
   ============================================================ -->
   <header class="bl-topbar">
     <div class="brand">
@@ -1052,7 +1050,7 @@
         <div class="left-col">
           <div class="table-wrap" id="tableWrap">
             <div class="table-title">
-              <span>⚽ Tabelle</span>
+              <span>Tabelle</span>
               <span class="badge">2. Bundesliga 26/27</span>
             </div>
             <table class="liga-table" id="tableOnly">
