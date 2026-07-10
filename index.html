@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ============================================================
-       TOKENS – BUNDESLIGA PREMIUM
+       TOKENS – angelehnt an bundesliga.com
        ============================================================ */
     :root {
       --bl-red: #E30613;
@@ -42,9 +42,8 @@
       min-height: 100vh;
       background: var(--bl-black);
       background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(227,6,19,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(227,6,19,0.04) 0%, transparent 40%),
-        repeating-linear-gradient(45deg, rgba(255,255,255,0.008) 0px, rgba(255,255,255,0.008) 1px, transparent 1px, transparent 32px);
+        radial-gradient(ellipse at 20% 0%, rgba(227,6,19,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(227,6,19,0.03) 0%, transparent 40%);
       color: var(--bl-white);
       font-family: var(--font-text);
       font-weight: 400;
@@ -53,7 +52,7 @@
     }
 
     /* ============================================================
-       TOPBAR – nur Logo links oben
+       TOPBAR – wie bundesliga.com (nur Logo)
        ============================================================ */
     .bl-topbar {
       background: var(--bl-dark);
@@ -123,14 +122,13 @@
     }
 
     /* ============================================================
-       HERO – Stadionatmosphäre
+       HERO – reduziert, wie bundesliga.com
        ============================================================ */
     .bl-hero {
       position: relative;
-      padding: 40px 32px 32px;
-      margin-bottom: 24px;
+      padding: 32px 32px 24px;
+      margin-bottom: 20px;
       background: var(--bl-black);
-      overflow: hidden;
       border-bottom: 1px solid var(--bl-line);
     }
     .bl-hero::before {
@@ -139,15 +137,15 @@
       inset: 0;
       background:
         url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80') center/cover no-repeat;
-      opacity: 0.25;
-      filter: brightness(0.6) saturate(0.8);
+      opacity: 0.12;
+      filter: brightness(0.5) saturate(0.6);
       z-index: 0;
     }
     .bl-hero::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 30% 20%, rgba(0,0,0,0.2) 0%, rgba(10,12,14,0.7) 80%);
+      background: radial-gradient(ellipse at 30% 20%, rgba(0,0,0,0.3) 0%, rgba(10,12,14,0.8) 80%);
       z-index: 1;
     }
     .bl-hero .hero-inner {
@@ -157,16 +155,16 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 16px;
     }
     .bl-hero .hero-left {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .bl-hero .hero-left .league-name {
       font-family: var(--font-headline);
-      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-size: clamp(2rem, 4vw, 3.2rem);
       font-weight: 400;
       letter-spacing: 0.04em;
       text-transform: uppercase;
@@ -176,9 +174,9 @@
     }
     .bl-hero .hero-left .league-name .gold { color: var(--bl-gold); }
     .bl-hero .hero-left .sub {
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--bl-steel-light);
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -187,11 +185,11 @@
     .bl-hero .hero-right {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.35);
       backdrop-filter: blur(4px);
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: var(--bl-radius);
       border: 1px solid var(--bl-line);
     }
@@ -202,19 +200,19 @@
     }
     .bl-hero .hero-right .stat-item .num {
       font-family: var(--font-mono);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--bl-white);
     }
     .bl-hero .hero-right .stat-item .label {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--bl-steel);
     }
     .bl-hero .hero-right .divider {
       width: 1px;
-      height: 32px;
+      height: 28px;
       background: var(--bl-line);
     }
 
@@ -222,13 +220,13 @@
        APP SHELL
        ============================================================ */
     .app-shell {
-      max-width: 1440px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 24px 40px;
     }
 
     /* ============================================================
-       VIEWS – nur noch drei Views (Tabelle, Spiele, Statistiken)
+       VIEWS
        ============================================================ */
     .view {
       display: none;
@@ -243,7 +241,7 @@
     }
 
     /* ============================================================
-       TABELLE + SPIELE (Hauptansicht) – Layout wie Home
+       LAYOUT: Tabelle links, Spiele rechts
        ============================================================ */
     .content-wrapper {
       display: flex;
@@ -251,7 +249,7 @@
       align-items: flex-start;
     }
     .content-wrapper .left-col {
-      flex: 0 0 500px;
+      flex: 0 0 520px;
       min-width: 0;
       position: sticky;
       top: 80px;
@@ -272,7 +270,7 @@
     }
 
     /* ============================================================
-       TABELLE – Premium
+       TABELLE – wie bundesliga.com
        ============================================================ */
     .table-wrap {
       background: var(--bl-gray);
@@ -283,7 +281,7 @@
     }
     .table-wrap .table-title {
       padding: 14px 20px;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--bl-steel);
@@ -308,9 +306,9 @@
       text-align: left;
       padding: 10px 12px;
       font-weight: 700;
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--bl-steel);
       border-bottom: 2px solid var(--bl-line-strong);
       font-family: var(--font-mono);
@@ -327,16 +325,19 @@
       font-weight: 600;
       color: var(--bl-white);
     }
-    .liga-table tbody tr:hover td { background: rgba(227,6,19,0.04); }
+    .liga-table tbody tr:hover td {
+      background: rgba(227,6,19,0.04);
+    }
     .liga-table .pos {
       font-weight: 800;
       color: var(--bl-steel);
       text-align: center;
       font-size: 0.7rem;
     }
+    /* Top 3 – goldener Balken */
     .liga-table tbody tr:nth-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-gold);
-      background: rgba(255,215,0,0.06);
+      background: rgba(255,215,0,0.05);
     }
     .liga-table tbody tr:nth-child(-n+2) .pos {
       color: var(--bl-black);
@@ -345,9 +346,10 @@
       border-radius: 4px;
       font-weight: 900;
     }
+    /* Abstiegsplätze – roter Balken */
     .liga-table tbody tr:nth-last-child(-n+2) td:first-child {
       border-left: 4px solid var(--bl-red);
-      background: rgba(227,6,19,0.06);
+      background: rgba(227,6,19,0.05);
     }
     .liga-table tbody tr:nth-last-child(-n+2) .pos {
       color: var(--bl-white);
@@ -361,28 +363,31 @@
       color: var(--bl-white);
       text-align: center;
     }
-    .liga-table .num { text-align: center; color: var(--bl-steel); }
+    .liga-table .num {
+      text-align: center;
+      color: var(--bl-steel);
+    }
 
     /* ============================================================
-       SPIELTAG TABS
+       SPIELTAG-TABS – wie bundesliga.com
        ============================================================ */
     .liga-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 24px;
-      padding: 6px;
+      gap: 4px;
+      margin-bottom: 20px;
+      padding: 4px;
       background: var(--bl-dark);
       border-radius: var(--bl-radius);
       border: 1px solid var(--bl-line);
     }
     .liga-tabs button {
-      padding: 8px 18px;
+      padding: 8px 16px;
       border: none;
       background: transparent;
       color: var(--bl-steel);
       font-weight: 600;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-family: var(--font-text);
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -397,16 +402,16 @@
     .liga-tabs button.active {
       background: var(--bl-red);
       color: var(--bl-white);
-      box-shadow: 0 4px 12px rgba(227,6,19,0.25);
+      box-shadow: 0 4px 12px rgba(227,6,19,0.2);
     }
 
     /* ============================================================
-       SPIELKARTEN – Live-Spielcenter
+       SPIELKARTEN – wie bundesliga.com Live-Spielcenter
        ============================================================ */
     .spiel-liste {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
     }
     .spiel-item {
       background: var(--bl-gray);
@@ -456,16 +461,16 @@
     }
     .spiel-header .score-display {
       font-family: var(--font-mono);
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 800;
       background: var(--bl-black);
       border: 2px solid var(--bl-red);
-      padding: 4px 18px;
+      padding: 4px 16px;
       border-radius: 8px;
       color: var(--bl-white);
       white-space: nowrap;
       flex-shrink: 0;
-      min-width: 80px;
+      min-width: 72px;
       text-align: center;
     }
     .spiel-header .toggle-btn {
@@ -496,8 +501,8 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      padding: 8px 20px;
-      font-size: 0.6rem;
+      padding: 6px 20px;
+      font-size: 0.55rem;
       font-family: var(--font-mono);
       color: var(--bl-steel);
       text-transform: uppercase;
@@ -529,7 +534,7 @@
     }
 
     /* ============================================================
-       BRETT – Premium, zentriert
+       BRETT – wie bundesliga.com Taktik-Tafel
        ============================================================ */
     .board-panel {
       background: var(--bl-gray);
@@ -548,14 +553,14 @@
       flex-wrap: wrap;
     }
     .board-panel .topbar .eyebrow {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--bl-steel);
     }
     .board-panel .topbar h3 {
       font-family: var(--font-headline);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 400;
       color: var(--bl-white);
       margin: 0;
@@ -594,7 +599,7 @@
       padding: 4px 16px;
       border-radius: 8px;
       color: white;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 400;
     }
     .board-panel .chess-grid {
@@ -628,17 +633,17 @@
       right: 4px;
       bottom: 4px;
       font-family: var(--font-mono);
-      font-size: clamp(0.6rem, calc(var(--cell-size)*0.14), 1rem);
+      font-size: clamp(0.5rem, calc(var(--cell-size)*0.12), 0.9rem);
       font-weight: 800;
       pointer-events: none;
-      opacity: 0.8;
+      opacity: 0.7;
     }
     .board-panel .piece-cell .field-watermark.positive { color: #2be08a; }
     .board-panel .piece-cell .field-watermark.negative { color: #ff4d4d; }
     .board-panel .piece-cell .field-watermark.zero { color: #c3aeff; }
     .board-panel .piece-cell .piece-svg {
-      width: 60%;
-      max-width: 50px;
+      width: 55%;
+      max-width: 44px;
       height: auto;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
       opacity: 0.9;
@@ -660,8 +665,8 @@
       position: absolute;
       top: 4px;
       left: 4px;
-      width: 24%;
-      max-width: 22px;
+      width: 22%;
+      max-width: 20px;
       background: rgba(0,0,0,0.5);
       padding: 2px;
       border-radius: 4px;
@@ -675,7 +680,7 @@
     }
     .board-panel .drop-cell .drop-value {
       font-family: var(--font-mono);
-      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.2rem);
+      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.1rem);
       font-weight: 800;
       color: var(--bl-white);
       text-shadow: 0 2px 8px rgba(0,0,0,0.6);
@@ -684,7 +689,7 @@
       position: absolute;
       top: 4px;
       left: 4px;
-      font-size: clamp(0.4rem, calc(var(--cell-size)*0.08), 0.6rem);
+      font-size: clamp(0.35rem, calc(var(--cell-size)*0.07), 0.55rem);
       color: var(--bl-steel);
     }
     .board-panel .drop-cell .drop-total {
@@ -692,7 +697,7 @@
       bottom: 4px;
       right: 4px;
       font-family: var(--font-mono);
-      font-size: clamp(0.8rem, calc(var(--cell-size)*0.18), 1.2rem);
+      font-size: clamp(0.7rem, calc(var(--cell-size)*0.16), 1.1rem);
       font-weight: 800;
       color: var(--bl-steel);
       display: none;
@@ -714,7 +719,7 @@
       place-items: center;
       background: var(--bl-white);
       color: var(--bl-black);
-      font-size: clamp(0.25rem, 0.4vw, 0.45rem);
+      font-size: clamp(0.2rem, 0.35vw, 0.4rem);
       font-weight: 700;
       padding: 2px 4px;
       border-radius: 4px;
@@ -728,7 +733,7 @@
       left: 4px;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.8em;
+      font-size: 0.7em;
       color: rgba(0,0,0,0.4);
     }
     .board-panel .placed-chip .chip-watermark {
@@ -737,18 +742,18 @@
       bottom: 2px;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 1.2em;
+      font-size: 1.1em;
     }
     .board-panel .placed-chip .chip-watermark.positive { color: #0f9d5c; }
     .board-panel .placed-chip .chip-watermark.negative { color: #d81e1e; }
     .board-panel .placed-chip .chip-watermark.zero { color: #7a5cd6; }
 
     /* ============================================================
-       STATISTIKEN
+       STATISTIKEN – wie bundesliga.com Insights
        ============================================================ */
     .stats-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 20px;
       margin-top: 8px;
     }
@@ -765,13 +770,13 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 16px 20px;
+      padding: 14px 20px;
       background: var(--bl-dark);
       border-bottom: 1px solid var(--bl-line);
     }
     .stat-card .piece-icon-wrap {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
       background: var(--bl-black);
@@ -779,13 +784,13 @@
       border: 1px solid var(--bl-line);
     }
     .stat-card .piece-icon-wrap img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       filter: invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
     .stat-card h3 {
       font-family: var(--font-headline);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 400;
       color: var(--bl-white);
       margin: 0;
@@ -797,7 +802,7 @@
     }
     .stat-section .section-title {
       font-family: var(--font-mono);
-      font-size: 0.55rem;
+      font-size: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--bl-steel);
@@ -809,24 +814,24 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 0;
+      padding: 6px 0;
       border-bottom: 1px solid var(--bl-line);
     }
     .stat-entry:last-child { border-bottom: none; }
     .stat-entry.top1 {
-      background: rgba(255,215,0,0.06);
+      background: rgba(255,215,0,0.05);
       border-left: 3px solid var(--bl-gold);
       padding-left: 8px;
       border-radius: 4px;
     }
     .stat-entry .rank-badge {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       display: grid;
       place-items: center;
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--bl-steel);
       background: var(--bl-black);
       border-radius: 4px;
@@ -847,13 +852,13 @@
     }
     .stat-entry .avatar-wrap {
       position: relative;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
     }
     .stat-entry .player-img {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       object-fit: cover;
       border-radius: 4px;
       background: var(--bl-black);
@@ -864,8 +869,8 @@
       position: absolute;
       right: -4px;
       bottom: -4px;
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border-radius: 4px;
       object-fit: contain;
       background: var(--bl-white);
@@ -878,11 +883,11 @@
     }
     .stat-entry .meta-col .meta-team {
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--bl-white);
     }
     .stat-entry .meta-col .meta-detail {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: var(--bl-steel);
     }
     .stat-entry .value-chip {
@@ -892,22 +897,22 @@
     .stat-entry .value-chip .value-num {
       font-family: var(--font-mono);
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--bl-gold);
       background: var(--bl-black);
-      padding: 2px 12px;
+      padding: 2px 10px;
       border-radius: 4px;
       border: 1px solid var(--bl-line);
     }
     .stat-entry .value-chip .value-unit {
-      font-size: 0.5rem;
+      font-size: 0.45rem;
       text-transform: uppercase;
       color: var(--bl-steel);
       display: block;
     }
     .no-data {
       color: var(--bl-steel);
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       padding: 8px 0;
     }
 
@@ -919,10 +924,10 @@
     }
     .spieltag-headline {
       font-family: var(--font-headline);
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--bl-gold);
-      margin-bottom: 16px;
-      padding-bottom: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 6px;
       border-bottom: 2px solid var(--bl-line-strong);
       display: flex;
       align-items: center;
@@ -930,51 +935,51 @@
     }
     .spieltag-headline small {
       font-family: var(--font-mono);
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--bl-steel);
       font-weight: 400;
     }
     .spieltag-headline .badge-count {
       background: var(--bl-red);
-      padding: 2px 12px;
+      padding: 2px 10px;
       border-radius: 12px;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 700;
       color: white;
       font-family: var(--font-mono);
     }
 
     /* ============================================================
-       RESPONSIVE
+       RESPONSIVE – wie bundesliga.com
        ============================================================ */
     @media (max-width: 700px) {
       .bl-topbar { padding: 0 16px; height: 52px; flex-wrap: wrap; gap: 6px; }
       .bl-topbar .brand .logo-img { height: 28px; }
-      .bl-topbar .nav-links button { padding: 4px 10px; font-size: 0.55rem; }
+      .bl-topbar .nav-links button { padding: 4px 10px; font-size: 0.5rem; }
       .bl-topbar .nav-links button svg { width: 14px; height: 14px; }
-      .bl-hero { padding: 24px 16px; }
-      .bl-hero .hero-right { padding: 8px 16px; gap: 12px; }
+      .bl-hero { padding: 20px 16px; }
+      .bl-hero .hero-right { padding: 8px 14px; gap: 10px; }
       .bl-hero .hero-right .stat-item .num { font-size: 1rem; }
       .app-shell { padding: 0 12px 24px; }
       .content-wrapper { flex-direction: column; }
       .content-wrapper .left-col { flex: none; width: 100%; position: static; }
       .spiel-header { padding: 10px 12px; }
       .spiel-header .team-name { font-size: 0.7rem; }
-      .spiel-header .score-display { font-size: 1rem; padding: 2px 12px; min-width: 60px; }
+      .spiel-header .score-display { font-size: 1rem; padding: 2px 12px; min-width: 56px; }
       .spiel-header .team-logo-small { width: 32px; height: 32px; }
       .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
       .stats-container { grid-template-columns: 1fr; }
-      .liga-table { font-size: 0.65rem; }
-      .liga-table th { font-size: 0.5rem; padding: 6px 8px; }
+      .liga-table { font-size: 0.6rem; }
+      .liga-table th { font-size: 0.45rem; padding: 6px 8px; }
       .liga-table td { padding: 6px 8px; }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
-      .spiel-header .score-display { font-size: 0.85rem; min-width: 50px; }
+      .spiel-header .score-display { font-size: 0.85rem; min-width: 48px; }
       .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px); }
       .spiel-header .team-logo-small { width: 28px; height: 28px; }
-      .bl-hero .hero-left .league-name { font-size: 1.8rem; }
-      .bl-topbar .nav-links button { font-size: 0.5rem; padding: 4px 8px; }
+      .bl-hero .hero-left .league-name { font-size: 1.6rem; }
+      .bl-topbar .nav-links button { font-size: 0.45rem; padding: 4px 8px; }
       .bl-topbar .nav-links button svg { width: 12px; height: 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -985,11 +990,10 @@
 <body>
 
   <!-- ============================================================
-  TOPBAR – nur Logo links oben, keine Fußzeile
+  TOPBAR – nur Logo
   ============================================================ -->
   <header class="bl-topbar">
     <div class="brand">
-      <!-- Logo als 16:9 Bild -->
       <img class="logo-img" src="logo.png" alt="Logo" />
     </div>
     <div class="nav-links" id="headerNav">
@@ -1043,9 +1047,7 @@
 
     <!-- TABELLE + SPIELE (Hauptansicht) -->
     <div class="view active" id="tableView">
-      <!-- Spieltag-Tabs -->
       <div class="liga-tabs" id="spieltagTabs"></div>
-      <!-- Content: Tabelle links, Spiele rechts -->
       <div class="content-wrapper">
         <div class="left-col">
           <div class="table-wrap" id="tableWrap">
@@ -1075,10 +1077,10 @@
       <div id="statsContainer" class="stats-container"></div>
     </div>
 
-  </div> <!-- Ende app-shell -->
+  </div>
 
   <!-- ============================================================
-  SCRIPT – angepasst: keine Home-View mehr, Tabelle+Spiele als Start
+  SCRIPT – unveränderte Logik
   ============================================================ -->
   <script>
     // ============================
@@ -1229,7 +1231,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER (zentriert)
+    //  BRETT-RENDERER
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1248,11 +1250,11 @@
       sb.innerHTML = `<div>
           <div style="display:flex;align-items:center;gap:10px;">
             <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
-            <span style="font-weight:700;color:var(--bl-white);font-size:1rem;font-family:var(--font-text);">${homeTeam}</span>
+            <span style="font-weight:700;color:var(--bl-white);font-size:0.95rem;font-family:var(--font-text);">${homeTeam}</span>
           </div>
           <div class="score-box">${score.white} : ${score.black}</div>
           <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-weight:700;color:var(--bl-white);font-size:1rem;font-family:var(--font-text);">${awayTeam}</span>
+            <span style="font-weight:700;color:var(--bl-white);font-size:0.95rem;font-family:var(--font-text);">${awayTeam}</span>
             <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
           </div>
         </div>`;
@@ -1330,7 +1332,7 @@
       item.className = 'spiel-item';
       if (!state) {
         item.innerHTML =
-          `<div class="spiel-header" style="opacity:0.4;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--bl-steel);font-size:0.6rem;">nicht verfügbar</span></div>`;
+          `<div class="spiel-header" style="opacity:0.4;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--bl-steel);font-size:0.55rem;">nicht verfügbar</span></div>`;
         return item;
       }
       const score = getGameScore(state);
@@ -1378,7 +1380,7 @@
       container.innerHTML = '';
       const spiele = spielplan.spieltage[spieltagIndex];
       if (!spiele) { container.innerHTML =
-          '<p style="color:var(--bl-steel);font-size:0.8rem;">Spieltag nicht gefunden.</p>'; return; }
+          '<p style="color:var(--bl-steel);font-size:0.75rem;">Spieltag nicht gefunden.</p>'; return; }
       spiele.forEach((spiel, idx) => {
         const key = `${spieltagIndex}-${idx}`;
         const state = allGameData[key];
@@ -1550,8 +1552,8 @@
       const headApp = document.createElement('div');
       headApp.className = 'stat-card-head';
       headApp.innerHTML = `
-          <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.08);border-color:rgba(255,215,0,0.2);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--bl-gold)" stroke-width="2" style="width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
+          <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.06);border-color:rgba(255,215,0,0.15);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--bl-gold)" stroke-width="2" style="width:18px;height:18px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
           </div>
           <h3>Häufigste Einsätze</h3>
         `;
@@ -1744,7 +1746,6 @@
         allGameData = await loadAllGameData();
         renderTables();
 
-        // Starte mit dem letzten verfügbaren Spieltag
         let startIndex = 0;
         for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
           const spiele = spielplan.spieltage[i];
@@ -1755,7 +1756,6 @@
           renderMainSpiele(startIndex);
         }
 
-        // Navigation initialisieren (Tabelle ist bereits aktiv)
         document.querySelectorAll('.nav-links button').forEach(btn => {
           btn.addEventListener('click', () => switchView(btn.dataset.view));
         });
