@@ -18,6 +18,11 @@
       --bundesliga-red: #e2001a;
       --bundesliga-red-dark: #9e0008;
       --bundesliga-gold: #ffcc00;
+      --zone-cl: #1e5fae;
+      --zone-el: #f7941d;
+      --zone-elq: #6ec6ff;
+      --zone-conf: #00913f;
+      --zone-playoff: #ffcc00;
       --blue: #0047ab;
       --surface: #ffffff;
       --chalk: #ffffff;
@@ -187,6 +192,7 @@
       text-overflow: ellipsis;
       color: var(--ink);
     }
+    .liga-table tbody tr { border-left: 5px solid transparent; }
     .liga-table tbody tr:nth-child(even) td { background: #f0ede2; }
     .liga-table tr:hover td { background: #ffe8a3; }
     .liga-table .pos {
@@ -197,13 +203,57 @@
       width: 30px;
       text-align: center;
     }
+    .liga-table tbody tr:nth-child(-n+4) {
+      border-left: 5px solid var(--zone-cl);
+    }
     .liga-table tbody tr:nth-child(-n+4) .pos {
-      color: #000;
-      background: var(--bundesliga-gold);
+      color: #fff;
+      background: var(--zone-cl);
       border: 2px solid #000;
       box-shadow: 2px 2px 0 #000;
     }
-    .liga-table tbody tr:nth-last-child(-n+2) .pos {
+    .liga-table tbody tr:nth-child(5) {
+      border-left: 5px solid var(--zone-el);
+    }
+    .liga-table tbody tr:nth-child(5) .pos {
+      color: #000;
+      background: var(--zone-el);
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .liga-table tbody tr:nth-child(6) {
+      border-left: 5px solid var(--zone-elq);
+    }
+    .liga-table tbody tr:nth-child(6) .pos {
+      color: #000;
+      background: var(--zone-elq);
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .liga-table tbody tr:nth-child(7) {
+      border-left: 5px solid var(--zone-conf);
+    }
+    .liga-table tbody tr:nth-child(7) .pos {
+      color: #fff;
+      background: var(--zone-conf);
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .liga-table tbody tr:nth-child(16) {
+      border-left: 5px solid var(--zone-playoff);
+    }
+    .liga-table tbody tr:nth-child(16) .pos {
+      color: #000;
+      background: var(--zone-playoff);
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .liga-table tbody tr:nth-child(17),
+    .liga-table tbody tr:nth-child(18) {
+      border-left: 5px solid var(--bundesliga-red);
+    }
+    .liga-table tbody tr:nth-child(17) .pos,
+    .liga-table tbody tr:nth-child(18) .pos {
       color: #fff;
       background: var(--bundesliga-red);
       border: 2px solid #000;
@@ -353,7 +403,7 @@
     .board-panel {
       position: relative;
       overflow: hidden;
-      background: #0d3d1f;
+      background: #000;
       border: 4px solid #000;
       padding: 12px;
       box-shadow: var(--hard-shadow);
@@ -410,20 +460,20 @@
       margin: 0 auto;
       border: 3px solid #000;
       box-shadow: 0 0 0 3px var(--bundesliga-gold), var(--hard-shadow);
-      background: #efd9a0;
+      background: #000;
       overflow: hidden;
     }
-    .board-panel .grid-cell { position: relative; border: 1px solid rgba(0,0,0,0.15); padding: 0; overflow: hidden; background: #efd9a0; }
+    .board-panel .grid-cell { position: relative; border: 1px solid rgba(255,255,255,0.12); padding: 0; overflow: hidden; background: #000; }
     .board-panel .piece-cell {
       display: grid;
       place-items: center;
-      background: #d8b978;
-      color: #111;
+      background: #141414;
+      color: #fff;
       font-weight: 800;
       isolation: isolate;
       position: relative;
     }
-    .board-panel .piece-cell.light { background: #efd9a0; }
+    .board-panel .piece-cell.light { background: #202020; }
     .board-panel .piece-cell .field-watermark {
       position: absolute;
       right: 4px;
@@ -434,12 +484,12 @@
       line-height: 1;
       opacity: 1 !important;
       pointer-events: none;
-      text-shadow: 1px 1px 0 rgba(255,255,255,0.4);
+      text-shadow: 0 0 6px rgba(0,0,0,0.9);
     }
-    .board-panel .piece-cell .field-watermark.positive { color: #00913f !important; }
-    .board-panel .piece-cell .field-watermark.negative { color: #c40000 !important; }
-    .board-panel .piece-cell .field-watermark.zero { color: #5c3ba8 !important; }
-    .board-panel .piece-cell .field-watermark.neutral { color: rgba(0,0,0,0.2); }
+    .board-panel .piece-cell .field-watermark.positive { color: #2be08a !important; }
+    .board-panel .piece-cell .field-watermark.negative { color: #ff4d4d !important; }
+    .board-panel .piece-cell .field-watermark.zero { color: #c3aeff !important; }
+    .board-panel .piece-cell .field-watermark.neutral { color: rgba(255,255,255,0.18); }
     .board-panel .piece-cell .piece-svg {
       position: relative;
       z-index: 1;
@@ -447,7 +497,7 @@
       width: 60%;
       max-width: 50px;
       height: auto;
-      filter: drop-shadow(1px 1px 0 rgba(255,255,255,0.3));
+      filter: drop-shadow(0 0 3px rgba(255,255,255,0.35));
       opacity: 0.95;
     }
     .board-panel .piece-cell .player-photo {
@@ -456,11 +506,11 @@
       z-index: 1;
       width: calc(100% - 8px);
       height: calc(100% - 8px);
-      background: rgba(0,0,0,0.15);
+      background: rgba(255,255,255,0.08);
       object-fit: contain;
       object-position: center bottom;
       padding: 3px;
-      border: 2px solid #000;
+      border: 2px solid #fff;
     }
     .board-panel .piece-cell .piece-corner {
       position: absolute;
@@ -481,12 +531,12 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      background: #efd9a0;
+      background: #000;
     }
     .board-panel .drop-cell .drop-value {
       font-family: var(--led-font);
       font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.6rem);
-      color: rgba(0,0,0,0.75);
+      color: rgba(255,255,255,0.8);
       pointer-events: none;
     }
     .board-panel .drop-cell.has-theses .drop-value {
@@ -494,7 +544,7 @@
       top: 4px;
       left: 4px;
       font-size: clamp(0.5rem, calc(var(--cell-size)*0.1), 0.85rem);
-      color: rgba(0,0,0,0.5);
+      color: rgba(255,255,255,0.5);
     }
     .board-panel .drop-cell .drop-total {
       position: absolute;
@@ -502,7 +552,7 @@
       right: 4px;
       font-family: var(--led-font);
       font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.6rem);
-      color: rgba(0,0,0,0.2);
+      color: rgba(255,255,255,0.15);
       pointer-events: none;
       display: none;
     }
@@ -577,7 +627,7 @@
     .stat-card {
       position: relative;
       overflow: hidden;
-      background: var(--surface);
+      background: #000;
       border: 3px solid #000;
       box-shadow: var(--hard-shadow);
       padding: 0 0 14px;
@@ -628,9 +678,9 @@
       border: 2px solid #000;
     }
     .stat-entry { display: flex; align-items: center; gap: 12px; padding: 7px 8px; border: 2px solid transparent; transition: background 0.12s; }
-    .stat-entry:hover { background: #f5f0dd; }
-    .stat-entry.top1 { background: #fff2b8; border-color: #000; }
-    .stat-entry.top1:hover { background: #ffe985; }
+    .stat-entry:hover { background: #1c1c1c; }
+    .stat-entry.top1 { background: #3a2f00; border-color: var(--bundesliga-gold); }
+    .stat-entry.top1:hover { background: #4a3c00; }
 
     .stat-entry .rank-badge {
       flex-shrink: 0;
@@ -643,7 +693,7 @@
       font-size: 0.9rem;
       color: #000;
       background: #e5e5e5;
-      border: 2px solid #000;
+      border: 2px solid #fff;
     }
     .stat-entry .rank-badge.gold { background: var(--bundesliga-gold); }
     .stat-entry .rank-badge.silver { background: #c0c0c0; }
@@ -656,8 +706,8 @@
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      background: #eee;
-      border: 2px solid #000;
+      background: #222;
+      border: 2px solid #fff;
     }
     .stat-entry .team-badge-mini {
       position: absolute;
@@ -676,14 +726,14 @@
       font-size: 0.65rem;
       font-weight: 800;
       font-style: italic;
-      color: var(--ink);
+      color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .stat-entry .meta-col .meta-detail {
       font-size: 0.6rem;
-      color: var(--steel);
+      color: #a8a8a8;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -702,11 +752,11 @@
     }
     .stat-entry .value-chip .value-unit {
       font-size: 0.5rem;
-      color: var(--steel);
+      color: #a8a8a8;
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
-    .no-data { color: var(--steel); font-size: 0.7rem; padding: 6px 8px; }
+    .no-data { color: #a8a8a8; font-size: 0.7rem; padding: 6px 8px; }
 
     /* ============================
        ALLE SPIELE VIEW
