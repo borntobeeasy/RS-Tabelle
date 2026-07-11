@@ -57,7 +57,7 @@
     }
 
     /* ============================
-       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
+       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (mehrere Reihen)
        ============================ */
     .bg-trikots {
       position: fixed;
@@ -70,17 +70,20 @@
       opacity: 0.5;
       pointer-events: none;
       background-color: #0a0a0a;
+      display: flex;
+      flex-direction: column;
     }
     .bg-trikots-inner {
       display: flex;
       flex-wrap: nowrap;
-      height: 100%;
-      animation: scroll 30s linear infinite;
+      height: 25%; /* 4 Reihen */
+      width: 100%;
       will-change: transform;
+      flex-shrink: 0;
     }
-    .trikot-item {
+    .bg-trikots-inner .trikot-item {
       flex: 0 0 auto;
-      width: 240px;
+      width: 200px;
       height: 100%;
       background-size: contain;
       background-repeat: no-repeat;
@@ -90,10 +93,22 @@
       border-radius: 0;
       filter: saturate(0.9) contrast(0.95);
     }
-    @keyframes scroll {
+
+    /* Animationen */
+    @keyframes scrollRight {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
+    @keyframes scrollLeft {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Reihen abwechselnd */
+    .row-0 { animation: scrollRight 30s linear infinite; }
+    .row-1 { animation: scrollLeft  30s linear infinite; }
+    .row-2 { animation: scrollRight 30s linear infinite; }
+    .row-3 { animation: scrollLeft  30s linear infinite; }
 
     .bg-overlay {
       position: fixed;
@@ -875,10 +890,8 @@
   </style>
 </head>
 <body>
-  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER -->
-  <div class="bg-trikots" id="bgTrikots">
-    <div class="bg-trikots-inner" id="trikotInner"></div>
-  </div>
+  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (mehrere Reihen) -->
+  <div class="bg-trikots" id="bgTrikots"></div>
   <div class="bg-overlay"></div>
 
   <div class="app-shell" id="app">
@@ -949,10 +962,10 @@
     let currentSpieltag = 0;
 
     // ============================
-    //  TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
+    //  TRIKOT-HINTERGRUND – mehrere Reihen mit wechselnder Richtung
     // ============================
     function setupBackground() {
-      const container = document.getElementById('trikotInner');
+      const container = document.getElementById('bgTrikots');
       if (!container) return;
 
       // 18 Bilder aus data/trikots/
@@ -961,14 +974,23 @@
         urls.push(`data/trikots/${i}.png`);
       }
 
-      // Doppelt einfügen, damit der Loop endlos wirkt
-      const doubled = [...urls, ...urls];
-      doubled.forEach(url => {
-        const item = document.createElement('div');
-        item.className = 'trikot-item';
-        item.style.backgroundImage = `url(${url})`;
-        container.appendChild(item);
-      });
+      // 4 Reihen erzeugen
+      const rowCount = 4;
+      for (let r = 0; r < rowCount; r++) {
+        const row = document.createElement('div');
+        row.className = `bg-trikots-inner row-${r}`; // row-0, row-1, …
+
+        // Bilder doppelt einfügen (für Endlosschleife)
+        const doubled = [...urls, ...urls];
+        doubled.forEach(url => {
+          const item = document.createElement('div');
+          item.className = 'trikot-item';
+          item.style.backgroundImage = `url(${url})`;
+          row.appendChild(item);
+        });
+
+        container.appendChild(row);
+      }
     }
 
     // ============================
