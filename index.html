@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=VT323&display=swap" rel="stylesheet" />
-      <style>
+  <style>
     /* ============================
        TOKENS – Retro 90er Bundesliga Style
        ============================ */
@@ -44,15 +44,55 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background-color: #1c1c1c;
-      background-image:
-        repeating-conic-gradient(#141414 0% 25%, #1c1c1c 0% 50%);
-      background-size: 34px 34px;
+      background-color: #0a0a0a;
       color: var(--ink);
       font-family: var(--event-font);
       padding: 22px;
     }
-    .app-shell { max-width: 1440px; margin: 0 auto; position: relative; isolation: isolate; }
+    .app-shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+      isolation: isolate;
+      z-index: 1;
+    }
+
+    /* ============================
+       TRIKOT-HINTERGRUND
+       ============================ */
+    .bg-trikots {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      opacity: 0.25;
+      pointer-events: none;
+      background-color: #0a0a0a;
+      padding: 12px;
+      overflow: hidden;
+    }
+    .bg-trikots .trikot-item {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 4px;
+    }
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
 
     /* ============================
        KOPF – Retro Sportschau-Bauchbinde
@@ -806,633 +846,584 @@
     }
     @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   </style>
-
-
 </head>
 <body>
-<div class="app-shell" id="app">
-  <!-- Kopf -->
-  <header class="liga-header">
-    <div class="header-left">
-      <div>
-        <h1>Bundesliga</h1>
-        <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
-      </div>
-      <div class="header-nav" id="headerNav">
-        <button class="active" data-view="home">Home</button>
-        <button data-view="table">Tabelle</button>
-        <button data-view="games">Spiele</button>
-        <button data-view="stats">Statistiken</button>
-      </div>
-    </div>
-  </header>
+  <!-- TRIKOT-HINTERGRUND -->
+  <div class="bg-trikots" id="bgTrikots"></div>
+  <div class="bg-overlay"></div>
 
-  <!-- VIEW: HOME -->
-  <div class="view active" id="homeView">
-    <div class="liga-tabs" id="spieltagTabs"></div>
-    <div class="content-wrapper">
-      <div class="left-col">
-        <div class="table-wrap" id="tableWrap">
-          <table class="liga-table" id="ligaTable">
-            <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
-            <tbody id="tableBody"></tbody>
-          </table>
+  <div class="app-shell" id="app">
+    <!-- Kopf -->
+    <header class="liga-header">
+      <div class="header-left">
+        <div>
+          <h1>Bundesliga</h1>
+          <div class="sub"><strong>Rasenschach</strong> · Saison 26/27</div>
+        </div>
+        <div class="header-nav" id="headerNav">
+          <button class="active" data-view="home">Home</button>
+          <button data-view="table">Tabelle</button>
+          <button data-view="games">Spiele</button>
+          <button data-view="stats">Statistiken</button>
         </div>
       </div>
-      <div class="right-col"><div class="spiel-liste" id="spieleContainer"></div></div>
+    </header>
+
+    <!-- VIEW: HOME -->
+    <div class="view active" id="homeView">
+      <div class="liga-tabs" id="spieltagTabs"></div>
+      <div class="content-wrapper">
+        <div class="left-col">
+          <div class="table-wrap" id="tableWrap">
+            <table class="liga-table" id="ligaTable">
+              <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="right-col"><div class="spiel-liste" id="spieleContainer"></div></div>
+      </div>
+    </div>
+
+    <!-- VIEW: TABELLE -->
+    <div class="view" id="tableView">
+      <div class="table-wrap centered">
+        <table class="liga-table" id="tableOnly">
+          <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
+          <tbody id="tableOnlyBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VIEW: SPIELE (alle) -->
+    <div class="view" id="gamesView">
+      <div id="allGamesContainer"></div>
+    </div>
+
+    <!-- VIEW: STATISTIKEN -->
+    <div class="view" id="statsView">
+      <div id="statsContainer" class="stats-container"></div>
     </div>
   </div>
 
-  <!-- VIEW: TABELLE -->
-  <div class="view" id="tableView">
-    <div class="table-wrap centered">
-      <table class="liga-table" id="tableOnly">
-        <thead><tr><th>#</th><th>Team</th><th class="num">Sp</th><th class="num">S</th><th class="num">U</th><th class="num">N</th><th class="num">Tore</th><th class="num">Diff</th><th class="pts">Pkt</th></tr></thead>
-        <tbody id="tableOnlyBody"></tbody>
-      </table>
-    </div>
-  </div>
+  <script>
+    // ============================
+    //  KONFIGURATION
+    // ============================
+    const SPIELPLAN_URL = 'spielplan.json';
+    const DATA_BASE = 'data/';
 
-  <!-- VIEW: SPIELE (alle) -->
-  <div class="view" id="gamesView">
-    <div id="allGamesContainer"></div>
-  </div>
+    let spielplan = null;
+    let teams = [];
+    let allGameData = {}; // key: "st-spiel" -> state
+    let currentView = 'home';
+    let currentSpieltag = 0;
 
-  <!-- VIEW: STATISTIKEN -->
-  <div class="view" id="statsView">
-    <div id="statsContainer" class="stats-container"></div>
-  </div>
-</div>
+    // ============================
+    //  TRIKOT-HINTERGRUND
+    // ============================
+    const trikotUrls = [
+      'https://www.footballkitarchive.com/cdn/2025/03/26/vI3BBWAAwZfTbF1/bayern-munchen-1991-92-heimtrikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2021/01/16/5yWoLiXM0PZhHvC/borussia-dortmund-1994-95-heimtrikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2025/05/12/HntFlWNsBFiXJ1Z/borussia-monchengladbach-1990-91-auswarts-trikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2022/05/07/5nPlXbkDLsFl7qt/1-fc-koln-2003-04-heimtrikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2019/12/FtuknUqA90UMEy1/arminia-bielefeld-2004-05-heimtrikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2025/03/24/5UVdhRjgnTcmj7q/werder-bremen-2008-09-drittes-trikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2025/11/16/UMivpZLDNEBrMiY/hamburger-sv-1992-93-drittes-trikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2020/05/wqVHAv8VIqZqEwH/schalke-04-1996-97-heimtrikot.jpg',
+      'https://www.footballkitarchive.com/cdn/2021/02/03/VZSYkfgU1DagTwg/1-fc-kaiserslautern-1996-97-home-kit.jpg',
+      'https://www.footballkitarchive.com/cdn/2021/04/12/4K9E2cut5qPVRTw/fortuna-dusseldorf-1995-96-home-kit.jpg',
+      'https://www.footballkitarchive.com/cdn/2025/08/25/S7Xwo3hYcRbLFdz/eintracht-frankfurt-2002-03-home-kit.jpg',
+      'https://www.footballkitarchive.com/cdn/2022/05/05/MHOCnlntAkyao1o/hertha-bsc-1999-00-home-kit.jpg',
+      'https://www.footballkitarchive.com/cdn/2025/03/24/ohiNtFJo7XmlLPV/vfb-stuttgart-2005-06-home-kit.jpg'
+    ];
 
-<script>
-  // ============================
-  //  KONFIGURATION
-  // ============================
-  const SPIELPLAN_URL = 'spielplan.json';
-  const DATA_BASE = 'data/';
-
-  let spielplan = null;
-  let teams = [];
-  let allGameData = {}; // key: "st-spiel" -> state
-  let currentView = 'home';
-  let currentSpieltag = 0;
-
-  // ============================
-  //  PIECES (nur für Anzeige)
-  // ============================
-  const PIECES = [
-    { id: 'rook',   name: 'Turm' },
-    { id: 'bishop', name: 'Läufer' },
-    { id: 'knight', name: 'Springer' },
-    { id: 'queen',  name: 'Dame' },
-    { id: 'king',   name: 'König' },
-  ];
-  const PIECE_SVG_URLS = {
-    rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
-    bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
-    knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
-    queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
-    king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
-  };
-
-  function formatNumber(num) { return num > 0 ? `+${num}` : String(num); }
-  function getScoreTone(value) {
-    if (value > 0) return 'positive';
-    if (value < 0) return 'negative';
-    return 'zero';
-  }
-  function getPieceById(id) { return PIECES.find(p => p.id === id); }
-
-  // ============================
-  //  getAssignmentScore (nur für Brett)
-  // ============================
-  function getAssignmentScore(assignment, state) {
-    if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
-    const piece = getPieceById(assignment.piece);
-    if (!piece) return 0;
-    const sign = assignment.polarity === 'positive' ? 1 : -1;
-    const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
-    switch (assignment.piece) {
-      case 'knight':
-        const knightVal = state.questionValue ?? 1;
-        return (assignment.polarity === 'positive') ? knightVal : 0;
-      case 'bishop':
-        return (assignment.polarity === 'positive') ? -base : 0;
-      case 'queen':
-        return (assignment.polarity === 'positive') ? base : 0;
-      case 'rook':
-        return base * sign * -1;
-      default:
-        return base * sign;
+    function setupBackground() {
+      const container = document.getElementById('bgTrikots');
+      if (!container) return;
+      trikotUrls.forEach(url => {
+        const item = document.createElement('div');
+        item.className = 'trikot-item';
+        item.style.backgroundImage = `url(${url})`;
+        container.appendChild(item);
+      });
     }
-  }
 
-  function isGameComplete(state) {
-    const placed = state.assignments.filter(a => a.side && a.piece).length;
-    return placed >= 10;
-  }
+    // ============================
+    //  PIECES (nur für Anzeige)
+    // ============================
+    const PIECES = [
+      { id: 'rook',   name: 'Turm' },
+      { id: 'bishop', name: 'Läufer' },
+      { id: 'knight', name: 'Springer' },
+      { id: 'queen',  name: 'Dame' },
+      { id: 'king',   name: 'König' },
+    ];
+    const PIECE_SVG_URLS = {
+      rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
+      bishop: 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
+      knight: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
+      queen:  'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
+      king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+    };
 
-  function getGameScore(state) {
-    let whiteTotal = 0, blackTotal = 0;
-    PIECES.forEach(p => {
-      whiteTotal += state.results.white[p.id] || 0;
-      blackTotal += state.results.black[p.id] || 0;
-    });
-    state.assignments.forEach(a => {
-      if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
-      else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
-    });
-    return { white: whiteTotal, black: blackTotal };
-  }
+    function formatNumber(num) { return num > 0 ? `+${num}` : String(num); }
+    function getScoreTone(value) {
+      if (value > 0) return 'positive';
+      if (value < 0) return 'negative';
+      return 'zero';
+    }
+    function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
-  // ============================
-  //  TABELLE
-  // ============================
-  function buildTableData() {
-    if (!spielplan || !teams.length) return [];
-    const stats = {};
-    teams.forEach(t => {
-      stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
-    });
-    spielplan.spieltage.forEach((spieltag, stIdx) => {
-      spieltag.forEach((spiel, spIdx) => {
-        const key = `${stIdx}-${spIdx}`;
-        const state = allGameData[key];
-        if (!state) return;
-        if (!isGameComplete(state)) return;
-        const score = getGameScore(state);
-        const home = spiel.heim, away = spiel.auswaerts;
-        if (!home || !away) return;
-        stats[home].sp++; stats[away].sp++;
-        stats[home].tore += score.white; stats[home].gegentore += score.black;
-        stats[away].tore += score.black; stats[away].gegentore += score.white;
-        if (score.white > score.black) { stats[home].s++; stats[home].punkte += 3; stats[away].n++; }
-        else if (score.black > score.white) { stats[away].s++; stats[away].punkte += 3; stats[home].n++; }
-        else { stats[home].u++; stats[home].punkte += 1; stats[away].u++; stats[away].punkte += 1; }
+    // ============================
+    //  getAssignmentScore (nur für Brett)
+    // ============================
+    function getAssignmentScore(assignment, state) {
+      if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
+      const piece = getPieceById(assignment.piece);
+      if (!piece) return 0;
+      const sign = assignment.polarity === 'positive' ? 1 : -1;
+      const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
+      switch (assignment.piece) {
+        case 'knight':
+          const knightVal = state.questionValue ?? 1;
+          return (assignment.polarity === 'positive') ? knightVal : 0;
+        case 'bishop':
+          return (assignment.polarity === 'positive') ? -base : 0;
+        case 'queen':
+          return (assignment.polarity === 'positive') ? base : 0;
+        case 'rook':
+          return base * sign * -1;
+        default:
+          return base * sign;
+      }
+    }
+
+    function isGameComplete(state) {
+      const placed = state.assignments.filter(a => a.side && a.piece).length;
+      return placed >= 10;
+    }
+
+    function getGameScore(state) {
+      let whiteTotal = 0, blackTotal = 0;
+      PIECES.forEach(p => {
+        whiteTotal += state.results.white[p.id] || 0;
+        blackTotal += state.results.black[p.id] || 0;
       });
-    });
-    const sorted = teams.slice().sort((a, b) => {
-      if (stats[b].punkte !== stats[a].punkte) return stats[b].punkte - stats[a].punkte;
-      const diffA = stats[a].tore - stats[a].gegentore;
-      const diffB = stats[b].tore - stats[b].gegentore;
-      if (diffB !== diffA) return diffB - diffA;
-      return stats[b].tore - stats[a].tore;
-    });
-    return sorted.map((team, idx) => ({
-      pos: idx + 1,
-      team,
-      sp: stats[team].sp,
-      s: stats[team].s,
-      u: stats[team].u,
-      n: stats[team].n,
-      tore: stats[team].tore,
-      gegentore: stats[team].gegentore,
-      diff: stats[team].tore - stats[team].gegentore,
-      punkte: stats[team].punkte
-    }));
-  }
+      state.assignments.forEach(a => {
+        if (a.side === 'white') whiteTotal += getAssignmentScore(a, state);
+        else if (a.side === 'black') blackTotal += getAssignmentScore(a, state);
+      });
+      return { white: whiteTotal, black: blackTotal };
+    }
 
-  function renderTables() {
-    const data = buildTableData();
-    const tbody1 = document.getElementById('tableBody');
-    const tbody2 = document.getElementById('tableOnlyBody');
-    tbody1.innerHTML = ''; tbody2.innerHTML = '';
-    data.forEach(row => {
-      const diff = row.diff;
-      const tr1 = document.createElement('tr');
-      tr1.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
-      tbody1.appendChild(tr1);
-      const tr2 = document.createElement('tr');
-      tr2.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
-      tbody2.appendChild(tr2);
-    });
-  }
+    // ============================
+    //  TABELLE
+    // ============================
+    function buildTableData() {
+      if (!spielplan || !teams.length) return [];
+      const stats = {};
+      teams.forEach(t => {
+        stats[t] = { sp: 0, s: 0, u: 0, n: 0, tore: 0, gegentore: 0, punkte: 0 };
+      });
+      spielplan.spieltage.forEach((spieltag, stIdx) => {
+        spieltag.forEach((spiel, spIdx) => {
+          const key = `${stIdx}-${spIdx}`;
+          const state = allGameData[key];
+          if (!state) return;
+          if (!isGameComplete(state)) return;
+          const score = getGameScore(state);
+          const home = spiel.heim, away = spiel.auswaerts;
+          if (!home || !away) return;
+          stats[home].sp++; stats[away].sp++;
+          stats[home].tore += score.white; stats[home].gegentore += score.black;
+          stats[away].tore += score.black; stats[away].gegentore += score.white;
+          if (score.white > score.black) { stats[home].s++; stats[home].punkte += 3; stats[away].n++; }
+          else if (score.black > score.white) { stats[away].s++; stats[away].punkte += 3; stats[home].n++; }
+          else { stats[home].u++; stats[home].punkte += 1; stats[away].u++; stats[away].punkte += 1; }
+        });
+      });
+      const sorted = teams.slice().sort((a, b) => {
+        if (stats[b].punkte !== stats[a].punkte) return stats[b].punkte - stats[a].punkte;
+        const diffA = stats[a].tore - stats[a].gegentore;
+        const diffB = stats[b].tore - stats[b].gegentore;
+        if (diffB !== diffA) return diffB - diffA;
+        return stats[b].tore - stats[a].tore;
+      });
+      return sorted.map((team, idx) => ({
+        pos: idx + 1,
+        team,
+        sp: stats[team].sp,
+        s: stats[team].s,
+        u: stats[team].u,
+        n: stats[team].n,
+        tore: stats[team].tore,
+        gegentore: stats[team].gegentore,
+        diff: stats[team].tore - stats[team].gegentore,
+        punkte: stats[team].punkte
+      }));
+    }
 
-  // ============================
-  //  BRETT-RENDERER
-  // ============================
-  function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
-    const board = document.createElement('div');
-    board.className = 'board-panel';
-    const topbar = document.createElement('div');
-    topbar.className = 'topbar';
-    topbar.innerHTML = `<div><p class="eyebrow">${homeTeam} vs ${awayTeam}</p><h3>Rasenschach · Spieltag ${stIdx+1}</h3></div>`;
-    board.appendChild(topbar);
+    function renderTables() {
+      const data = buildTableData();
+      const tbody1 = document.getElementById('tableBody');
+      const tbody2 = document.getElementById('tableOnlyBody');
+      tbody1.innerHTML = ''; tbody2.innerHTML = '';
+      data.forEach(row => {
+        const diff = row.diff;
+        const tr1 = document.createElement('tr');
+        tr1.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tbody1.appendChild(tr1);
+        const tr2 = document.createElement('tr');
+        tr2.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tbody2.appendChild(tr2);
+      });
+    }
 
-    const score = getGameScore(state);
-    const whiteLogo = state.teamLogos?.white || null;
-    const blackLogo = state.teamLogos?.black || null;
-    const sb = document.createElement('div');
-    sb.className = 'scoreboard';
-    sb.innerHTML = `<div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
-        <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--bundesliga-red),var(--bundesliga-red-dark));padding:3px 12px;border-radius:0;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
-        <span>${score.white}</span><span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span><span>${score.black}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
-        <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
-      </div>
-    </div>`;
-    board.appendChild(sb);
+    // ============================
+    //  BRETT-RENDERER
+    // ============================
+    function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
+      const board = document.createElement('div');
+      board.className = 'board-panel';
+      const topbar = document.createElement('div');
+      topbar.className = 'topbar';
+      topbar.innerHTML = `<div><p class="eyebrow">${homeTeam} vs ${awayTeam}</p><h3>Rasenschach · Spieltag ${stIdx+1}</h3></div>`;
+      board.appendChild(topbar);
 
-    const grid = document.createElement('div');
-    grid.className = 'chess-grid';
-    const rows = ['top','white','black','bottom'];
-    rows.forEach(row => {
-      PIECES.forEach((piece, idx) => {
-        const cell = document.createElement('div');
-        cell.className = 'grid-cell';
-        if (row === 'top' || row === 'bottom') {
-          cell.classList.add('piece-cell');
-          if ((row === 'top' && idx%2===1) || (row === 'bottom' && idx%2===0)) cell.classList.add('light');
-          const side = row === 'top' ? 'white' : 'black';
-          const slot = `${row}-${piece.id}`;
-          const image = state.figureImages?.[slot] || null;
-          const scoreVal = state.results[side]?.[piece.id] ?? 0;
-          const pieceSvg = PIECE_SVG_URLS[piece.id];
-          let html = `<strong class="field-watermark ${getScoreTone(scoreVal)}">${formatNumber(scoreVal)}</strong>`;
-          if (image) {
-            cell.classList.add('has-player-image');
-            html += `<img class="player-photo" src="${image}" alt="" />`;
-            html += `<img class="piece-corner" src="${pieceSvg}" alt="" />`;
+      const score = getGameScore(state);
+      const whiteLogo = state.teamLogos?.white || null;
+      const blackLogo = state.teamLogos?.black || null;
+      const sb = document.createElement('div');
+      sb.className = 'scoreboard';
+      sb.innerHTML = `<div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
+          <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--bundesliga-red),var(--bundesliga-red-dark));padding:3px 12px;border-radius:0;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
+          <span>${score.white}</span><span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span><span>${score.black}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
+          <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
+        </div>
+      </div>`;
+      board.appendChild(sb);
+
+      const grid = document.createElement('div');
+      grid.className = 'chess-grid';
+      const rows = ['top','white','black','bottom'];
+      rows.forEach(row => {
+        PIECES.forEach((piece, idx) => {
+          const cell = document.createElement('div');
+          cell.className = 'grid-cell';
+          if (row === 'top' || row === 'bottom') {
+            cell.classList.add('piece-cell');
+            if ((row === 'top' && idx%2===1) || (row === 'bottom' && idx%2===0)) cell.classList.add('light');
+            const side = row === 'top' ? 'white' : 'black';
+            const slot = `${row}-${piece.id}`;
+            const image = state.figureImages?.[slot] || null;
+            const scoreVal = state.results[side]?.[piece.id] ?? 0;
+            const pieceSvg = PIECE_SVG_URLS[piece.id];
+            let html = `<strong class="field-watermark ${getScoreTone(scoreVal)}">${formatNumber(scoreVal)}</strong>`;
+            if (image) {
+              cell.classList.add('has-player-image');
+              html += `<img class="player-photo" src="${image}" alt="" />`;
+              html += `<img class="piece-corner" src="${pieceSvg}" alt="" />`;
+            } else {
+              html += `<img class="piece-svg" src="${pieceSvg}" alt="" />`;
+            }
+            cell.innerHTML = html;
           } else {
-            html += `<img class="piece-svg" src="${pieceSvg}" alt="" />`;
+            cell.classList.add('drop-cell');
+            cell.dataset.side = row;
+            cell.dataset.piece = piece.id;
+            let thesisTotal = 0;
+            state.assignments.forEach(a => {
+              if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
+            });
+            let figureValue = (piece.id === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+            let html = `<div class="drop-value">${figureValue}</div>`;
+            if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
+            html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
+            cell.innerHTML = html;
           }
-          cell.innerHTML = html;
-        } else {
-          cell.classList.add('drop-cell');
-          cell.dataset.side = row;
-          cell.dataset.piece = piece.id;
-          let thesisTotal = 0;
-          state.assignments.forEach(a => {
-            if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
-          });
-          let figureValue = (piece.id === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
-          let html = `<div class="drop-value">${figureValue}</div>`;
-          if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
-          html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
-          cell.innerHTML = html;
-        }
-        grid.appendChild(cell);
+          grid.appendChild(cell);
+        });
       });
-    });
-    board.appendChild(grid);
-    container.innerHTML = '';
-    container.appendChild(board);
-    container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
-    state.assignments.forEach(a => {
-      if (!a.side || !a.piece) return;
-      const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
-      if (!slot) return;
-      const piece = getPieceById(a.piece);
-      const fieldLabel = (a.piece === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
-      const score = getAssignmentScore(a, state);
-      const chip = document.createElement('span');
-      chip.className = 'placed-chip';
-      chip.innerHTML = `<span class="chip-field-badge">${fieldLabel}</span><strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
-      slot.appendChild(chip);
-    });
-  }
+      board.appendChild(grid);
+      container.innerHTML = '';
+      container.appendChild(board);
+      container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
+      state.assignments.forEach(a => {
+        if (!a.side || !a.piece) return;
+        const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
+        if (!slot) return;
+        const piece = getPieceById(a.piece);
+        const fieldLabel = (a.piece === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+        const score = getAssignmentScore(a, state);
+        const chip = document.createElement('span');
+        chip.className = 'placed-chip';
+        chip.innerHTML = `<span class="chip-field-badge">${fieldLabel}</span><strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
+        slot.appendChild(chip);
+      });
+    }
 
-  // ============================
-  //  SPIEL-LISTE
-  // ============================
-  function createSpielItem(stIdx, spIdx, spiel, state) {
-    const item = document.createElement('div');
-    item.className = 'spiel-item';
-    if (!state) {
-      item.innerHTML = `<div class="spiel-header" style="opacity:0.5;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--steel);font-size:0.6rem;">nicht verfügbar</span></div>`;
+    // ============================
+    //  SPIEL-LISTE
+    // ============================
+    function createSpielItem(stIdx, spIdx, spiel, state) {
+      const item = document.createElement('div');
+      item.className = 'spiel-item';
+      if (!state) {
+        item.innerHTML = `<div class="spiel-header" style="opacity:0.5;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--steel);font-size:0.6rem;">nicht verfügbar</span></div>`;
+        return item;
+      }
+      const score = getGameScore(state);
+      const placed = state.assignments.filter(a => a.side && a.piece).length;
+      const complete = placed >= 10;
+      const homeLogo = state.teamLogos?.white || null;
+      const awayLogo = state.teamLogos?.black || null;
+      const header = document.createElement('div');
+      header.className = 'spiel-header';
+      header.innerHTML = `
+        <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
+        <span class="score-display">${score.white} : ${score.black}</span>
+        <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
+        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
+      `;
+      item.appendChild(header);
+      const meta = document.createElement('div');
+      meta.className = 'spiel-meta';
+      meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${complete ? 'gespielt' : 'offen'}</span>`;
+      item.appendChild(meta);
+      const boardContainer = document.createElement('div');
+      boardContainer.className = 'spiel-board-container';
+      item.appendChild(boardContainer);
+      const toggleBtn = header.querySelector('.toggle-btn');
+      let isOpen = false;
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isOpen = !isOpen;
+        toggleBtn.classList.toggle('open', isOpen);
+        boardContainer.classList.toggle('open', isOpen);
+        if (isOpen && !boardContainer.hasChildNodes()) {
+          renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
+        }
+      });
       return item;
     }
-    const score = getGameScore(state);
-    const placed = state.assignments.filter(a => a.side && a.piece).length;
-    const complete = placed >= 10;
-    const homeLogo = state.teamLogos?.white || null;
-    const awayLogo = state.teamLogos?.black || null;
-    const header = document.createElement('div');
-    header.className = 'spiel-header';
-    header.innerHTML = `
-      <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
-      <span class="score-display">${score.white} : ${score.black}</span>
-      <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
-      <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
-    `;
-    item.appendChild(header);
-    const meta = document.createElement('div');
-    meta.className = 'spiel-meta';
-    meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${complete ? 'gespielt' : 'offen'}</span>`;
-    item.appendChild(meta);
-    const boardContainer = document.createElement('div');
-    boardContainer.className = 'spiel-board-container';
-    item.appendChild(boardContainer);
-    const toggleBtn = header.querySelector('.toggle-btn');
-    let isOpen = false;
-    toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      isOpen = !isOpen;
-      toggleBtn.classList.toggle('open', isOpen);
-      boardContainer.classList.toggle('open', isOpen);
-      if (isOpen && !boardContainer.hasChildNodes()) {
-        renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
-      }
-    });
-    return item;
-  }
 
-  // ============================
-  //  HOME
-  // ============================
-  function renderHome(spieltagIndex) {
-    currentSpieltag = spieltagIndex;
-    const container = document.getElementById('spieleContainer');
-    container.innerHTML = '';
-    const spiele = spielplan.spieltage[spieltagIndex];
-    if (!spiele) { container.innerHTML = '<p style="color:var(--steel);">Spieltag nicht gefunden.</p>'; return; }
-    spiele.forEach((spiel, idx) => {
-      const key = `${spieltagIndex}-${idx}`;
-      const state = allGameData[key];
-      const item = createSpielItem(spieltagIndex, idx, spiel, state);
-      container.appendChild(item);
-    });
-    renderTabs(spieltagIndex + 1);
-  }
-
-  function computeTabNumbers(total, current) {
-    if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
-    const raw = [1, current-1, current, current+1, total];
-    const seen = new Set();
-    const result = [];
-    raw.forEach(n => { if (n>=1 && n<=total && !seen.has(n)) { seen.add(n); result.push(n); } });
-    result.sort((a,b) => a-b);
-    return result;
-  }
-
-  function renderTabs(current) {
-    const total = spielplan.spieltage.length;
-    const tabsContainer = document.getElementById('spieltagTabs');
-    tabsContainer.innerHTML = '';
-    computeTabNumbers(total, current).forEach(n => {
-      const btn = document.createElement('button');
-      btn.textContent = `${n}. Spieltag`;
-      btn.dataset.index = n - 1;
-      btn.classList.toggle('active', n === current);
-      btn.addEventListener('click', () => renderHome(n - 1));
-      tabsContainer.appendChild(btn);
-    });
-  }
-
-  // ============================
-  //  ALLE SPIELE
-  // ============================
-  function renderAllGames() {
-    const container = document.getElementById('allGamesContainer');
-    container.innerHTML = '';
-    spielplan.spieltage.forEach((spiele, stIdx) => {
-      const group = document.createElement('div');
-      group.className = 'spieltag-group';
-      const headline = document.createElement('div');
-      headline.className = 'spieltag-headline';
-      headline.innerHTML = `Spieltag ${stIdx+1} <small>${spiele.length} Partien</small>`;
-      group.appendChild(headline);
-      const list = document.createElement('div');
-      list.className = 'spiel-liste';
-      spiele.forEach((spiel, spIdx) => {
-        const key = `${stIdx}-${spIdx}`;
+    // ============================
+    //  HOME
+    // ============================
+    function renderHome(spieltagIndex) {
+      currentSpieltag = spieltagIndex;
+      const container = document.getElementById('spieleContainer');
+      container.innerHTML = '';
+      const spiele = spielplan.spieltage[spieltagIndex];
+      if (!spiele) { container.innerHTML = '<p style="color:var(--steel);">Spieltag nicht gefunden.</p>'; return; }
+      spiele.forEach((spiel, idx) => {
+        const key = `${spieltagIndex}-${idx}`;
         const state = allGameData[key];
-        const item = createSpielItem(stIdx, spIdx, spiel, state);
-        list.appendChild(item);
+        const item = createSpielItem(spieltagIndex, idx, spiel, state);
+        container.appendChild(item);
       });
-      group.appendChild(list);
-      container.appendChild(group);
-    });
-  }
+      renderTabs(spieltagIndex + 1);
+    }
 
-  // ============================
-  //  STATISTIKEN
-  // ============================
+    function computeTabNumbers(total, current) {
+      if (total <= 5) return Array.from({ length: total }, (_, i) => i + 1);
+      const raw = [1, current-1, current, current+1, total];
+      const seen = new Set();
+      const result = [];
+      raw.forEach(n => { if (n>=1 && n<=total && !seen.has(n)) { seen.add(n); result.push(n); } });
+      result.sort((a,b) => a-b);
+      return result;
+    }
 
-  // 1. Häufigste Einsätze (Top 10) – ohne Team-Namen
-  function computeAppearanceStats() {
-    const players = {};
-    for (const [key, state] of Object.entries(allGameData)) {
-      if (!state) continue;
-      if (!isGameComplete(state)) continue;
-      const [stIdx, spIdx] = key.split('-').map(Number);
-      const spiel = spielplan.spieltage[stIdx]?.[spIdx];
-      if (!spiel) continue;
+    function renderTabs(current) {
+      const total = spielplan.spieltage.length;
+      const tabsContainer = document.getElementById('spieltagTabs');
+      tabsContainer.innerHTML = '';
+      computeTabNumbers(total, current).forEach(n => {
+        const btn = document.createElement('button');
+        btn.textContent = `${n}. Spieltag`;
+        btn.dataset.index = n - 1;
+        btn.classList.toggle('active', n === current);
+        btn.addEventListener('click', () => renderHome(n - 1));
+        tabsContainer.appendChild(btn);
+      });
+    }
 
-      const rows = ['top', 'bottom'];
-      rows.forEach(row => {
-        const side = row === 'top' ? 'white' : 'black';
-        PIECES.forEach(piece => {
-          const slot = `${row}-${piece.id}`;
-          const image = state.figureImages?.[slot];
-          if (!image) return;
-          if (!players[image]) {
-            players[image] = { count: 0 };
-          }
-          players[image].count += 1;
+    // ============================
+    //  ALLE SPIELE
+    // ============================
+    function renderAllGames() {
+      const container = document.getElementById('allGamesContainer');
+      container.innerHTML = '';
+      spielplan.spieltage.forEach((spiele, stIdx) => {
+        const group = document.createElement('div');
+        group.className = 'spieltag-group';
+        const headline = document.createElement('div');
+        headline.className = 'spieltag-headline';
+        headline.innerHTML = `Spieltag ${stIdx+1} <small>${spiele.length} Partien</small>`;
+        group.appendChild(headline);
+        const list = document.createElement('div');
+        list.className = 'spiel-liste';
+        spiele.forEach((spiel, spIdx) => {
+          const key = `${stIdx}-${spIdx}`;
+          const state = allGameData[key];
+          const item = createSpielItem(stIdx, spIdx, spiel, state);
+          list.appendChild(item);
         });
+        group.appendChild(list);
+        container.appendChild(group);
       });
     }
-    const sorted = Object.entries(players)
-      .map(([image, data]) => ({ image, count: data.count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
-    return sorted;
-  }
 
-  // 2. Figuren-statistiken (pro Figur: Einzel & Durchschnitt)
-  function computePlayerStats() {
-    const pieceStats = {};
-    PIECES.forEach(p => {
-      pieceStats[p.id] = { players: {} };
-    });
+    // ============================
+    //  STATISTIKEN
+    // ============================
 
-    for (const [key, state] of Object.entries(allGameData)) {
-      if (!state) continue;
-      if (!isGameComplete(state)) continue;
-      
-      const [stIdx, spIdx] = key.split('-').map(Number);
-      const spiel = spielplan.spieltage[stIdx]?.[spIdx];
-      if (!spiel) continue;
+    // 1. Häufigste Einsätze (Top 10) – ohne Team-Namen
+    function computeAppearanceStats() {
+      const players = {};
+      for (const [key, state] of Object.entries(allGameData)) {
+        if (!state) continue;
+        if (!isGameComplete(state)) continue;
+        const [stIdx, spIdx] = key.split('-').map(Number);
+        const spiel = spielplan.spieltage[stIdx]?.[spIdx];
+        if (!spiel) continue;
 
-      const rows = ['top', 'bottom'];
-      rows.forEach(row => {
-        const side = row === 'top' ? 'white' : 'black';
-        PIECES.forEach(piece => {
-          const slot = `${row}-${piece.id}`;
-          const image = state.figureImages?.[slot];
-          if (!image) return;
-          const points = state.results[side]?.[piece.id] ?? 0;
-          const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
-          const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
-
-          const playerData = pieceStats[piece.id].players;
-          if (!playerData[image]) {
-            playerData[image] = {
-              games: 0,
-              totalPoints: 0,
-              maxPoints: -Infinity,
-              maxGameTeam: null,
-              maxGameTeamLogo: null,
-              values: []
-            };
-          }
-          const p = playerData[image];
-          p.games += 1;
-          p.totalPoints += points;
-          p.values.push(points);
-          if (points > p.maxPoints) {
-            p.maxPoints = points;
-            p.maxGameTeam = teamName;
-            p.maxGameTeamLogo = teamLogo;
-          }
+        const rows = ['top', 'bottom'];
+        rows.forEach(row => {
+          const side = row === 'top' ? 'white' : 'black';
+          PIECES.forEach(piece => {
+            const slot = `${row}-${piece.id}`;
+            const image = state.figureImages?.[slot];
+            if (!image) return;
+            if (!players[image]) {
+              players[image] = { count: 0 };
+            }
+            players[image].count += 1;
+          });
         });
+      }
+      const sorted = Object.entries(players)
+        .map(([image, data]) => ({ image, count: data.count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
+      return sorted;
+    }
+
+    // 2. Figuren-statistiken (pro Figur: Einzel & Durchschnitt)
+    function computePlayerStats() {
+      const pieceStats = {};
+      PIECES.forEach(p => {
+        pieceStats[p.id] = { players: {} };
       });
+
+      for (const [key, state] of Object.entries(allGameData)) {
+        if (!state) continue;
+        if (!isGameComplete(state)) continue;
+        
+        const [stIdx, spIdx] = key.split('-').map(Number);
+        const spiel = spielplan.spieltage[stIdx]?.[spIdx];
+        if (!spiel) continue;
+
+        const rows = ['top', 'bottom'];
+        rows.forEach(row => {
+          const side = row === 'top' ? 'white' : 'black';
+          PIECES.forEach(piece => {
+            const slot = `${row}-${piece.id}`;
+            const image = state.figureImages?.[slot];
+            if (!image) return;
+            const points = state.results[side]?.[piece.id] ?? 0;
+            const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
+            const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
+
+            const playerData = pieceStats[piece.id].players;
+            if (!playerData[image]) {
+              playerData[image] = {
+                games: 0,
+                totalPoints: 0,
+                maxPoints: -Infinity,
+                maxGameTeam: null,
+                maxGameTeamLogo: null,
+                values: []
+              };
+            }
+            const p = playerData[image];
+            p.games += 1;
+            p.totalPoints += points;
+            p.values.push(points);
+            if (points > p.maxPoints) {
+              p.maxPoints = points;
+              p.maxGameTeam = teamName;
+              p.maxGameTeamLogo = teamLogo;
+            }
+          });
+        });
+      }
+
+      const result = {};
+      for (const [piece, data] of Object.entries(pieceStats)) {
+        const players = data.players;
+        const entries = Object.entries(players).map(([image, stats]) => ({
+          image,
+          games: stats.games,
+          totalPoints: stats.totalPoints,
+          maxPoints: stats.maxPoints,
+          avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
+          team: stats.maxGameTeam,
+          teamLogo: stats.maxGameTeamLogo,
+          values: stats.values || []
+        }));
+
+        const bySingle = [...entries]
+          .sort((a, b) => b.maxPoints - a.maxPoints)
+          .slice(0, 5);
+        
+        const byAvg = [...entries]
+          .filter(e => e.games >= 3)
+          .sort((a, b) => b.avg - a.avg)
+          .slice(0, 5);
+        
+        result[piece] = { bySingle, byAvg };
+      }
+      return result;
     }
 
-    const result = {};
-    for (const [piece, data] of Object.entries(pieceStats)) {
-      const players = data.players;
-      const entries = Object.entries(players).map(([image, stats]) => ({
-        image,
-        games: stats.games,
-        totalPoints: stats.totalPoints,
-        maxPoints: stats.maxPoints,
-        avg: stats.games > 0 ? stats.totalPoints / stats.games : 0,
-        team: stats.maxGameTeam,
-        teamLogo: stats.maxGameTeamLogo,
-        values: stats.values || []
-      }));
+    // ============================
+    //  RENDER STATISTICS
+    // ============================
+    function renderStatistics() {
+      const container = document.getElementById('statsContainer');
+      container.innerHTML = '';
 
-      const bySingle = [...entries]
-        .sort((a, b) => b.maxPoints - a.maxPoints)
-        .slice(0, 5);
-      
-      const byAvg = [...entries]
-        .filter(e => e.games >= 3)
-        .sort((a, b) => b.avg - a.avg)
-        .slice(0, 5);
-      
-      result[piece] = { bySingle, byAvg };
-    }
-    return result;
-  }
-
-  // ============================
-  //  RENDER STATISTICS
-  // ============================
-  function renderStatistics() {
-    const container = document.getElementById('statsContainer');
-    container.innerHTML = '';
-
-    // 1. Häufigste Einsätze (Top 10) – ohne Team-Name
-    const appearanceData = computeAppearanceStats();
-    const appearanceCard = document.createElement('div');
-    appearanceCard.className = 'stat-card';
-    const headApp = document.createElement('div');
-    headApp.className = 'stat-card-head';
-    headApp.innerHTML = `
-      <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.12);border-color:rgba(255,215,0,0.3);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--bundesliga-gold);width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
-      </div>
-      <h3>Häufigste Einsätze</h3>
-    `;
-    appearanceCard.appendChild(headApp);
-
-    const sectionApp = document.createElement('div');
-    sectionApp.className = 'stat-section';
-    const listApp = document.createElement('div');
-    if (appearanceData.length === 0) {
-      listApp.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
-    } else {
-      appearanceData.forEach((entry, idx) => {
-        const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
-        const div = document.createElement('div');
-        div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
-        div.innerHTML = `
-          <div class="rank-badge ${rankClass}">${idx + 1}</div>
-          <div class="avatar-wrap">
-            <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
-          </div>
-          <div class="value-chip" style="margin-left:0;flex:1;align-items:flex-start;">
-            <span class="value-num">${entry.count}</span>
-            <span class="value-unit">Einsätze</span>
-          </div>
-        `;
-        listApp.appendChild(div);
-      });
-    }
-    sectionApp.appendChild(listApp);
-    appearanceCard.appendChild(sectionApp);
-    container.appendChild(appearanceCard);
-
-    // 2. Figuren-Statistiken (Einzel & Durchschnitt)
-    const stats = computePlayerStats();
-
-    PIECES.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'stat-card';
-
-      const head = document.createElement('div');
-      head.className = 'stat-card-head';
-      head.innerHTML = `
-        <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
-        <h3>${p.name}</h3>
+      // 1. Häufigste Einsätze (Top 10) – ohne Team-Name
+      const appearanceData = computeAppearanceStats();
+      const appearanceCard = document.createElement('div');
+      appearanceCard.className = 'stat-card';
+      const headApp = document.createElement('div');
+      headApp.className = 'stat-card-head';
+      headApp.innerHTML = `
+        <div class="piece-icon-wrap" style="background:rgba(255,215,0,0.12);border-color:rgba(255,215,0,0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--bundesliga-gold);width:20px;height:20px;"><path d="M4 20V12"/><path d="M12 20V6"/><path d="M20 20V15"/></svg>
+        </div>
+        <h3>Häufigste Einsätze</h3>
       `;
-      card.appendChild(head);
+      appearanceCard.appendChild(headApp);
 
-      // Höchste Einzelpunktzahl
-      const sectionSingle = document.createElement('div');
-      sectionSingle.className = 'stat-section';
-      sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
-      const listSingle = document.createElement('div');
-      
-      const singleData = stats[p.id]?.bySingle || [];
-      if (singleData.length === 0) {
-        listSingle.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
+      const sectionApp = document.createElement('div');
+      sectionApp.className = 'stat-section';
+      const listApp = document.createElement('div');
+      if (appearanceData.length === 0) {
+        listApp.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
       } else {
-        singleData.forEach((entry, idx) => {
-          const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
-          const div = document.createElement('div');
-          div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
-          div.innerHTML = `
-            <div class="rank-badge ${rankClass}">${idx + 1}</div>
-            <div class="avatar-wrap">
-              <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
-              ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
-            </div>
-            <div class="meta-col">
-              <span class="meta-team">${entry.team || '?'}</span>
-              <span class="meta-detail">${entry.games} Einsätze · gesamt ${entry.totalPoints}</span>
-            </div>
-            <div class="value-chip">
-              <span class="value-num">${entry.maxPoints}</span>
-              <span class="value-unit">Punkte</span>
-            </div>
-          `;
-          listSingle.appendChild(div);
-        });
-      }
-      sectionSingle.appendChild(listSingle);
-      card.appendChild(sectionSingle);
-
-      // Bester Durchschnitt (min. 3 Spiele)
-      const sectionAvg = document.createElement('div');
-      sectionAvg.className = 'stat-section';
-      sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (min. 3 Spiele)</div>`;
-      const listAvg = document.createElement('div');
-      
-      const avgData = stats[p.id]?.byAvg || [];
-      if (avgData.length === 0) {
-        listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 3)</div>';
-      } else {
-        avgData.forEach((entry, idx) => {
+        appearanceData.forEach((entry, idx) => {
           const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
           const div = document.createElement('div');
           div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
@@ -1441,120 +1432,204 @@
             <div class="avatar-wrap">
               <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
             </div>
-            <div class="meta-col">
-              <span class="meta-detail">${entry.games} Spiele · gesamt ${entry.totalPoints}</span>
-            </div>
-            <div class="value-chip">
-              <span class="value-num">${entry.avg.toFixed(1)}</span>
-              <span class="value-unit">Ø Punkte</span>
+            <div class="value-chip" style="margin-left:0;flex:1;align-items:flex-start;">
+              <span class="value-num">${entry.count}</span>
+              <span class="value-unit">Einsätze</span>
             </div>
           `;
-          listAvg.appendChild(div);
+          listApp.appendChild(div);
         });
       }
-      sectionAvg.appendChild(listAvg);
-      card.appendChild(sectionAvg);
+      sectionApp.appendChild(listApp);
+      appearanceCard.appendChild(sectionApp);
+      container.appendChild(appearanceCard);
 
-      container.appendChild(card);
-    });
-  }
+      // 2. Figuren-Statistiken (Einzel & Durchschnitt)
+      const stats = computePlayerStats();
 
-  // ============================
-  //  VIEW-NAVIGATION
-  // ============================
-  function switchView(view) {
-    currentView = view;
-    document.querySelectorAll('.header-nav button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.view === view);
-    });
-    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-    document.getElementById(`${view}View`).classList.add('active');
-    if (view === 'games') renderAllGames();
-    if (view === 'stats') renderStatistics();
-  }
+      PIECES.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'stat-card';
 
-  // ============================
-  //  LADE ALLE DATEN (parallel)
-  // ============================
-  async function loadAllGameData() {
-    const gameData = {};
-    const totalSpieltage = spielplan.spieltage.length;
-    const stPromises = [];
-    for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
-      const spiele = spielplan.spieltage[stIdx];
-      const spieleCount = spiele.length;
-      const spielPromises = [];
-      for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
-        const filePath = `${DATA_BASE}Spieltag ${stIdx+1}/${spIdx+1}.json`;
-        spielPromises.push(
-          fetch(filePath)
-            .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
-            .then(data => ({ stIdx, spIdx, data }))
-            .catch(() => null)
+        const head = document.createElement('div');
+        head.className = 'stat-card-head';
+        head.innerHTML = `
+          <div class="piece-icon-wrap"><img src="${PIECE_SVG_URLS[p.id]}" alt="" /></div>
+          <h3>${p.name}</h3>
+        `;
+        card.appendChild(head);
+
+        // Höchste Einzelpunktzahl
+        const sectionSingle = document.createElement('div');
+        sectionSingle.className = 'stat-section';
+        sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
+        const listSingle = document.createElement('div');
+        
+        const singleData = stats[p.id]?.bySingle || [];
+        if (singleData.length === 0) {
+          listSingle.innerHTML = '<div class="no-data">Keine Daten verfügbar</div>';
+        } else {
+          singleData.forEach((entry, idx) => {
+            const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+            const div = document.createElement('div');
+            div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
+            div.innerHTML = `
+              <div class="rank-badge ${rankClass}">${idx + 1}</div>
+              <div class="avatar-wrap">
+                <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
+                ${entry.teamLogo ? `<img class="team-badge-mini" src="${entry.teamLogo}" alt="" />` : ''}
+              </div>
+              <div class="meta-col">
+                <span class="meta-team">${entry.team || '?'}</span>
+                <span class="meta-detail">${entry.games} Einsätze · gesamt ${entry.totalPoints}</span>
+              </div>
+              <div class="value-chip">
+                <span class="value-num">${entry.maxPoints}</span>
+                <span class="value-unit">Punkte</span>
+              </div>
+            `;
+            listSingle.appendChild(div);
+          });
+        }
+        sectionSingle.appendChild(listSingle);
+        card.appendChild(sectionSingle);
+
+        // Bester Durchschnitt (min. 3 Spiele)
+        const sectionAvg = document.createElement('div');
+        sectionAvg.className = 'stat-section';
+        sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (min. 3 Spiele)</div>`;
+        const listAvg = document.createElement('div');
+        
+        const avgData = stats[p.id]?.byAvg || [];
+        if (avgData.length === 0) {
+          listAvg.innerHTML = '<div class="no-data">Nicht genug Einsätze (mindestens 3)</div>';
+        } else {
+          avgData.forEach((entry, idx) => {
+            const rankClass = idx === 0 ? 'gold' : idx === 1 ? 'silver' : idx === 2 ? 'bronze' : '';
+            const div = document.createElement('div');
+            div.className = `stat-entry ${idx === 0 ? 'top1' : idx === 1 ? 'top2' : idx === 2 ? 'top3' : ''}`;
+            div.innerHTML = `
+              <div class="rank-badge ${rankClass}">${idx + 1}</div>
+              <div class="avatar-wrap">
+                <img class="player-img" src="${entry.image}" alt="Spieler" onerror="this.style.display='none'" />
+              </div>
+              <div class="meta-col">
+                <span class="meta-detail">${entry.games} Spiele · gesamt ${entry.totalPoints}</span>
+              </div>
+              <div class="value-chip">
+                <span class="value-num">${entry.avg.toFixed(1)}</span>
+                <span class="value-unit">Ø Punkte</span>
+              </div>
+            `;
+            listAvg.appendChild(div);
+          });
+        }
+        sectionAvg.appendChild(listAvg);
+        card.appendChild(sectionAvg);
+
+        container.appendChild(card);
+      });
+    }
+
+    // ============================
+    //  VIEW-NAVIGATION
+    // ============================
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.header-nav button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+      document.getElementById(`${view}View`).classList.add('active');
+      if (view === 'games') renderAllGames();
+      if (view === 'stats') renderStatistics();
+    }
+
+    // ============================
+    //  LADE ALLE DATEN (parallel)
+    // ============================
+    async function loadAllGameData() {
+      const gameData = {};
+      const totalSpieltage = spielplan.spieltage.length;
+      const stPromises = [];
+      for (let stIdx = 0; stIdx < totalSpieltage; stIdx++) {
+        const spiele = spielplan.spieltage[stIdx];
+        const spieleCount = spiele.length;
+        const spielPromises = [];
+        for (let spIdx = 0; spIdx < spieleCount; spIdx++) {
+          const filePath = `${DATA_BASE}Spieltag ${stIdx+1}/${spIdx+1}.json`;
+          spielPromises.push(
+            fetch(filePath)
+              .then(res => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+              .then(data => ({ stIdx, spIdx, data }))
+              .catch(() => null)
+          );
+        }
+        stPromises.push(
+          Promise.all(spielPromises).then(results => {
+            const valid = results.filter(r => r !== null);
+            for (const { stIdx, spIdx, data } of valid) {
+              const state = data.data || data;
+              if (!state) return;
+              if (state.positions) {
+                state.assignments = state.positions.map(p => ({
+                  id: p.id,
+                  side: p.side || null,
+                  piece: p.piece || null,
+                  polarity: p.polarity || null,
+                  knightSwing: p.knightSwing ?? 1,
+                }));
+                delete state.positions;
+              }
+              if (!state.results) {
+                state.results = { white: { rook:0, bishop:0, knight:0, queen:0, king:0 }, black: { rook:0, bishop:0, knight:0, queen:0, king:0 } };
+              }
+              if (!state.theses) state.theses = Array.from({ length: 12 }, (_, i) => `These ${i+1}`);
+              if (!state.teamLogos) state.teamLogos = { white: null, black: null };
+              if (!state.figureImages) state.figureImages = {};
+              gameData[`${stIdx}-${spIdx}`] = state;
+            }
+          })
         );
       }
-      stPromises.push(
-        Promise.all(spielPromises).then(results => {
-          const valid = results.filter(r => r !== null);
-          for (const { stIdx, spIdx, data } of valid) {
-            const state = data.data || data;
-            if (!state) return;
-            if (state.positions) {
-              state.assignments = state.positions.map(p => ({
-                id: p.id,
-                side: p.side || null,
-                piece: p.piece || null,
-                polarity: p.polarity || null,
-                knightSwing: p.knightSwing ?? 1,
-              }));
-              delete state.positions;
-            }
-            if (!state.results) {
-              state.results = { white: { rook:0, bishop:0, knight:0, queen:0, king:0 }, black: { rook:0, bishop:0, knight:0, queen:0, king:0 } };
-            }
-            if (!state.theses) state.theses = Array.from({ length: 12 }, (_, i) => `These ${i+1}`);
-            if (!state.teamLogos) state.teamLogos = { white: null, black: null };
-            if (!state.figureImages) state.figureImages = {};
-            gameData[`${stIdx}-${spIdx}`] = state;
-          }
-        })
-      );
+      await Promise.all(stPromises);
+      return gameData;
     }
-    await Promise.all(stPromises);
-    return gameData;
-  }
 
-  // ============================
-  //  INIT
-  // ============================
-  async function init() {
-    try {
-      const res = await fetch(SPIELPLAN_URL);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      spielplan = await res.json();
-      teams = spielplan.teams;
+    // ============================
+    //  INIT
+    // ============================
+    async function init() {
+      // Hintergrund mit Trikot-Bildern initialisieren
+      setupBackground();
 
-      allGameData = await loadAllGameData();
-      renderTables();
+      try {
+        const res = await fetch(SPIELPLAN_URL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        spielplan = await res.json();
+        teams = spielplan.teams;
 
-      let startIndex = 0;
-      for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
-        const spiele = spielplan.spieltage[i];
-        const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
-        if (hasData) { startIndex = i; break; }
+        allGameData = await loadAllGameData();
+        renderTables();
+
+        let startIndex = 0;
+        for (let i = spielplan.spieltage.length - 1; i >= 0; i--) {
+          const spiele = spielplan.spieltage[i];
+          const hasData = spiele.some((_, spIdx) => allGameData[`${i}-${spIdx}`]);
+          if (hasData) { startIndex = i; break; }
+        }
+        if (spielplan.spieltage.length > 0) renderHome(startIndex);
+
+        document.querySelectorAll('.header-nav button').forEach(btn => {
+          btn.addEventListener('click', () => switchView(btn.dataset.view));
+        });
+      } catch (err) {
+        console.error('Fehler beim Laden:', err);
+        document.getElementById('spieleContainer').innerHTML = '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
       }
-      if (spielplan.spieltage.length > 0) renderHome(startIndex);
-
-      document.querySelectorAll('.header-nav button').forEach(btn => {
-        btn.addEventListener('click', () => switchView(btn.dataset.view));
-      });
-    } catch (err) {
-      console.error('Fehler beim Laden:', err);
-      document.getElementById('spieleContainer').innerHTML = '<p style="color:var(--bundesliga-red);">Spielplan konnte nicht geladen werden.</p>';
     }
-  }
 
-  init();
-</script>
+    init();
+  </script>
 </body>
 </html>
