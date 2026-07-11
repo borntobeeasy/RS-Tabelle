@@ -24,7 +24,7 @@
       --zone-conf: #00913f;
       --zone-playoff: #ffcc00;
       --blue: #0047ab;
-      --surface: rgba(255, 255, 255, 0.8);   /* transparente Oberfläche */
+      --surface: rgba(255, 255, 255, 0.8);
       --ink: #111111;
       --steel: #555555;
       --line: #000000;
@@ -57,7 +57,7 @@
     }
 
     /* ============================
-       TRIKOT-HINTERGRUND
+       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
        ============================ */
     .bg-trikots {
       position: fixed;
@@ -66,21 +66,35 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      opacity: 0.4;
+      overflow: hidden;
+      opacity: 0.5;
       pointer-events: none;
       background-color: #0a0a0a;
-      padding: 12px;
-      overflow: hidden;
     }
-    .bg-trikots .trikot-item {
-      background: no-repeat center / contain, #1a1a1a;
-      border: 2px solid rgba(255,255,255,0.08);
-      border-radius: 4px;
-      min-height: 100px;
+    .bg-trikots-inner {
+      display: flex;
+      flex-wrap: nowrap;
+      height: 100%;
+      animation: scroll 30s linear infinite;
+      will-change: transform;
     }
+    .trikot-item {
+      flex: 0 0 auto;
+      width: 240px;
+      height: 100%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      filter: saturate(0.9) contrast(0.95);
+    }
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
     .bg-overlay {
       position: fixed;
       top: 0;
@@ -88,7 +102,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      background: rgba(0,0,0,0.4);  /* noch heller für mehr Trikot-Sichtbarkeit */
+      background: rgba(0, 0, 0, 0.3);
       pointer-events: none;
     }
 
@@ -104,7 +118,7 @@
       gap: 16px;
       margin-bottom: 22px;
       padding: 18px 26px;
-      background: rgba(10, 10, 10, 0.85);  /* leicht transparent */
+      background: rgba(10, 10, 10, 0.85);
       border: 4px solid #000;
       box-shadow: var(--hard-shadow);
       overflow: hidden;
@@ -197,11 +211,11 @@
        ============================ */
     .table-wrap {
       overflow-x: hidden;
-      background: rgba(255, 255, 255, 0.75);  /* durchscheinend */
+      background: rgba(255, 255, 255, 0.75);
       border: 4px solid #000;
       box-shadow: var(--hard-shadow);
       padding: 4px 0 6px;
-      backdrop-filter: blur(2px);  /* optional für Lesbarkeit */
+      backdrop-filter: blur(2px);
     }
     .table-wrap.centered { max-width: 900px; margin: 0 auto; }
     .liga-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.75rem; }
@@ -232,7 +246,6 @@
       color: var(--ink);
     }
     .liga-table tbody tr { border-left: 5px solid transparent; }
-    /* transparente Zeilen */
     .liga-table tbody tr:nth-child(even) td { background: rgba(240, 237, 226, 0.7); }
     .liga-table tr:hover td { background: rgba(255, 232, 163, 0.8); }
     .liga-table .pos {
@@ -313,7 +326,7 @@
       gap: 8px;
       margin-bottom: 22px;
       padding: 10px;
-      background: rgba(0, 0, 0, 0.8);  /* durchscheinend */
+      background: rgba(0, 0, 0, 0.8);
       border: 4px solid #000;
       box-shadow: var(--hard-shadow);
       backdrop-filter: blur(2px);
@@ -343,7 +356,7 @@
        ============================ */
     .spiel-liste { display: flex; flex-direction: column; gap: 14px; }
     .spiel-item {
-      background: rgba(255, 255, 255, 0.8);  /* durchscheinend */
+      background: rgba(255, 255, 255, 0.8);
       border: 3px solid #000;
       box-shadow: var(--hard-shadow);
       overflow: hidden;
@@ -356,7 +369,7 @@
       padding: 12px 16px;
       gap: 10px;
       flex-wrap: wrap;
-      background: rgba(255, 255, 255, 0.6);  /* leicht transparent */
+      background: rgba(255, 255, 255, 0.6);
     }
     .spiel-header .team-block { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
     .spiel-header .team-block.heim { justify-content: flex-start; }
@@ -451,7 +464,211 @@
       padding: 12px;
       box-shadow: var(--hard-shadow);
     }
-    /* ... (alles wie gehabt) ... */
+    .board-panel .topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .board-panel .topbar .eyebrow {
+      margin: 0 0 3px;
+      font-family: var(--led-font);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--bundesliga-gold);
+    }
+    .board-panel .topbar h3 {
+      margin: 0;
+      font-family: var(--headline-font);
+      font-style: italic;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .board-panel .scoreboard { display: flex; justify-content: center; width: 100%; margin-bottom: 8px; }
+    .board-panel .scoreboard > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #fff;
+      border: 3px solid #000;
+      padding: 6px 16px;
+      max-width: 700px;
+      width: 100%;
+    }
+    .board-panel .team-logo-wrapper {
+      width: clamp(1.8rem, 2.6vw, 2.8rem);
+      height: clamp(1.8rem, 2.6vw, 2.8rem);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      overflow: visible;
+    }
+    .board-panel .team-logo-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+    .board-panel .chess-grid {
+      display: grid;
+      grid-template-columns: repeat(5, var(--cell-size));
+      grid-template-rows: repeat(4, var(--cell-size));
+      width: calc(var(--cell-size) * 5);
+      height: calc(var(--cell-size) * 4);
+      margin: 0 auto;
+      border: 3px solid #000;
+      box-shadow: 0 0 0 3px var(--bundesliga-gold), var(--hard-shadow);
+      background: #000;
+      overflow: hidden;
+    }
+    .board-panel .grid-cell { position: relative; border: 1px solid rgba(255,255,255,0.12); padding: 0; overflow: hidden; background: #000; }
+    .board-panel .piece-cell {
+      display: grid;
+      place-items: center;
+      background: #141414;
+      color: #fff;
+      font-weight: 800;
+      isolation: isolate;
+      position: relative;
+    }
+    .board-panel .piece-cell.light { background: #202020; }
+    .board-panel .piece-cell .field-watermark {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      z-index: 4;
+      font-family: var(--led-font);
+      font-size: clamp(0.8rem, calc(var(--cell-size)*0.2), 1.4rem);
+      line-height: 1;
+      opacity: 1 !important;
+      pointer-events: none;
+      text-shadow: 0 0 6px rgba(0,0,0,0.9);
+    }
+    .board-panel .piece-cell .field-watermark.positive { color: #2be08a !important; }
+    .board-panel .piece-cell .field-watermark.negative { color: #ff4d4d !important; }
+    .board-panel .piece-cell .field-watermark.zero { color: #c3aeff !important; }
+    .board-panel .piece-cell .field-watermark.neutral { color: rgba(255,255,255,0.18); }
+    .board-panel .piece-cell .piece-svg {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 60%;
+      max-width: 50px;
+      height: auto;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,0.35));
+      opacity: 0.95;
+    }
+    .board-panel .piece-cell .player-photo {
+      position: absolute;
+      inset: 4px;
+      z-index: 1;
+      width: calc(100% - 8px);
+      height: calc(100% - 8px);
+      background: rgba(255,255,255,0.08);
+      object-fit: contain;
+      object-position: center bottom;
+      padding: 3px;
+      border: 2px solid #fff;
+    }
+    .board-panel .piece-cell .piece-corner {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      z-index: 2;
+      width: 24%;
+      max-width: 22px;
+      padding: 2px;
+      background: #fff;
+      border: 2px solid #000;
+      filter: none !important;
+    }
+    .board-panel .piece-cell.has-player-image .piece-svg { display: none; }
+    .board-panel .piece-cell.has-player-image .piece-corner { display: block; }
+    .board-panel .drop-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #000;
+    }
+    .board-panel .drop-cell .drop-value {
+      font-family: var(--led-font);
+      font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.6rem);
+      color: rgba(255,255,255,0.8);
+      pointer-events: none;
+    }
+    .board-panel .drop-cell.has-theses .drop-value {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      font-size: clamp(0.5rem, calc(var(--cell-size)*0.1), 0.85rem);
+      color: rgba(255,255,255,0.5);
+    }
+    .board-panel .drop-cell .drop-total {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-family: var(--led-font);
+      font-size: clamp(1rem, calc(var(--cell-size)*0.22), 1.6rem);
+      color: rgba(255,255,255,0.15);
+      pointer-events: none;
+      display: none;
+    }
+    .board-panel .drop-cell.has-theses .drop-total { display: block; }
+    .board-panel .placed-list {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      grid-auto-rows: minmax(0,1fr);
+      gap: 2px;
+      padding: 2px;
+      pointer-events: none;
+    }
+    .board-panel .placed-chip {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      border: 1.5px solid #000;
+      background: #fff;
+      color: #111;
+      font-size: clamp(0.25rem, 0.4vw, 0.45rem);
+      font-weight: 700;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+      padding: clamp(3px, calc(var(--cell-size)*0.04), 8px) 4px 4px;
+      text-align: center;
+      pointer-events: none;
+      isolation: isolate;
+    }
+    .board-panel .placed-chip .chip-field-badge {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      z-index: 2;
+      line-height: 1;
+      font-family: var(--led-font);
+      font-size: 1.3em;
+      color: rgba(0,0,0,0.55);
+      pointer-events: none;
+    }
+    .board-panel .placed-chip .chip-watermark {
+      position: absolute;
+      right: 3px;
+      bottom: 2px;
+      z-index: 1;
+      line-height: 1;
+      font-family: var(--led-font);
+      font-size: 1.9em;
+      opacity: 1 !important;
+      pointer-events: none;
+    }
+    .board-panel .placed-chip .chip-watermark.positive { color: #00913f !important; }
+    .board-panel .placed-chip .chip-watermark.negative { color: #c40000 !important; }
+    .board-panel .placed-chip .chip-watermark.zero { color: #5c3ba8 !important; }
+    .board-panel .placed-chip .chip-watermark.neutral { color: rgba(0,0,0,0.15); }
 
     /* ============================
        STATISTIKEN – transparente Karten
@@ -466,7 +683,7 @@
     .stat-card {
       position: relative;
       overflow: hidden;
-      background: rgba(0, 0, 0, 0.75);  /* durchscheinend dunkel */
+      background: rgba(0, 0, 0, 0.75);
       border: 3px solid #000;
       box-shadow: var(--hard-shadow);
       padding: 0 0 14px;
@@ -524,7 +741,7 @@
       padding: 7px 8px;
       border: 2px solid transparent;
       transition: background 0.12s;
-      background: rgba(255,255,255,0.05);  /* leicht transparent */
+      background: rgba(255,255,255,0.05);
     }
     .stat-entry:hover { background: rgba(28, 28, 28, 0.8); }
     .stat-entry.top1 { background: rgba(58, 47, 0, 0.7); border-color: var(--bundesliga-gold); }
@@ -658,8 +875,10 @@
   </style>
 </head>
 <body>
-  <!-- TRIKOT-HINTERGRUND -->
-  <div class="bg-trikots" id="bgTrikots"></div>
+  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER -->
+  <div class="bg-trikots" id="bgTrikots">
+    <div class="bg-trikots-inner" id="trikotInner"></div>
+  </div>
   <div class="bg-overlay"></div>
 
   <div class="app-shell" id="app">
@@ -725,23 +944,31 @@
 
     let spielplan = null;
     let teams = [];
-    let allGameData = {}; // key: "st-spiel" -> state
+    let allGameData = {};
     let currentView = 'home';
     let currentSpieltag = 0;
 
     // ============================
-    //  TRIKOT-HINTERGRUND (lokale Bilder)
+    //  TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
     // ============================
     function setupBackground() {
-      const container = document.getElementById('bgTrikots');
+      const container = document.getElementById('trikotInner');
       if (!container) return;
+
+      // 18 Bilder aus data/trikots/
+      const urls = [];
       for (let i = 1; i <= 18; i++) {
+        urls.push(`data/trikots/${i}.png`);
+      }
+
+      // Doppelt einfügen, damit der Loop endlos wirkt
+      const doubled = [...urls, ...urls];
+      doubled.forEach(url => {
         const item = document.createElement('div');
         item.className = 'trikot-item';
-        const url = `data/trikots/${i}.png`;
-        item.style.background = `url(${url}) no-repeat center / contain, #1a1a1a`;
+        item.style.backgroundImage = `url(${url})`;
         container.appendChild(item);
-      }
+      });
     }
 
     // ============================
@@ -1082,7 +1309,6 @@
     //  STATISTIKEN
     // ============================
 
-    // 1. Häufigste Einsätze (Top 10) – ohne Team-Namen
     function computeAppearanceStats() {
       const players = {};
       for (const [key, state] of Object.entries(allGameData)) {
@@ -1113,7 +1339,6 @@
       return sorted;
     }
 
-    // 2. Figuren-statistiken (pro Figur: Einzel & Durchschnitt)
     function computePlayerStats() {
       const pieceStats = {};
       PIECES.forEach(p => {
@@ -1198,7 +1423,6 @@
       const container = document.getElementById('statsContainer');
       container.innerHTML = '';
 
-      // 1. Häufigste Einsätze (Top 10) – ohne Team-Name
       const appearanceData = computeAppearanceStats();
       const appearanceCard = document.createElement('div');
       appearanceCard.className = 'stat-card';
@@ -1239,7 +1463,6 @@
       appearanceCard.appendChild(sectionApp);
       container.appendChild(appearanceCard);
 
-      // 2. Figuren-Statistiken (Einzel & Durchschnitt)
       const stats = computePlayerStats();
 
       PIECES.forEach(p => {
@@ -1254,7 +1477,6 @@
         `;
         card.appendChild(head);
 
-        // Höchste Einzelpunktzahl
         const sectionSingle = document.createElement('div');
         sectionSingle.className = 'stat-section';
         sectionSingle.innerHTML = `<div class="section-title">Höchste Einzelpunktzahl</div>`;
@@ -1289,7 +1511,6 @@
         sectionSingle.appendChild(listSingle);
         card.appendChild(sectionSingle);
 
-        // Bester Durchschnitt (min. 3 Spiele)
         const sectionAvg = document.createElement('div');
         sectionAvg.className = 'stat-section';
         sectionAvg.innerHTML = `<div class="section-title">Bester Durchschnitt (min. 3 Spiele)</div>`;
