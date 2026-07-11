@@ -58,7 +58,7 @@
     }
 
     /* ============================
-       TRIKOT-HINTERGRUND (verbessert)
+       TRIKOT-HINTERGRUND
        ============================ */
     .bg-trikots {
       position: fixed;
@@ -70,17 +70,17 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 12px;
-      opacity: 0.4; /* erhöht für bessere Sichtbarkeit */
+      opacity: 0.4;
       pointer-events: none;
       background-color: #0a0a0a;
       padding: 12px;
       overflow: hidden;
     }
     .bg-trikots .trikot-item {
-      background: no-repeat center / contain, #1a1a1a; /* Fallback-Farbe */
+      background: no-repeat center / contain, #1a1a1a;
       border: 2px solid rgba(255,255,255,0.08);
       border-radius: 4px;
-      min-height: 100px; /* stellt sicher, dass jede Zelle eine Mindesthöhe hat */
+      min-height: 100px;
     }
     .bg-overlay {
       position: fixed;
@@ -89,7 +89,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      background: rgba(0,0,0,0.5); /* etwas heller für mehr Trikot-Sichtbarkeit */
+      background: rgba(0,0,0,0.5);
       pointer-events: none;
     }
 
@@ -919,34 +919,19 @@
     let currentSpieltag = 0;
 
     // ============================
-    //  TRIKOT-HINTERGRUND
+    //  TRIKOT-HINTERGRUND (lokale Bilder)
     // ============================
-    const trikotUrls = [
-      'https://www.footballkitarchive.com/cdn/2025/03/26/vI3BBWAAwZfTbF1/bayern-munchen-1991-92-heimtrikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2021/01/16/5yWoLiXM0PZhHvC/borussia-dortmund-1994-95-heimtrikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2025/05/12/HntFlWNsBFiXJ1Z/borussia-monchengladbach-1990-91-auswarts-trikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2022/05/07/5nPlXbkDLsFl7qt/1-fc-koln-2003-04-heimtrikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2019/12/FtuknUqA90UMEy1/arminia-bielefeld-2004-05-heimtrikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2025/03/24/5UVdhRjgnTcmj7q/werder-bremen-2008-09-drittes-trikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2025/11/16/UMivpZLDNEBrMiY/hamburger-sv-1992-93-drittes-trikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2020/05/wqVHAv8VIqZqEwH/schalke-04-1996-97-heimtrikot.jpg',
-      'https://www.footballkitarchive.com/cdn/2021/02/03/VZSYkfgU1DagTwg/1-fc-kaiserslautern-1996-97-home-kit.jpg',
-      'https://www.footballkitarchive.com/cdn/2021/04/12/4K9E2cut5qPVRTw/fortuna-dusseldorf-1995-96-home-kit.jpg',
-      'https://www.footballkitarchive.com/cdn/2025/08/25/S7Xwo3hYcRbLFdz/eintracht-frankfurt-2002-03-home-kit.jpg',
-      'https://www.footballkitarchive.com/cdn/2022/05/05/MHOCnlntAkyao1o/hertha-bsc-1999-00-home-kit.jpg',
-      'https://www.footballkitarchive.com/cdn/2025/03/24/ohiNtFJo7XmlLPV/vfb-stuttgart-2005-06-home-kit.jpg'
-    ];
-
     function setupBackground() {
       const container = document.getElementById('bgTrikots');
       if (!container) return;
-      trikotUrls.forEach(url => {
+      // 18 Trikot-Bilder aus dem Ordner data/trikots/
+      for (let i = 1; i <= 18; i++) {
         const item = document.createElement('div');
         item.className = 'trikot-item';
-        // Fallback-Farbe, falls das Bild nicht lädt
+        const url = `data/trikots/${i}.png`;
         item.style.background = `url(${url}) no-repeat center / contain, #1a1a1a`;
         container.appendChild(item);
-      });
+      }
     }
 
     // ============================
