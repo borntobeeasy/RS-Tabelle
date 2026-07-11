@@ -58,7 +58,7 @@
     }
 
     /* ============================
-       TRIKOT-HINTERGRUND
+       TRIKOT-HINTERGRUND (verbessert)
        ============================ */
     .bg-trikots {
       position: fixed;
@@ -70,18 +70,17 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 12px;
-      opacity: 0.25;
+      opacity: 0.4; /* erhöht für bessere Sichtbarkeit */
       pointer-events: none;
       background-color: #0a0a0a;
       padding: 12px;
       overflow: hidden;
     }
     .bg-trikots .trikot-item {
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+      background: no-repeat center / contain, #1a1a1a; /* Fallback-Farbe */
       border: 2px solid rgba(255,255,255,0.08);
       border-radius: 4px;
+      min-height: 100px; /* stellt sicher, dass jede Zelle eine Mindesthöhe hat */
     }
     .bg-overlay {
       position: fixed;
@@ -90,7 +89,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.5); /* etwas heller für mehr Trikot-Sichtbarkeit */
       pointer-events: none;
     }
 
@@ -944,7 +943,8 @@
       trikotUrls.forEach(url => {
         const item = document.createElement('div');
         item.className = 'trikot-item';
-        item.style.backgroundImage = `url(${url})`;
+        // Fallback-Farbe, falls das Bild nicht lädt
+        item.style.background = `url(${url}) no-repeat center / contain, #1a1a1a`;
         container.appendChild(item);
       });
     }
