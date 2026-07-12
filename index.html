@@ -94,13 +94,13 @@
       filter: saturate(0.9) contrast(0.95);
     }
 
-    /* Animationen – für 3 Sätze (33.33% Verschiebung) */
+    /* Animationen – jetzt mit 50% Verschiebung (doppelter Satz) */
     @keyframes scrollRight {
       0%   { transform: translateX(0); }
-      100% { transform: translateX(-33.33%); }
+      100% { transform: translateX(-50%); }
     }
     @keyframes scrollLeft {
-      0%   { transform: translateX(-33.33%); }
+      0%   { transform: translateX(-50%); }
       100% { transform: translateX(0); }
     }
 
@@ -920,7 +920,7 @@
   </style>
 </head>
 <body>
-  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (mehrere Reihen) -->
+  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (4 Reihen) -->
   <div class="bg-trikots" id="bgTrikots"></div>
   <div class="bg-overlay"></div>
 
@@ -999,25 +999,26 @@
 
     // ============================
     //  HINTERGRUND – 4 Reihen mit wechselnder Laufrichtung
+    //  Jede Reihe besteht aus zwei identischen Sätzen (60 Bilder),
+    //  damit die 50%-Verschiebung nahtlos wirkt.
     // ============================
     function setupBackground() {
       const container = document.getElementById('bgTrikots');
       if (!container) return;
 
       // 4 Reihen erzeugen
-      const rowCount = 4;
-      for (let r = 0; r < rowCount; r++) {
+      for (let r = 0; r < 4; r++) {
         const row = document.createElement('div');
-        row.className = `bg-trikots-inner row-${r}`; // row-0, row-1, …
+        row.className = `bg-trikots-inner row-${r}`;
 
-        // DREI Sätze einfügen, damit der Loop nahtlos ist
-        const triple = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-        triple.forEach(url => {
+        // Zwei Sätze hintereinander, damit wir 50% verschieben können
+        const double = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
+        double.forEach(url => {
           const item = document.createElement('div');
           item.className = 'trikot-item';
           item.style.backgroundImage = `url(${url})`;
-          // Fallback bei Fehler
-          item.onerror = () => { item.style.backgroundImage = 'none'; };
+          // Falls Bild nicht existiert, ausblenden
+          item.onerror = () => { item.style.display = 'none'; };
           row.appendChild(item);
         });
 
@@ -1026,7 +1027,7 @@
     }
 
     // ============================
-    //  PIECES (nur für Anzeige)
+    //  PIECES (für Anzeige auf dem Brett)
     // ============================
     const PIECES = [
       { id: 'rook',   name: 'Turm', label: 'T' },
@@ -1052,7 +1053,7 @@
     function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
     // ============================
-    //  getAssignmentScore (nur für Brett)
+    //  getAssignmentScore (für Brett)
     // ============================
     function getAssignmentScore(assignment, state) {
       if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
@@ -1157,7 +1158,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER
+    //  BRETT-RENDERER – korrigierte Anzeige der Feldbezeichnungen
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1219,9 +1220,9 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            // Ersetze 'undefined' durch den Buchstaben des Feldes oder den Springer-Swing-Wert
+            // Feldbezeichnung: Buchstabe oder Springer-Swing-Wert
             let figureValue;
-            if (piece.id === 'knight' && state.questionValue !== null && state.questionValue !== undefined) {
+            if (piece.id === 'knight' && state.questionValue !== undefined && state.questionValue !== null) {
               figureValue = formatNumber(state.questionValue);
             } else {
               figureValue = piece.label || piece.id[0].toUpperCase();
@@ -1243,9 +1244,8 @@
         const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
         const piece = getPieceById(a.piece);
-        // Feldbeschriftung: Buchstabe oder Springer-Swing-Wert
         let fieldLabel;
-        if (a.piece === 'knight' && state.questionValue !== null && state.questionValue !== undefined) {
+        if (a.piece === 'knight' && state.questionValue !== undefined && state.questionValue !== null) {
           fieldLabel = formatNumber(state.questionValue);
         } else {
           fieldLabel = piece.label || piece.id[0].toUpperCase();
@@ -1372,9 +1372,8 @@
     }
 
     // ============================
-    //  STATISTIKEN
+    //  STATISTIKEN (gekürzt, bleibt wie bisher)
     // ============================
-
     function computeAppearanceStats() {
       const players = {};
       for (const [key, state] of Object.entries(allGameData)) {
@@ -1482,9 +1481,6 @@
       return result;
     }
 
-    // ============================
-    //  RENDER STATISTICS
-    // ============================
     function renderStatistics() {
       const container = document.getElementById('statsContainer');
       container.innerHTML = '';
