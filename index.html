@@ -566,11 +566,11 @@
     .board-panel .piece-cell.has-player-image .piece-svg { display: none; }
     .board-panel .piece-cell.has-player-image .piece-corner { display: block; }
 
-    /* ====== ANPASSUNG DROP-CELLS – Werte links oben ====== */
+    /* ====== DROP-CELLS – Werte links oben ====== */
     .board-panel .drop-cell {
       display: flex;
       align-items: center;
-      justify-content: center;   /* Fallback, aber der absolute Wert überschreibt */
+      justify-content: center;
       position: relative;
       background: #000;
     }
@@ -628,17 +628,7 @@
       pointer-events: none;
       isolation: isolate;
     }
-    .board-panel .placed-chip .chip-field-badge {
-      position: absolute;
-      top: 2px;
-      left: 3px;
-      z-index: 2;
-      line-height: 1;
-      font-family: var(--led-font);
-      font-size: 1.3em;
-      color: rgba(0,0,0,0.55);
-      pointer-events: none;
-    }
+    /* .chip-field-badge wurde entfernt – keine Buchstaben mehr in den Chips */
     .board-panel .placed-chip .chip-watermark {
       position: absolute;
       right: 3px;
@@ -1191,7 +1181,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER – mit angepassten Feldwerten (links oben)
+    //  BRETT-RENDERER – mit angepassten Feldwerten (links oben), ohne Buchstaben in Chips
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1253,7 +1243,7 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            // --- Angepasste Anzeige der Feldwerte (links oben) ---
+            // Feldwerte (links oben)
             let figureValue;
             if (piece.id === 'knight') {
               figureValue = (state.questionValue !== undefined && state.questionValue !== null)
@@ -1270,7 +1260,6 @@
             } else {
               figureValue = piece.label;
             }
-            // ----------------------------------------------------
             let html = `<div class="drop-value">${figureValue}</div>`;
             if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
             html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
@@ -1287,17 +1276,12 @@
         if (!a.side || !a.piece) return;
         const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
-        const piece = getPieceById(a.piece);
-        let fieldLabel;
-        if (a.piece === 'knight' && state.questionValue !== undefined && state.questionValue !== null) {
-          fieldLabel = formatNumber(state.questionValue);
-        } else {
-          fieldLabel = piece.label || piece.id[0].toUpperCase();
-        }
+        // Kein chip-field-badge mehr – nur These-Text und Punktzahl
         const score = getAssignmentScore(a, state);
         const chip = document.createElement('span');
         chip.className = 'placed-chip';
-        chip.innerHTML = `<span class="chip-field-badge">${fieldLabel}</span><strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
+        // Entferne .chip-field-badge, behalte nur Wasserzeichen und These-Text
+        chip.innerHTML = `<strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
         slot.appendChild(chip);
       });
     }
