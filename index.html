@@ -43,11 +43,26 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background-color: #0a0a0a; /* einfacher dunkler Hintergrund */
+      background-color: #0a0a0a;
       color: var(--ink);
       font-family: var(--event-font);
       padding: 22px;
+      overflow-x: hidden;
     }
+
+    /* ============================
+       HINTERGRUND-CANVAS (Bildschirmschoner)
+       ============================ */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
     .app-shell {
       max-width: 1440px;
       margin: 0 auto;
@@ -157,12 +172,12 @@
         flex: none;
         width: 100%;
         position: static;
-        order: 2; /* Tabelle unter den Spielen */
+        order: 2;
       }
       .content-wrapper .right-col {
         flex: none;
         width: 100%;
-        order: 1; /* Spiele zuerst */
+        order: 1;
       }
     }
 
@@ -856,8 +871,6 @@
   </style>
 </head>
 <body>
-  <!-- KEIN HINTERGRUND MEHR – nur body-Background -->
-
   <div class="app-shell" id="app">
     <!-- Kopf -->
     <header class="liga-header">
@@ -913,6 +926,90 @@
   </div>
 
   <script>
+    // ============================
+    //  HINTERGRUND-BILDSCHIRMSCHONER
+    // ============================
+    function initBackground() {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'bgCanvas';
+      document.body.prepend(canvas);
+
+      const ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      const BG_IMAGE_COUNT = 30;
+      const BG_IMAGE_PATH = 'data/grafiken/';
+      const loadPromises = [];
+
+      for (let i = 1; i <= BG_IMAGE_COUNT; i++) {
+        const img = new Image();
+        img.src = `${BG_IMAGE_PATH}${i}.png`;
+        const promise = new Promise((resolve) => {
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+        });
+        loadPromises.push(promise);
+      }
+
+      Promise.all(loadPromises).then(results => {
+        const loaded = results.filter(img => img !== null);
+        if (loaded.length === 0) {
+          console.warn('Keine Hintergrundbilder geladen.');
+          return;
+        }
+
+        const bgImageData = loaded.map(img => {
+          const maxW = 150;
+          const scale = Math.min(1, maxW / img.width);
+          const w = img.width * scale;
+          const h = img.height * scale;
+          return {
+            img,
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: (Math.random() - 0.5) * 1.2,
+            w,
+            h,
+            rotation: (Math.random() - 0.5) * 0.2,
+            alpha: 0.5 + Math.random() * 0.4,
+          };
+        });
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          const W = canvas.width;
+          const H = canvas.height;
+
+          for (const d of bgImageData) {
+            d.x += d.vx;
+            d.y += d.vy;
+
+            // Abprallen / zyklisch (für sanften Übergang)
+            if (d.x < -d.w) d.x = W;
+            if (d.x > W) d.x = -d.w;
+            if (d.y < -d.h) d.y = H;
+            if (d.y > H) d.y = -d.h;
+
+            ctx.save();
+            ctx.globalAlpha = d.alpha;
+            ctx.translate(d.x, d.y);
+            ctx.rotate(d.rotation);
+            ctx.drawImage(d.img, -d.w/2, -d.h/2, d.w, d.h);
+            ctx.restore();
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+      });
+    }
+
     // ============================
     //  KONFIGURATION
     // ============================
@@ -1119,7 +1216,6 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            // Feldbezeichnung: Buchstabe oder Springer-Swing-Wert
             let figureValue;
             if (piece.id === 'knight' && state.questionValue !== undefined && state.questionValue !== null) {
               figureValue = formatNumber(state.questionValue);
@@ -1577,6 +1673,9 @@
     //  INIT
     // ============================
     async function init() {
+      // Hintergrund starten
+      initBackground();
+
       try {
         const res = await fetch(SPIELPLAN_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1603,7 +1702,12 @@
       }
     }
 
-    init();
+    // Starten, sobald DOM bereit
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
 </body>
 </html>
