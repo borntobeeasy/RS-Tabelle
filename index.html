@@ -67,9 +67,9 @@
       height: 100%;
       z-index: -1;
       overflow: hidden;
-      opacity: 0.7;  /* erhöht, damit die Bilder sichtbarer sind */
+      opacity: 0.5;
       pointer-events: none;
-      background-color: transparent; /* damit die Bilder durchscheinen */
+      background-color: #0a0a0a;
       display: flex;
       flex-direction: column;
     }
@@ -234,7 +234,7 @@
        TABELLE – transparente Version, jetzt scrollbar
        ============================ */
     .table-wrap {
-      overflow-x: auto;  /* horizontal scrollen bei kleinen Bildschirmen */
+      overflow-x: auto;
       background: rgba(255, 255, 255, 0.75);
       border: 4px solid #000;
       box-shadow: var(--hard-shadow);
@@ -248,7 +248,7 @@
       table-layout: fixed;
       border-collapse: collapse;
       font-size: 0.75rem;
-      min-width: 600px; /* verhindert zu starkes Zusammenquetschen */
+      min-width: 600px;
     }
     .liga-table th:nth-child(1) { width: 7%; }
     .liga-table th:nth-child(3) { width: 8%; }
@@ -893,7 +893,6 @@
       .stat-entry .value-chip .value-num { font-size: 1rem; padding: 1px 8px; }
       .stat-entry .team-badge-mini { width: 14px; height: 14px; right: -2px; bottom: -2px; }
 
-      /* Tabelle verkleinern und scrollbar machen */
       .liga-table {
         font-size: 0.6rem;
         min-width: 480px;
@@ -987,11 +986,10 @@
     const DATA_BASE = 'data/';
 
     // ============================
-    //  TRIKOT-BILDER – EXAKT 30 SLOTS
-    //  Hier werden 30 Bilder mit den URLs data/trikots/1.png … data/trikots/30.png erwartet.
-    //  Du kannst die Anzahl durch Ändern der Zahl 30 in Array.from anpassen.
+    //  HINTERGRUNDBILDER – GENAU 30 SLOTS
+    //  Pfad: data/grafiken/1.png … data/grafiken/30.png
     // ============================
-    const TRIKOT_IMAGES = Array.from({ length: 30 }, (_, i) => `data/trikots/${i+1}.png`);
+    const BACKGROUND_IMAGES = Array.from({ length: 30 }, (_, i) => `data/grafiken/${i+1}.png`);
 
     let spielplan = null;
     let teams = [];
@@ -1000,7 +998,7 @@
     let currentSpieltag = 0;
 
     // ============================
-    //  TRIKOT-HINTERGRUND – mehrere Reihen mit wechselnder Richtung
+    //  HINTERGRUND – 4 Reihen mit wechselnder Laufrichtung
     // ============================
     function setupBackground() {
       const container = document.getElementById('bgTrikots');
@@ -1013,12 +1011,12 @@
         row.className = `bg-trikots-inner row-${r}`; // row-0, row-1, …
 
         // DREI Sätze einfügen, damit der Loop nahtlos ist
-        const triple = [...TRIKOT_IMAGES, ...TRIKOT_IMAGES, ...TRIKOT_IMAGES];
+        const triple = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
         triple.forEach(url => {
           const item = document.createElement('div');
           item.className = 'trikot-item';
           item.style.backgroundImage = `url(${url})`;
-          // Fallback, falls das Bild nicht lädt – dann bleibt es leer
+          // Fallback bei Fehler
           item.onerror = () => { item.style.backgroundImage = 'none'; };
           row.appendChild(item);
         });
@@ -1031,11 +1029,11 @@
     //  PIECES (nur für Anzeige)
     // ============================
     const PIECES = [
-      { id: 'rook',   name: 'Turm', value: 3 },
-      { id: 'bishop', name: 'Läufer', value: 1 },
-      { id: 'knight', name: 'Springer', value: 1 },
-      { id: 'queen',  name: 'Dame', value: 1 },
-      { id: 'king',   name: 'König', value: 3 },
+      { id: 'rook',   name: 'Turm', label: 'T' },
+      { id: 'bishop', name: 'Läufer', label: 'L' },
+      { id: 'knight', name: 'Springer', label: 'S' },
+      { id: 'queen',  name: 'Dame', label: 'D' },
+      { id: 'king',   name: 'König', label: 'K' },
     ];
     const PIECE_SVG_URLS = {
       rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
@@ -1061,7 +1059,7 @@
       const piece = getPieceById(assignment.piece);
       if (!piece) return 0;
       const sign = assignment.polarity === 'positive' ? 1 : -1;
-      const base = piece.value || 1;
+      const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
       switch (assignment.piece) {
         case 'knight':
           const knightVal = state.questionValue ?? 1;
@@ -1221,10 +1219,13 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            // FIX: Verwende den Wert aus state.questionValue, sonst den piece.value
-            let figureValue = (piece.id === 'knight' && state.questionValue !== null && state.questionValue !== undefined) 
-                ? formatNumber(state.questionValue) 
-                : piece.value;
+            // Ersetze 'undefined' durch den Buchstaben des Feldes oder den Springer-Swing-Wert
+            let figureValue;
+            if (piece.id === 'knight' && state.questionValue !== null && state.questionValue !== undefined) {
+              figureValue = formatNumber(state.questionValue);
+            } else {
+              figureValue = piece.label || piece.id[0].toUpperCase();
+            }
             let html = `<div class="drop-value">${figureValue}</div>`;
             if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
             html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
@@ -1242,9 +1243,13 @@
         const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
         const piece = getPieceById(a.piece);
-        const fieldLabel = (a.piece === 'knight' && state.questionValue !== null && state.questionValue !== undefined) 
-            ? formatNumber(state.questionValue) 
-            : piece.value;
+        // Feldbeschriftung: Buchstabe oder Springer-Swing-Wert
+        let fieldLabel;
+        if (a.piece === 'knight' && state.questionValue !== null && state.questionValue !== undefined) {
+          fieldLabel = formatNumber(state.questionValue);
+        } else {
+          fieldLabel = piece.label || piece.id[0].toUpperCase();
+        }
         const score = getAssignmentScore(a, state);
         const chip = document.createElement('span');
         chip.className = 'placed-chip';
