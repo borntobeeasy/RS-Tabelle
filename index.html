@@ -43,7 +43,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background-color: #0a0a0a;
+      background-color: #0a0a0a; /* einfacher dunkler Hintergrund */
       color: var(--ink);
       font-family: var(--event-font);
       padding: 22px;
@@ -54,70 +54,6 @@
       position: relative;
       isolation: isolate;
       z-index: 1;
-    }
-
-    /* ============================
-       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
-       ============================ */
-    .bg-trikots {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-      opacity: 0.5;
-      pointer-events: none;
-      background-color: #0a0a0a;
-      display: flex;
-      flex-direction: column;
-    }
-    .bg-trikots-inner {
-      display: flex;
-      flex-wrap: nowrap;
-      height: 25%; /* 4 Reihen */
-      width: 100%;
-      will-change: transform;
-      flex-shrink: 0;
-    }
-    .bg-trikots-inner .trikot-item {
-      flex: 0 0 auto;
-      width: 200px;
-      height: 100%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      margin: 0;
-      border: none;
-      border-radius: 0;
-      filter: saturate(0.9) contrast(0.95);
-    }
-
-    /* Animationen – jetzt mit 50% Verschiebung (doppelter Satz) */
-    @keyframes scrollRight {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes scrollLeft {
-      0%   { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
-
-    .row-0 { animation: scrollRight 40s linear infinite; }
-    .row-1 { animation: scrollLeft  40s linear infinite; }
-    .row-2 { animation: scrollRight 40s linear infinite; }
-    .row-3 { animation: scrollLeft  40s linear infinite; }
-
-    .bg-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      background: rgba(0, 0, 0, 0.3);
-      pointer-events: none;
     }
 
     /* ============================
@@ -920,9 +856,7 @@
   </style>
 </head>
 <body>
-  <!-- TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (4 Reihen) -->
-  <div class="bg-trikots" id="bgTrikots"></div>
-  <div class="bg-overlay"></div>
+  <!-- KEIN HINTERGRUND MEHR – nur body-Background -->
 
   <div class="app-shell" id="app">
     <!-- Kopf -->
@@ -985,46 +919,11 @@
     const SPIELPLAN_URL = 'spielplan.json';
     const DATA_BASE = 'data/';
 
-    // ============================
-    //  HINTERGRUNDBILDER – GENAU 30 SLOTS
-    //  Pfad: data/grafiken/1.png … data/grafiken/30.png
-    // ============================
-    const BACKGROUND_IMAGES = Array.from({ length: 30 }, (_, i) => `data/grafiken/${i+1}.png`);
-
     let spielplan = null;
     let teams = [];
     let allGameData = {};
     let currentView = 'home';
     let currentSpieltag = 0;
-
-    // ============================
-    //  HINTERGRUND – 4 Reihen mit wechselnder Laufrichtung
-    //  Jede Reihe besteht aus zwei identischen Sätzen (60 Bilder),
-    //  damit die 50%-Verschiebung nahtlos wirkt.
-    // ============================
-    function setupBackground() {
-      const container = document.getElementById('bgTrikots');
-      if (!container) return;
-
-      // 4 Reihen erzeugen
-      for (let r = 0; r < 4; r++) {
-        const row = document.createElement('div');
-        row.className = `bg-trikots-inner row-${r}`;
-
-        // Zwei Sätze hintereinander, damit wir 50% verschieben können
-        const double = [...BACKGROUND_IMAGES, ...BACKGROUND_IMAGES];
-        double.forEach(url => {
-          const item = document.createElement('div');
-          item.className = 'trikot-item';
-          item.style.backgroundImage = `url(${url})`;
-          // Falls Bild nicht existiert, ausblenden
-          item.onerror = () => { item.style.display = 'none'; };
-          row.appendChild(item);
-        });
-
-        container.appendChild(row);
-      }
-    }
 
     // ============================
     //  PIECES (für Anzeige auf dem Brett)
@@ -1678,8 +1577,6 @@
     //  INIT
     // ============================
     async function init() {
-      setupBackground();
-
       try {
         const res = await fetch(SPIELPLAN_URL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
