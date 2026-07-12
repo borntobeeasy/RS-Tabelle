@@ -387,23 +387,54 @@
       flex-shrink: 0;
       box-shadow: inset 0 0 8px rgba(0,0,0,0.8), var(--hard-shadow-sm);
     }
+
+    /* ===== NEUER TOGGLE-BUTTON – stylisch, weiß, rot beim Öffnen ===== */
     .spiel-header .toggle-btn {
-      background: var(--bundesliga-gold);
-      border: 3px solid #000;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      border: 3px solid #000;
+      background: #ffffff;
       color: #000;
-      font-size: 0.85rem;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      flex-shrink: 0;
+      box-shadow: var(--hard-shadow-sm);
+      transition: background 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      box-shadow: var(--hard-shadow-sm);
+      padding: 0;
+      position: relative;
     }
-    .spiel-header .toggle-btn.open { transform: rotate(180deg); background: var(--bundesliga-red); color: #fff; }
+    .spiel-header .toggle-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: #000;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.25s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: rotate(0deg);
+    }
+    .spiel-header .toggle-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 3px 3px 0 #000;
+    }
+    .spiel-header .toggle-btn.open {
+      background: var(--bundesliga-red);
+      box-shadow: 0 0 0 #000;
+      transform: scale(0.95);
+    }
+    .spiel-header .toggle-btn.open svg {
+      stroke: #ffffff;
+      transform: rotate(180deg);
+    }
+    .spiel-header .toggle-btn.open:hover {
+      transform: scale(1.02);
+      box-shadow: 2px 2px 0 #000;
+    }
+
     .spiel-meta {
       display: flex;
       align-items: center;
@@ -424,7 +455,7 @@
       grid-template-rows: 0fr;
       opacity: 0;
       transition: grid-template-rows 0.32s ease, opacity 0.28s ease;
-      background: rgba(0,0,0,0.85);
+      background: transparent;
     }
     .spiel-board-container > * { overflow: hidden; }
     .spiel-board-container.open {
@@ -436,13 +467,13 @@
     }
 
     /* ============================
-       BRETT – Taktiktafel (transparent, alpha 0.65)
+       BRETT – Taktiktafel (dunkel transparent)
        ============================ */
     .board-panel {
       position: relative;
       overflow: hidden;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(2px);
       border: 4px solid #000;
       padding: 12px;
       box-shadow: var(--hard-shadow);
@@ -628,7 +659,6 @@
       pointer-events: none;
       isolation: isolate;
     }
-    /* .chip-field-badge wurde entfernt – keine Buchstaben mehr in den Chips */
     .board-panel .placed-chip .chip-watermark {
       position: absolute;
       right: 3px;
@@ -830,6 +860,8 @@
       .spiel-header { flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
       .spiel-header .team-name { font-size: 0.7rem; }
       .spiel-header .score-display { font-size: 1.3rem; padding: 2px 10px; }
+      .spiel-header .toggle-btn { width: 34px; height: 34px; }
+      .spiel-header .toggle-btn svg { width: 20px; height: 20px; }
       .board-panel .chess-grid { --cell-size: clamp(44px, calc((100vw - 50px)/5), 64px); }
       .spiel-header .team-logo-small { width: 26px; height: 26px; }
       .stat-entry .avatar-wrap { width: 34px; height: 34px; }
@@ -854,6 +886,8 @@
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
       .spiel-header .score-display { font-size: 1.1rem; padding: 2px 8px; }
+      .spiel-header .toggle-btn { width: 30px; height: 30px; }
+      .spiel-header .toggle-btn svg { width: 18px; height: 18px; }
       .board-panel .chess-grid { --cell-size: clamp(34px, calc((100vw - 30px)/5), 46px); }
       .spiel-header .team-logo-small { width: 22px; height: 22px; }
       .stat-entry .avatar-wrap { width: 30px; height: 30px; }
@@ -1181,7 +1215,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER – mit angepassten Feldwerten (links oben), ohne Buchstaben in Chips
+    //  BRETT-RENDERER – mit transparentem Hintergrund
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1276,11 +1310,9 @@
         if (!a.side || !a.piece) return;
         const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
-        // Kein chip-field-badge mehr – nur These-Text und Punktzahl
         const score = getAssignmentScore(a, state);
         const chip = document.createElement('span');
         chip.className = 'placed-chip';
-        // Entferne .chip-field-badge, behalte nur Wasserzeichen und These-Text
         chip.innerHTML = `<strong class="chip-watermark ${getScoreTone(score)}">${formatNumber(score)}</strong><span class="fit-text">${state.theses[a.id-1]}</span>`;
         slot.appendChild(chip);
       });
@@ -1303,11 +1335,19 @@
       const awayLogo = state.teamLogos?.black || null;
       const header = document.createElement('div');
       header.className = 'spiel-header';
+      
+      // SVG-Chevron für den Toggle-Button
+      const chevronSVG = `
+        <svg viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      `;
+
       header.innerHTML = `
         <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
         <span class="score-display">${score.white} : ${score.black}</span>
         <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
-        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">▼</button>
+        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">${chevronSVG}</button>
       `;
       item.appendChild(header);
       const meta = document.createElement('div');
