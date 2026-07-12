@@ -927,7 +927,7 @@
 
   <script>
     // ============================
-    //  HINTERGRUND – 4 Reihen, lückenlos, langsam
+    //  HINTERGRUND – 4 Reihen, lückenlos, keine Überlappungen
     // ============================
     function initBackground() {
       const canvas = document.createElement('canvas');
@@ -969,6 +969,7 @@
         const speedBase = 0.3;
         const speedVariance = 0.15;
 
+        // Bilder skalieren
         const images = loaded.map(img => {
           const scale = Math.min(1, maxWidth / img.width);
           const w = img.width * scale;
@@ -989,7 +990,7 @@
           }
           if (rowImages.length === 0) continue;
 
-          // Wiederhole die Reihe, bis sie breiter als der Bildschirm ist
+          // Reihe so oft wiederholen, bis sie breiter als der Bildschirm ist
           const fullRow = [];
           let totalWidth = 0;
           while (totalWidth < canvas.width + 2 * maxWidth) {
@@ -1001,10 +1002,12 @@
 
           const direction = (r % 2 === 0) ? 1 : -1;
           const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
-          const startX = [];
+
+          // Startpositionen exakt berechnen (keine Überlappung)
+          const positions = [];
           let x = 0;
           for (let i = 0; i < fullRow.length; i++) {
-            startX.push(x);
+            positions.push(x);
             x += fullRow[i].w + gap;
           }
 
@@ -1013,7 +1016,7 @@
             images: fullRow,
             y: Math.min(y, canvas.height - fullRow[0].h),
             speed: speed,
-            positions: startX,
+            positions: positions,
           });
         }
 
@@ -1026,8 +1029,9 @@
               let x = positions[i];
               x += speed;
 
-              // Nahtloses Verschieben am Rand
+              // Nahtloses Verschieben am Rand – ohne Überlappung
               if (speed > 0 && x > canvas.width + 20) {
+                // verschiebe ganz nach links
                 x = -img.w - gap;
               }
               if (speed < 0 && x < -img.w - 20) {
