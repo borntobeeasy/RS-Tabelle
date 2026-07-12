@@ -57,7 +57,7 @@
     }
 
     /* ============================
-       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER (mehrere Reihen)
+       TRIKOT-HINTERGRUND – BILDSCHIRMSCHONER
        ============================ */
     .bg-trikots {
       position: fixed;
@@ -94,21 +94,20 @@
       filter: saturate(0.9) contrast(0.95);
     }
 
-    /* Animationen */
+    /* Animationen – für 3 Sätze (33.33% Verschiebung) */
     @keyframes scrollRight {
       0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(-33.33%); }
     }
     @keyframes scrollLeft {
-      0%   { transform: translateX(-50%); }
+      0%   { transform: translateX(-33.33%); }
       100% { transform: translateX(0); }
     }
 
-    /* Reihen abwechselnd */
-    .row-0 { animation: scrollRight 30s linear infinite; }
-    .row-1 { animation: scrollLeft  30s linear infinite; }
-    .row-2 { animation: scrollRight 30s linear infinite; }
-    .row-3 { animation: scrollLeft  30s linear infinite; }
+    .row-0 { animation: scrollRight 40s linear infinite; }
+    .row-1 { animation: scrollLeft  40s linear infinite; }
+    .row-2 { animation: scrollRight 40s linear infinite; }
+    .row-3 { animation: scrollLeft  40s linear infinite; }
 
     .bg-overlay {
       position: fixed;
@@ -955,6 +954,11 @@
     const SPIELPLAN_URL = 'spielplan.json';
     const DATA_BASE = 'data/';
 
+    // ============================
+    //  TRIKOT-ANZAHL – HIER KANNST DU DIE ANZAHL DER BILDER EINSTELLEN
+    // ============================
+    const TRIKOT_COUNT = 18;  // <-- Ändere diesen Wert, wenn du mehr/weniger Bilder hast
+
     let spielplan = null;
     let teams = [];
     let allGameData = {};
@@ -968,9 +972,9 @@
       const container = document.getElementById('bgTrikots');
       if (!container) return;
 
-      // 18 Bilder aus data/trikots/
+      // Bilder-URLs aus der Nummerierung generieren
       const urls = [];
-      for (let i = 1; i <= 18; i++) {
+      for (let i = 1; i <= TRIKOT_COUNT; i++) {
         urls.push(`data/trikots/${i}.png`);
       }
 
@@ -980,9 +984,9 @@
         const row = document.createElement('div');
         row.className = `bg-trikots-inner row-${r}`; // row-0, row-1, …
 
-        // Bilder doppelt einfügen (für Endlosschleife)
-        const doubled = [...urls, ...urls];
-        doubled.forEach(url => {
+        // DREI Sätze einfügen, damit der Loop nahtlos ist
+        const triple = [...urls, ...urls, ...urls];
+        triple.forEach(url => {
           const item = document.createElement('div');
           item.className = 'trikot-item';
           item.style.backgroundImage = `url(${url})`;
