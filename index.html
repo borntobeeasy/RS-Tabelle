@@ -51,7 +51,7 @@
     }
 
     /* ============================
-       HINTERGRUND-CANVAS (Bildschirmschoner) – ganzer Bildschirm
+       HINTERGRUND-CANVAS – ganzer Bildschirm
        ============================ */
     #bgCanvas {
       position: fixed;
@@ -72,7 +72,7 @@
     }
 
     /* ============================
-       KOPF – Retro Sportschau-Bauchbinde (halbtransparent)
+       KOPF – Retro Sportschau-Bauchbinde
        ============================ */
     .liga-header {
       position: relative;
@@ -182,7 +182,7 @@
     }
 
     /* ============================
-       TABELLE – transparente Version, jetzt scrollbar
+       TABELLE
        ============================ */
     .table-wrap {
       overflow-x: auto;
@@ -299,7 +299,7 @@
     .liga-table .num { text-align: center; color: var(--steel); font-weight: 700; }
 
     /* ============================
-       SPIELTAG-NAVIGATION (transparent)
+       SPIELTAG-NAVIGATION
        ============================ */
     .liga-tabs {
       display: flex;
@@ -436,7 +436,7 @@
     }
 
     /* ============================
-       BRETT – bleibt undurchsichtig (Taktiktafel)
+       BRETT – Taktiktafel
        ============================ */
     .board-panel {
       position: relative;
@@ -828,7 +828,7 @@
     .spieltag-headline small { font-family: var(--led-font); font-size: 0.85rem; color: var(--bundesliga-gold); font-weight: 400; margin-left: 8px; }
 
     /* ============================
-       RESPONSIVE – speziell für Tabelle auf Handy
+       RESPONSIVE
        ============================ */
     @media (max-width: 700px) {
       .liga-header { padding: 16px 20px; flex-direction: column; align-items: stretch; }
@@ -927,7 +927,7 @@
 
   <script>
     // ============================
-    //  HINTERGRUND – Weniger Reihen, kleinerer Abstand
+    //  HINTERGRUND – 4 Reihen, lückenlos, langsam
     // ============================
     function initBackground() {
       const canvas = document.createElement('canvas');
@@ -964,14 +964,11 @@
           return;
         }
 
-        // Konfiguration
         const maxWidth = 120;
-        const rowHeight = 150;          // mehr Platz zwischen Reihen → weniger Reihen
-        const gap = 12;                // kleiner Abstand zwischen Bildern in einer Reihe
+        const gap = 12;
         const speedBase = 0.3;
         const speedVariance = 0.15;
 
-        // Bilder skalieren
         const images = loaded.map(img => {
           const scale = Math.min(1, maxWidth / img.width);
           const w = img.width * scale;
@@ -979,11 +976,11 @@
           return { img, w, h };
         });
 
-        // Fixe Anzahl Reihen = 4
         const rows = 4;
         const imagesPerRow = Math.ceil(images.length / rows);
-        const rowData = [];
         let imgIndex = 0;
+        const rowData = [];
+
         for (let r = 0; r < rows; r++) {
           const rowImages = [];
           for (let c = 0; c < imagesPerRow; c++) {
@@ -992,22 +989,29 @@
           }
           if (rowImages.length === 0) continue;
 
-          const direction = (r % 2 === 0) ? 1 : -1;
-          const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
-
-          // Startpositionen: erstes Bild bei 0, dann mit Abstand gap
-          const startX = [];
-          let x = 0;
-          for (let i = 0; i < rowImages.length; i++) {
-            startX.push(x);
-            x += rowImages[i].w + gap;
+          // Wiederhole die Reihe, bis sie breiter als der Bildschirm ist
+          const fullRow = [];
+          let totalWidth = 0;
+          while (totalWidth < canvas.width + 2 * maxWidth) {
+            for (const img of rowImages) {
+              fullRow.push(img);
+              totalWidth += img.w + gap;
+            }
           }
 
-          // y-Position: gleichmäßig über den Bildschirm verteilen
-          const y = (r / (rows - 1)) * (canvas.height - rowImages[0].h);
+          const direction = (r % 2 === 0) ? 1 : -1;
+          const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
+          const startX = [];
+          let x = 0;
+          for (let i = 0; i < fullRow.length; i++) {
+            startX.push(x);
+            x += fullRow[i].w + gap;
+          }
+
+          const y = (r / (rows - 1)) * (canvas.height - fullRow[0].h);
           rowData.push({
-            images: rowImages,
-            y: Math.min(y, canvas.height - rowImages[0].h),
+            images: fullRow,
+            y: Math.min(y, canvas.height - fullRow[0].h),
             speed: speed,
             positions: startX,
           });
@@ -1015,25 +1019,22 @@
 
         function animate() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-
           for (const row of rowData) {
             const { images, y, speed, positions } = row;
             for (let i = 0; i < images.length; i++) {
               const img = images[i];
               let x = positions[i];
               x += speed;
-              // Rechts raus → links
+
+              // Nahtloses Verschieben am Rand
               if (speed > 0 && x > canvas.width + 20) {
-                const lastX = positions[positions.length - 1];
                 x = -img.w - gap;
-                // optional: alle nachfolgenden anpassen? – aber wir schieben einzeln.
               }
-              // Links raus → rechts
               if (speed < 0 && x < -img.w - 20) {
-                const firstX = positions[0];
                 x = canvas.width + gap;
               }
               positions[i] = x;
+
               ctx.save();
               ctx.globalAlpha = 0.6;
               ctx.drawImage(img.img, x, y, img.w, img.h);
@@ -1059,7 +1060,7 @@
     let currentSpieltag = 0;
 
     // ============================
-    //  PIECES (für Anzeige auf dem Brett)
+    //  PIECES
     // ============================
     const PIECES = [
       { id: 'rook',   name: 'Turm', label: 'T' },
@@ -1085,7 +1086,7 @@
     function getPieceById(id) { return PIECES.find(p => p.id === id); }
 
     // ============================
-    //  getAssignmentScore (für Brett)
+    //  getAssignmentScore
     // ============================
     function getAssignmentScore(assignment, state) {
       if (!assignment.side || !assignment.piece || !assignment.polarity) return 0;
@@ -1190,7 +1191,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER – korrigierte Anzeige der Feldbezeichnungen
+    //  BRETT-RENDERER
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1403,7 +1404,7 @@
     }
 
     // ============================
-    //  STATISTIKEN (gekürzt, bleibt wie bisher)
+    //  STATISTIKEN
     // ============================
     function computeAppearanceStats() {
       const players = {};
@@ -1655,7 +1656,7 @@
     }
 
     // ============================
-    //  LADE ALLE DATEN (parallel)
+    //  LADE ALLE DATEN
     // ============================
     async function loadAllGameData() {
       const gameData = {};
@@ -1738,7 +1739,6 @@
       }
     }
 
-    // Starten, sobald DOM bereit
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
     } else {
