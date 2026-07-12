@@ -436,12 +436,13 @@
     }
 
     /* ============================
-       BRETT – Taktiktafel
+       BRETT – Taktiktafel (jetzt transparent)
        ============================ */
     .board-panel {
       position: relative;
       overflow: hidden;
-      background: #000;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
       border: 4px solid #000;
       padding: 12px;
       box-shadow: var(--hard-shadow);
@@ -471,7 +472,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      background: #fff;
+      background: rgba(255,255,255,0.9);
       border: 3px solid #000;
       padding: 6px 16px;
       max-width: 700px;
@@ -927,7 +928,7 @@
 
   <script>
     // ============================
-    //  HINTERGRUND – 4 Reihen, lückenlos, modulo-basierte Wiederholung
+    //  HINTERGRUND – 4 Reihen, lückenlos, modulo-basiert
     // ============================
     function initBackground() {
       const canvas = document.createElement('canvas');
@@ -969,7 +970,6 @@
         const speedBase = 0.3;
         const speedVariance = 0.15;
 
-        // Bilder skalieren
         const images = loaded.map(img => {
           const scale = Math.min(1, maxWidth / img.width);
           const w = img.width * scale;
@@ -990,9 +990,7 @@
           }
           if (rowImages.length === 0) continue;
 
-          // Basis-Reihe (einmalig)
           const baseImages = rowImages;
-          // Gesamtbreite der Basis-Reihe (ohne letzten Gap)
           let totalWidth = 0;
           baseImages.forEach((img, i) => {
             totalWidth += img.w;
@@ -1002,7 +1000,6 @@
           const direction = (r % 2 === 0) ? 1 : -1;
           const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
 
-          // Startpositionen für die Basis-Reihe
           const positions = [];
           let x = 0;
           for (let i = 0; i < baseImages.length; i++) {
@@ -1010,7 +1007,6 @@
             x += baseImages[i].w + gap;
           }
 
-          // y-Position gleichmäßig verteilen
           const y = (r / (rows - 1)) * (canvas.height - baseImages[0].h);
           rowData.push({
             images: baseImages,
@@ -1018,25 +1014,22 @@
             speed: speed,
             positions: positions,
             totalWidth: totalWidth,
-            offset: 0, // wird pro Frame aktualisiert
+            offset: 0,
           });
         }
 
         function animate() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           for (const row of rowData) {
-            // Offset bewegen und auf totalWidth normieren
             row.offset += row.speed;
             row.offset = ((row.offset % row.totalWidth) + row.totalWidth) % row.totalWidth;
 
             const { images, y, positions, totalWidth, offset } = row;
-            // Jedes Bild dreimal zeichnen: bei x, x+totalWidth, x-totalWidth
             for (let i = 0; i < images.length; i++) {
               const img = images[i];
               const baseX = positions[i];
               for (let copy = -1; copy <= 1; copy++) {
                 let x = baseX + offset + copy * totalWidth;
-                // Nur zeichnen, wenn im sichtbaren Bereich (mit Puffer)
                 if (x + img.w > -50 && x < canvas.width + 50) {
                   ctx.save();
                   ctx.globalAlpha = 0.6;
@@ -1196,7 +1189,7 @@
     }
 
     // ============================
-    //  BRETT-RENDERER
+    //  BRETT-RENDERER – mit angepassten Feldwerten
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
       const board = document.createElement('div');
@@ -1258,12 +1251,25 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
+            // --- Angepasste Anzeige der Feldwerte ---
             let figureValue;
-            if (piece.id === 'knight' && state.questionValue !== undefined && state.questionValue !== null) {
-              figureValue = formatNumber(state.questionValue);
+            if (piece.id === 'knight') {
+              // Springer: dynamischer Fragewert
+              figureValue = (state.questionValue !== undefined && state.questionValue !== null)
+                ? formatNumber(state.questionValue)
+                : '?';
+            } else if (piece.id === 'rook') {
+              figureValue = '±3';
+            } else if (piece.id === 'bishop') {
+              figureValue = '-1';
+            } else if (piece.id === 'queen') {
+              figureValue = '+1';
+            } else if (piece.id === 'king') {
+              figureValue = '±3';
             } else {
-              figureValue = piece.label || piece.id[0].toUpperCase();
+              figureValue = piece.label; // Fallback
             }
+            // ----------------------------------------
             let html = `<div class="drop-value">${figureValue}</div>`;
             if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
             html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
@@ -1715,7 +1721,6 @@
     //  INIT
     // ============================
     async function init() {
-      // Hintergrund starten
       initBackground();
 
       try {
