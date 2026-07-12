@@ -927,8 +927,7 @@
 
   <script>
     // ============================
-    //  HINTERGRUND – Reihen von links/rechts (Endlosschleife)
-    //  – Ganzer Bildschirm, langsamere Bewegung
+    //  HINTERGRUND – Weniger Reihen, kleinerer Abstand
     // ============================
     function initBackground() {
       const canvas = document.createElement('canvas');
@@ -965,11 +964,12 @@
           return;
         }
 
-        // Konfiguration – langsamer gemacht
+        // Konfiguration
         const maxWidth = 120;
-        const rowHeight = 90;
-        const speedBase = 0.3;          // deutlich langsamer
-        const speedVariance = 0.15;      // geringere Streuung
+        const rowHeight = 150;          // mehr Platz zwischen Reihen → weniger Reihen
+        const gap = 12;                // kleiner Abstand zwischen Bildern in einer Reihe
+        const speedBase = 0.3;
+        const speedVariance = 0.15;
 
         // Bilder skalieren
         const images = loaded.map(img => {
@@ -979,8 +979,8 @@
           return { img, w, h };
         });
 
-        // Anzahl Reihen so, dass der gesamte Bildschirm gefüllt wird
-        const rows = Math.max(5, Math.ceil(canvas.height / rowHeight));
+        // Fixe Anzahl Reihen = 4
+        const rows = 4;
         const imagesPerRow = Math.ceil(images.length / rows);
         const rowData = [];
         let imgIndex = 0;
@@ -992,17 +992,22 @@
           }
           if (rowImages.length === 0) continue;
 
-          // Richtung abwechselnd: +1 (rechts) / -1 (links)
           const direction = (r % 2 === 0) ? 1 : -1;
           const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
 
-          // Startpositionen so verteilen, dass sie den Bildschirm füllen
-          const spacing = (canvas.width + 100) / rowImages.length;
-          const startX = rowImages.map((_, c) => c * spacing - 50);
+          // Startpositionen: erstes Bild bei 0, dann mit Abstand gap
+          const startX = [];
+          let x = 0;
+          for (let i = 0; i < rowImages.length; i++) {
+            startX.push(x);
+            x += rowImages[i].w + gap;
+          }
 
+          // y-Position: gleichmäßig über den Bildschirm verteilen
+          const y = (r / (rows - 1)) * (canvas.height - rowImages[0].h);
           rowData.push({
             images: rowImages,
-            y: r * rowHeight + (rowHeight - rowImages[0].h) / 2,
+            y: Math.min(y, canvas.height - rowImages[0].h),
             speed: speed,
             positions: startX,
           });
@@ -1017,17 +1022,20 @@
               const img = images[i];
               let x = positions[i];
               x += speed;
-              // Rechts raus → links rein
+              // Rechts raus → links
               if (speed > 0 && x > canvas.width + 20) {
-                x = -img.w - 20;
+                const lastX = positions[positions.length - 1];
+                x = -img.w - gap;
+                // optional: alle nachfolgenden anpassen? – aber wir schieben einzeln.
               }
-              // Links raus → rechts rein
+              // Links raus → rechts
               if (speed < 0 && x < -img.w - 20) {
-                x = canvas.width + 20;
+                const firstX = positions[0];
+                x = canvas.width + gap;
               }
               positions[i] = x;
               ctx.save();
-              ctx.globalAlpha = 0.6; // dezenter
+              ctx.globalAlpha = 0.6;
               ctx.drawImage(img.img, x, y, img.w, img.h);
               ctx.restore();
             }
@@ -1701,7 +1709,7 @@
     //  INIT
     // ============================
     async function init() {
-      // Hintergrund starten (Bildschirmschoner)
+      // Hintergrund starten
       initBackground();
 
       try {
