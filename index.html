@@ -67,9 +67,9 @@
       height: 100%;
       z-index: -1;
       overflow: hidden;
-      opacity: 0.5;
+      opacity: 0.7;  /* erhöht, damit die Bilder sichtbarer sind */
       pointer-events: none;
-      background-color: #0a0a0a;
+      background-color: transparent; /* damit die Bilder durchscheinen */
       display: flex;
       flex-direction: column;
     }
@@ -987,12 +987,11 @@
     const DATA_BASE = 'data/';
 
     // ============================
-    //  TRIKOT-BILDER – HIER KANNST DU DIE URLS DEINER 29 BILDER EINTRAGEN
-    //  Standardmäßig werden 29 Bilder mit data/trikots/1.png … data/trikots/29.png erwartet
+    //  TRIKOT-BILDER – EXAKT 30 SLOTS
+    //  Hier werden 30 Bilder mit den URLs data/trikots/1.png … data/trikots/30.png erwartet.
+    //  Du kannst die Anzahl durch Ändern der Zahl 30 in Array.from anpassen.
     // ============================
-    // Erzeuge 29 Standard-URLs (kannst du nach Belieben anpassen)
-    const TRIKOT_IMAGES = Array.from({ length: 29 }, (_, i) => `data/trikots/${i+1}.png`);
-    // Falls du andere Pfade oder Dateinamen hast, ersetze dieses Array einfach.
+    const TRIKOT_IMAGES = Array.from({ length: 30 }, (_, i) => `data/trikots/${i+1}.png`);
 
     let spielplan = null;
     let teams = [];
@@ -1019,7 +1018,7 @@
           const item = document.createElement('div');
           item.className = 'trikot-item';
           item.style.backgroundImage = `url(${url})`;
-          // Fallback, falls das Bild nicht lädt – bleibt dann einfach leer
+          // Fallback, falls das Bild nicht lädt – dann bleibt es leer
           item.onerror = () => { item.style.backgroundImage = 'none'; };
           row.appendChild(item);
         });
@@ -1032,11 +1031,11 @@
     //  PIECES (nur für Anzeige)
     // ============================
     const PIECES = [
-      { id: 'rook',   name: 'Turm' },
-      { id: 'bishop', name: 'Läufer' },
-      { id: 'knight', name: 'Springer' },
-      { id: 'queen',  name: 'Dame' },
-      { id: 'king',   name: 'König' },
+      { id: 'rook',   name: 'Turm', value: 3 },
+      { id: 'bishop', name: 'Läufer', value: 1 },
+      { id: 'knight', name: 'Springer', value: 1 },
+      { id: 'queen',  name: 'Dame', value: 1 },
+      { id: 'king',   name: 'König', value: 3 },
     ];
     const PIECE_SVG_URLS = {
       rook:   'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
@@ -1062,7 +1061,7 @@
       const piece = getPieceById(assignment.piece);
       if (!piece) return 0;
       const sign = assignment.polarity === 'positive' ? 1 : -1;
-      const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
+      const base = piece.value || 1;
       switch (assignment.piece) {
         case 'knight':
           const knightVal = state.questionValue ?? 1;
@@ -1222,7 +1221,10 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            let figureValue = (piece.id === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+            // FIX: Verwende den Wert aus state.questionValue, sonst den piece.value
+            let figureValue = (piece.id === 'knight' && state.questionValue !== null && state.questionValue !== undefined) 
+                ? formatNumber(state.questionValue) 
+                : piece.value;
             let html = `<div class="drop-value">${figureValue}</div>`;
             if (thesisTotal !== 0) { html += `<div class="drop-total">${formatNumber(thesisTotal)}</div>`; cell.classList.add('has-theses'); }
             html += `<div class="placed-list" data-slot="${row}-${piece.id}"></div>`;
@@ -1240,7 +1242,9 @@
         const slot = container.querySelector(`[data-slot="${a.side}-${a.piece}"]`);
         if (!slot) return;
         const piece = getPieceById(a.piece);
-        const fieldLabel = (a.piece === 'knight' && state.questionValue !== null) ? formatNumber(state.questionValue) : piece.value;
+        const fieldLabel = (a.piece === 'knight' && state.questionValue !== null && state.questionValue !== undefined) 
+            ? formatNumber(state.questionValue) 
+            : piece.value;
         const score = getAssignmentScore(a, state);
         const chip = document.createElement('span');
         chip.className = 'placed-chip';
