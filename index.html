@@ -231,18 +231,25 @@
     }
 
     /* ============================
-       TABELLE – transparente Version
+       TABELLE – transparente Version, jetzt scrollbar
        ============================ */
     .table-wrap {
-      overflow-x: hidden;
+      overflow-x: auto;  /* horizontal scrollen bei kleinen Bildschirmen */
       background: rgba(255, 255, 255, 0.75);
       border: 4px solid #000;
       box-shadow: var(--hard-shadow);
       padding: 4px 0 6px;
       backdrop-filter: blur(2px);
+      -webkit-overflow-scrolling: touch;
     }
     .table-wrap.centered { max-width: 900px; margin: 0 auto; }
-    .liga-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.75rem; }
+    .liga-table {
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      min-width: 600px; /* verhindert zu starkes Zusammenquetschen */
+    }
     .liga-table th:nth-child(1) { width: 7%; }
     .liga-table th:nth-child(3) { width: 8%; }
     .liga-table th:nth-child(4), .liga-table th:nth-child(5), .liga-table th:nth-child(6) { width: 7%; }
@@ -870,7 +877,7 @@
     .spieltag-headline small { font-family: var(--led-font); font-size: 0.85rem; color: var(--bundesliga-gold); font-weight: 400; margin-left: 8px; }
 
     /* ============================
-       RESPONSIVE
+       RESPONSIVE – speziell für Tabelle auf Handy
        ============================ */
     @media (max-width: 700px) {
       .liga-header { padding: 16px 20px; flex-direction: column; align-items: stretch; }
@@ -885,6 +892,21 @@
       .stat-entry .player-img { width: 34px; height: 34px; }
       .stat-entry .value-chip .value-num { font-size: 1rem; padding: 1px 8px; }
       .stat-entry .team-badge-mini { width: 14px; height: 14px; right: -2px; bottom: -2px; }
+
+      /* Tabelle verkleinern und scrollbar machen */
+      .liga-table {
+        font-size: 0.6rem;
+        min-width: 480px;
+      }
+      .liga-table th, .liga-table td {
+        padding: 4px 6px;
+      }
+      .liga-table .pts {
+        font-size: 1rem;
+      }
+      .liga-table .pos {
+        font-size: 0.9rem;
+      }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
@@ -965,9 +987,12 @@
     const DATA_BASE = 'data/';
 
     // ============================
-    //  TRIKOT-ANZAHL – HIER KANNST DU DIE ANZAHL DER BILDER EINSTELLEN
+    //  TRIKOT-BILDER – HIER KANNST DU DIE URLS DEINER 29 BILDER EINTRAGEN
+    //  Standardmäßig werden 29 Bilder mit data/trikots/1.png … data/trikots/29.png erwartet
     // ============================
-    const TRIKOT_COUNT = 18;  // <-- Ändere diesen Wert, wenn du mehr/weniger Bilder hast
+    // Erzeuge 29 Standard-URLs (kannst du nach Belieben anpassen)
+    const TRIKOT_IMAGES = Array.from({ length: 29 }, (_, i) => `data/trikots/${i+1}.png`);
+    // Falls du andere Pfade oder Dateinamen hast, ersetze dieses Array einfach.
 
     let spielplan = null;
     let teams = [];
@@ -982,12 +1007,6 @@
       const container = document.getElementById('bgTrikots');
       if (!container) return;
 
-      // Bilder-URLs aus der Nummerierung generieren
-      const urls = [];
-      for (let i = 1; i <= TRIKOT_COUNT; i++) {
-        urls.push(`data/trikots/${i}.png`);
-      }
-
       // 4 Reihen erzeugen
       const rowCount = 4;
       for (let r = 0; r < rowCount; r++) {
@@ -995,11 +1014,13 @@
         row.className = `bg-trikots-inner row-${r}`; // row-0, row-1, …
 
         // DREI Sätze einfügen, damit der Loop nahtlos ist
-        const triple = [...urls, ...urls, ...urls];
+        const triple = [...TRIKOT_IMAGES, ...TRIKOT_IMAGES, ...TRIKOT_IMAGES];
         triple.forEach(url => {
           const item = document.createElement('div');
           item.className = 'trikot-item';
           item.style.backgroundImage = `url(${url})`;
+          // Fallback, falls das Bild nicht lädt – bleibt dann einfach leer
+          item.onerror = () => { item.style.backgroundImage = 'none'; };
           row.appendChild(item);
         });
 
