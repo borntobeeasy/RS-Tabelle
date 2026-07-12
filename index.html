@@ -51,7 +51,7 @@
     }
 
     /* ============================
-       HINTERGRUND-CANVAS (Bildschirmschoner)
+       HINTERGRUND-CANVAS (Bildschirmschoner) – ganzer Bildschirm
        ============================ */
     #bgCanvas {
       position: fixed;
@@ -928,6 +928,7 @@
   <script>
     // ============================
     //  HINTERGRUND – Reihen von links/rechts (Endlosschleife)
+    //  – Ganzer Bildschirm, langsamere Bewegung
     // ============================
     function initBackground() {
       const canvas = document.createElement('canvas');
@@ -964,11 +965,11 @@
           return;
         }
 
-        // Konfiguration
-        const maxWidth = 120;          // max. Bildbreite in px
-        const rowHeight = 90;          // Höhe pro Reihe (inkl. Abstand)
-        const speedBase = 0.8;         // Grundgeschwindigkeit pro Frame
-        const speedVariance = 0.4;     // zufällige Abweichung
+        // Konfiguration – langsamer gemacht
+        const maxWidth = 120;
+        const rowHeight = 90;
+        const speedBase = 0.3;          // deutlich langsamer
+        const speedVariance = 0.15;      // geringere Streuung
 
         // Bilder skalieren
         const images = loaded.map(img => {
@@ -978,10 +979,9 @@
           return { img, w, h };
         });
 
-        // Anzahl Reihen (mindestens 5)
-        const rows = Math.max(5, Math.floor(canvas.height / rowHeight));
+        // Anzahl Reihen so, dass der gesamte Bildschirm gefüllt wird
+        const rows = Math.max(5, Math.ceil(canvas.height / rowHeight));
         const imagesPerRow = Math.ceil(images.length / rows);
-        // Verteile die Bilder gleichmäßig auf die Reihen
         const rowData = [];
         let imgIndex = 0;
         for (let r = 0; r < rows; r++) {
@@ -992,27 +992,22 @@
           }
           if (rowImages.length === 0) continue;
 
-          // Richtung: abwechselnd +1 (rechts) und -1 (links)
+          // Richtung abwechselnd: +1 (rechts) / -1 (links)
           const direction = (r % 2 === 0) ? 1 : -1;
-          // Geschwindigkeit leicht variieren
           const speed = direction * (speedBase + (Math.random() - 0.5) * speedVariance);
 
-          // Start-x-Positionen so verteilen, dass sie den Bildschirm füllen
+          // Startpositionen so verteilen, dass sie den Bildschirm füllen
           const spacing = (canvas.width + 100) / rowImages.length;
-          const startX = [];
-          for (let c = 0; c < rowImages.length; c++) {
-            startX.push(c * spacing - 50);
-          }
+          const startX = rowImages.map((_, c) => c * spacing - 50);
 
           rowData.push({
             images: rowImages,
             y: r * rowHeight + (rowHeight - rowImages[0].h) / 2,
             speed: speed,
-            positions: startX.map(x => x),
+            positions: startX,
           });
         }
 
-        // Animationsschleife
         function animate() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -1022,18 +1017,17 @@
               const img = images[i];
               let x = positions[i];
               x += speed;
-              // Wenn Bild den rechten Rand überschreitet, links wieder erscheinen lassen
+              // Rechts raus → links rein
               if (speed > 0 && x > canvas.width + 20) {
                 x = -img.w - 20;
               }
-              // Wenn Bild den linken Rand überschreitet, rechts wieder erscheinen lassen
+              // Links raus → rechts rein
               if (speed < 0 && x < -img.w - 20) {
                 x = canvas.width + 20;
               }
               positions[i] = x;
-              // Zeichnen
               ctx.save();
-              ctx.globalAlpha = 0.7; // dezent
+              ctx.globalAlpha = 0.6; // dezenter
               ctx.drawImage(img.img, x, y, img.w, img.h);
               ctx.restore();
             }
