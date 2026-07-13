@@ -343,15 +343,17 @@
         min-width: auto;
         font-size: 0.65rem;
       }
-      /* Spalten 3-6 (Sp, S, U, N) ausblenden */
+      /* Spalten 3-7 (Sp, S, U, N, Tore) ausblenden */
       #homeView .liga-table th:nth-child(3),
       #homeView .liga-table th:nth-child(4),
       #homeView .liga-table th:nth-child(5),
       #homeView .liga-table th:nth-child(6),
+      #homeView .liga-table th:nth-child(7),
       #homeView .liga-table td:nth-child(3),
       #homeView .liga-table td:nth-child(4),
       #homeView .liga-table td:nth-child(5),
-      #homeView .liga-table td:nth-child(6) {
+      #homeView .liga-table td:nth-child(6),
+      #homeView .liga-table td:nth-child(7) {
         display: none;
       }
       /* Team-Spalte nur Logo, Namen ausblenden */
@@ -367,12 +369,11 @@
         justify-content: center;
         gap: 0;
       }
-      /* Spaltenbreiten anpassen */
+      /* Spaltenbreiten anpassen: #, Logo, Sp, Diff, Pkt */
       #homeView .liga-table th:nth-child(1) { width: 12%; }
       #homeView .liga-table th:nth-child(2) { width: 35%; }
-      #homeView .liga-table th:nth-child(7) { width: 18%; }
-      #homeView .liga-table th:nth-child(8) { width: 15%; }
-      #homeView .liga-table th:nth-child(9) { width: 20%; }
+      #homeView .liga-table th:nth-child(8) { width: 20%; }
+      #homeView .liga-table th:nth-child(9) { width: 25%; }
       /* Tabelle zentrieren, keine feste Breite */
       #homeView .table-wrap {
         overflow-x: hidden;
@@ -1254,7 +1255,6 @@
         const logo = getTeamLogo(row.team);
         const logoHtml = logo ? `<img class="team-logo-table" src="${logo}" alt="" />` : '';
 
-        // Team-Spalte: Logo + Teamname (für mobile wird der Name ausgeblendet)
         const teamHtml = `<span class="team">${logoHtml}<span class="team-name">${row.team}</span></span>`;
 
         const tr1 = document.createElement('tr');
