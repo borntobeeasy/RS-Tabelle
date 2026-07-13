@@ -161,7 +161,7 @@
     .view.active { display: block; }
 
     /* ============================
-       HOME-LAYOUT – ausgewogen, rechte Spalte 540px
+       HOME-LAYOUT – rechte Spalte 560px
        ============================ */
     .content-wrapper {
       display: flex;
@@ -329,8 +329,55 @@
       background: transparent;
       border: none;
     }
+    .liga-table .team .team-name {
+      display: inline;
+    }
     .liga-table .pts { font-family: var(--led-font); font-size: 1.3rem; color: var(--ink); text-align: center; }
     .liga-table .num { text-align: center; color: var(--steel); font-weight: 700; }
+
+    /* ============================
+       MOBILE OPTIMIERUNGEN NUR FÜR HOME-VIEW
+       ============================ */
+    @media (max-width: 700px) {
+      #homeView .liga-table {
+        min-width: auto;
+        font-size: 0.65rem;
+      }
+      /* Spalten 3-6 (Sp, S, U, N) ausblenden */
+      #homeView .liga-table th:nth-child(3),
+      #homeView .liga-table th:nth-child(4),
+      #homeView .liga-table th:nth-child(5),
+      #homeView .liga-table th:nth-child(6),
+      #homeView .liga-table td:nth-child(3),
+      #homeView .liga-table td:nth-child(4),
+      #homeView .liga-table td:nth-child(5),
+      #homeView .liga-table td:nth-child(6) {
+        display: none;
+      }
+      /* Team-Spalte nur Logo, Namen ausblenden */
+      #homeView .liga-table .team .team-name {
+        display: none;
+      }
+      #homeView .liga-table .team .team-logo-table {
+        width: 32px;
+        height: 32px;
+        margin: 0 auto;
+      }
+      #homeView .liga-table .team {
+        justify-content: center;
+        gap: 0;
+      }
+      /* Spaltenbreiten anpassen */
+      #homeView .liga-table th:nth-child(1) { width: 12%; }
+      #homeView .liga-table th:nth-child(2) { width: 35%; }
+      #homeView .liga-table th:nth-child(7) { width: 18%; }
+      #homeView .liga-table th:nth-child(8) { width: 15%; }
+      #homeView .liga-table th:nth-child(9) { width: 20%; }
+      /* Tabelle zentrieren, keine feste Breite */
+      #homeView .table-wrap {
+        overflow-x: hidden;
+      }
+    }
 
     /* ============================
        SPIELTAG-NAVIGATION
@@ -500,7 +547,7 @@
     }
 
     /* ============================
-       BRETT – Taktiktafel (nur Schachbrett, keine doppelten Infos)
+       BRETT – Taktiktafel (nur Schachbrett)
        ============================ */
     .board-panel {
       position: relative;
@@ -840,7 +887,7 @@
     .spieltag-headline small { font-family: var(--led-font); font-size: 0.85rem; color: var(--bundesliga-gold); font-weight: 400; margin-left: 8px; }
 
     /* ============================
-       RESPONSIVE
+       RESPONSIVE (allgemein)
        ============================ */
     @media (max-width: 700px) {
       .liga-header { padding: 16px 20px; flex-direction: column; align-items: stretch; }
@@ -858,6 +905,7 @@
       .stat-entry .value-chip .value-num { font-size: 1rem; padding: 1px 8px; }
       .stat-entry .team-badge-mini { width: 14px; height: 14px; right: -2px; bottom: -2px; }
 
+      /* Allgemeine Tabellen-Anpassungen für alle Views */
       .liga-table {
         font-size: 0.6rem;
         min-width: 480px;
@@ -1206,21 +1254,23 @@
         const logo = getTeamLogo(row.team);
         const logoHtml = logo ? `<img class="team-logo-table" src="${logo}" alt="" />` : '';
 
+        // Team-Spalte: Logo + Teamname (für mobile wird der Name ausgeblendet)
+        const teamHtml = `<span class="team">${logoHtml}<span class="team-name">${row.team}</span></span>`;
+
         const tr1 = document.createElement('tr');
-        tr1.innerHTML = `<td class="pos">${row.pos}</td><td><span class="team">${logoHtml}${row.team}</span></td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tr1.innerHTML = `<td class="pos">${row.pos}</td><td>${teamHtml}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
         tbody1.appendChild(tr1);
 
         const tr2 = document.createElement('tr');
-        tr2.innerHTML = `<td class="pos">${row.pos}</td><td><span class="team">${logoHtml}${row.team}</span></td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tr2.innerHTML = `<td class="pos">${row.pos}</td><td>${teamHtml}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
         tbody2.appendChild(tr2);
       });
     }
 
     // ============================
-    //  BRETT-RENDERER – NUR DAS SCHACHBRETT (keine doppelten Infos)
+    //  BRETT-RENDERER – NUR DAS SCHACHBRETT
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
-      // Nur das Schachbrett, ohne Header/Scoreboard (die Infos stehen oben)
       const board = document.createElement('div');
       board.className = 'board-panel';
 
@@ -1256,7 +1306,6 @@
             state.assignments.forEach(a => {
               if (a.side === row && a.piece === piece.id) thesisTotal += getAssignmentScore(a, state);
             });
-            // Feldwerte (links oben)
             let figureValue;
             if (piece.id === 'knight') {
               figureValue = (state.questionValue !== undefined && state.questionValue !== null)
@@ -1285,7 +1334,6 @@
       container.innerHTML = '';
       container.appendChild(board);
 
-      // placed-list füllen
       container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
