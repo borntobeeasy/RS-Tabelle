@@ -161,7 +161,7 @@
     .view.active { display: block; }
 
     /* ============================
-       HOME-LAYOUT – Tabelle breit, Spiele schmal
+       HOME-LAYOUT – ausgewogen
        ============================ */
     .content-wrapper {
       display: flex;
@@ -175,7 +175,7 @@
       top: 20px;
     }
     .content-wrapper .right-col {
-      flex: 0 0 340px;
+      flex: 0 0 420px;
       min-width: 0;
     }
     @media (max-width: 1100px) {
@@ -196,7 +196,7 @@
     }
 
     /* ============================
-       TABELLE
+       TABELLE – mit max-width für ausgewogene Breite
        ============================ */
     .table-wrap {
       overflow-x: auto;
@@ -206,7 +206,8 @@
       padding: 4px 0 6px;
       backdrop-filter: blur(2px);
       -webkit-overflow-scrolling: touch;
-      width: 100%;
+      max-width: 850px;
+      margin: 0 auto;
     }
     .table-wrap.centered { max-width: 900px; margin: 0 auto; }
     .liga-table {
