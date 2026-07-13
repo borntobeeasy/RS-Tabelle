@@ -161,7 +161,7 @@
     .view.active { display: block; }
 
     /* ============================
-       HOME-LAYOUT – rechte Spalte breiter (1,5×)
+       HOME-LAYOUT – ausgewogen, rechte Spalte 540px
        ============================ */
     .content-wrapper {
       display: flex;
@@ -500,7 +500,7 @@
     }
 
     /* ============================
-       BRETT – Taktiktafel (dunkel transparent)
+       BRETT – Taktiktafel (nur Schachbrett, keine doppelten Infos)
        ============================ */
     .board-panel {
       position: relative;
@@ -511,49 +511,6 @@
       padding: 12px;
       box-shadow: var(--hard-shadow);
     }
-    .board-panel .topbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-    .board-panel .topbar .eyebrow {
-      margin: 0 0 3px;
-      font-family: var(--led-font);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--bundesliga-gold);
-    }
-    .board-panel .topbar h3 {
-      margin: 0;
-      font-family: var(--headline-font);
-      font-style: italic;
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      color: #fff;
-    }
-    .board-panel .scoreboard { display: flex; justify-content: center; width: 100%; margin-bottom: 8px; }
-    .board-panel .scoreboard > div {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      background: rgba(255,255,255,0.9);
-      border: 3px solid #000;
-      padding: 6px 16px;
-      max-width: 700px;
-      width: 100%;
-    }
-    .board-panel .team-logo-wrapper {
-      width: clamp(1.8rem, 2.6vw, 2.8rem);
-      height: clamp(1.8rem, 2.6vw, 2.8rem);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      overflow: visible;
-    }
-    .board-panel .team-logo-wrapper img { width: 100%; height: 100%; object-fit: contain; }
     .board-panel .chess-grid {
       display: grid;
       grid-template-columns: repeat(5, var(--cell-size));
@@ -1260,35 +1217,12 @@
     }
 
     // ============================
-    //  BRETT-RENDERER – mit transparentem Hintergrund
+    //  BRETT-RENDERER – NUR DAS SCHACHBRETT (keine doppelten Infos)
     // ============================
     function renderBoard(container, stIdx, spIdx, homeTeam, awayTeam, state) {
+      // Nur das Schachbrett, ohne Header/Scoreboard (die Infos stehen oben)
       const board = document.createElement('div');
       board.className = 'board-panel';
-      const topbar = document.createElement('div');
-      topbar.className = 'topbar';
-      topbar.innerHTML = `<div><p class="eyebrow">${homeTeam} vs ${awayTeam}</p><h3>Rasenschach · Spieltag ${stIdx+1}</h3></div>`;
-      board.appendChild(topbar);
-
-      const score = getGameScore(state);
-      const whiteLogo = getTeamLogo(homeTeam) || state.teamLogos?.white || null;
-      const blackLogo = getTeamLogo(awayTeam) || state.teamLogos?.black || null;
-      const sb = document.createElement('div');
-      sb.className = 'scoreboard';
-      sb.innerHTML = `<div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="team-logo-wrapper">${whiteLogo ? `<img src="${whiteLogo}" alt="" />` : homeTeam[0]}</div>
-          <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${homeTeam}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:4px;font-family:var(--headline-font);background:linear-gradient(180deg,var(--bundesliga-red),var(--bundesliga-red-dark));padding:3px 12px;border-radius:0;color:white;font-weight:700;font-size:clamp(1rem,2vw,1.6rem);">
-          <span>${score.white}</span><span style="color:rgba(255,255,255,0.7);padding:0 2px;">:</span><span>${score.black}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-weight:800;color:#16171a;font-size:clamp(0.8rem,1.5vw,1.2rem);text-transform:uppercase;font-family:var(--headline-font);">${awayTeam}</span>
-          <div class="team-logo-wrapper">${blackLogo ? `<img src="${blackLogo}" alt="" />` : awayTeam[0]}</div>
-        </div>
-      </div>`;
-      board.appendChild(sb);
 
       const grid = document.createElement('div');
       grid.className = 'chess-grid';
@@ -1350,6 +1284,8 @@
       board.appendChild(grid);
       container.innerHTML = '';
       container.appendChild(board);
+
+      // placed-list füllen
       container.querySelectorAll('.placed-list').forEach(slot => slot.innerHTML = '');
       state.assignments.forEach(a => {
         if (!a.side || !a.piece) return;
