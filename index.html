@@ -294,7 +294,25 @@
       border: 2px solid #000;
       box-shadow: 2px 2px 0 #000;
     }
-    .liga-table .team { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); font-style: italic; }
+    .liga-table .team {
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--ink);
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .liga-table .team .team-logo-table {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      object-fit: contain;
+      background: transparent;
+      border: none;
+    }
     .liga-table .pts { font-family: var(--led-font); font-size: 1.3rem; color: var(--ink); text-align: center; }
     .liga-table .num { text-align: center; color: var(--steel); font-weight: 700; }
 
@@ -1101,6 +1119,15 @@
       king:   'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
     };
 
+    // ============================
+    //  HILFSFUNKTION für Team-Logos
+    // ============================
+    function getTeamLogo(teamName) {
+      const idx = teams.indexOf(teamName);
+      if (idx === -1) return null;
+      return `data/logos/${idx + 1}.png`;
+    }
+
     function formatNumber(num) { return num > 0 ? `+${num}` : String(num); }
     function getScoreTone(value) {
       if (value > 0) return 'positive';
@@ -1205,11 +1232,15 @@
       tbody1.innerHTML = ''; tbody2.innerHTML = '';
       data.forEach(row => {
         const diff = row.diff;
+        const logo = getTeamLogo(row.team);
+        const logoHtml = logo ? `<img class="team-logo-table" src="${logo}" alt="" />` : '';
+
         const tr1 = document.createElement('tr');
-        tr1.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tr1.innerHTML = `<td class="pos">${row.pos}</td><td><span class="team">${logoHtml}${row.team}</span></td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
         tbody1.appendChild(tr1);
+
         const tr2 = document.createElement('tr');
-        tr2.innerHTML = `<td class="pos">${row.pos}</td><td class="team">${row.team}</td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
+        tr2.innerHTML = `<td class="pos">${row.pos}</td><td><span class="team">${logoHtml}${row.team}</span></td><td class="num">${row.sp}</td><td class="num">${row.s}</td><td class="num">${row.u}</td><td class="num">${row.n}</td><td class="num">${row.tore}:${row.gegentore}</td><td class="num">${diff>0?'+':''}${diff}</td><td class="pts">${row.punkte}</td>`;
         tbody2.appendChild(tr2);
       });
     }
@@ -1226,8 +1257,8 @@
       board.appendChild(topbar);
 
       const score = getGameScore(state);
-      const whiteLogo = state.teamLogos?.white || null;
-      const blackLogo = state.teamLogos?.black || null;
+      const whiteLogo = getTeamLogo(homeTeam) || state.teamLogos?.white || null;
+      const blackLogo = getTeamLogo(awayTeam) || state.teamLogos?.black || null;
       const sb = document.createElement('div');
       sb.className = 'scoreboard';
       sb.innerHTML = `<div>
@@ -1331,8 +1362,8 @@
       const score = getGameScore(state);
       const placed = state.assignments.filter(a => a.side && a.piece).length;
       const complete = placed >= 10;
-      const homeLogo = state.teamLogos?.white || null;
-      const awayLogo = state.teamLogos?.black || null;
+      const homeLogo = getTeamLogo(spiel.heim) || state.teamLogos?.white || null;
+      const awayLogo = getTeamLogo(spiel.auswaerts) || state.teamLogos?.black || null;
       const header = document.createElement('div');
       header.className = 'spiel-header';
       
@@ -1494,7 +1525,7 @@
             const image = state.figureImages?.[slot];
             if (!image) return;
             const points = state.results[side]?.[piece.id] ?? 0;
-            const teamLogo = side === 'white' ? state.teamLogos?.white : state.teamLogos?.black;
+            const teamLogo = side === 'white' ? getTeamLogo(spiel.heim) : getTeamLogo(spiel.auswaerts);
             const teamName = side === 'white' ? spiel.heim : spiel.auswaerts;
 
             const playerData = pieceStats[piece.id].players;
