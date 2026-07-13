@@ -161,11 +161,11 @@
     .view.active { display: block; }
 
     /* ============================
-       HOME-LAYOUT – ausgewogen
+       HOME-LAYOUT – ausgewogen, enger Abstand
        ============================ */
     .content-wrapper {
       display: flex;
-      gap: 22px;
+      gap: 12px;
       align-items: flex-start;
     }
     .content-wrapper .left-col {
@@ -175,12 +175,13 @@
       top: 20px;
     }
     .content-wrapper .right-col {
-      flex: 0 0 420px;
+      flex: 0 0 360px;
       min-width: 0;
     }
     @media (max-width: 1100px) {
       .content-wrapper {
         flex-direction: column;
+        gap: 22px;
       }
       .content-wrapper .left-col {
         flex: none;
@@ -196,7 +197,7 @@
     }
 
     /* ============================
-       TABELLE – mit max-width für ausgewogene Breite
+       TABELLE – nimmt volle Breite der linken Spalte
        ============================ */
     .table-wrap {
       overflow-x: auto;
@@ -206,8 +207,7 @@
       padding: 4px 0 6px;
       backdrop-filter: blur(2px);
       -webkit-overflow-scrolling: touch;
-      max-width: 850px;
-      margin: 0 auto;
+      width: 100%;
     }
     .table-wrap.centered { max-width: 900px; margin: 0 auto; }
     .liga-table {
