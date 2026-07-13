@@ -1,5 +1,5 @@
 {
-  "saison": "26/27",
+  "saison": "2026/27",
   "liga": "Bundesliga",
   "teams": [
     "1. FC Köln",
@@ -13,7 +13,7 @@
     "FC Bayern München",
     "FC Schalke 04",
     "Hamburger SV",
-    "RB Leipzig",
+    "Arminia Bielefeld",
     "SC Paderborn 07",
     "SV Elversberg",
     "SV Werder Bremen",
@@ -32,7 +32,7 @@
         "auswaerts": "Hamburger SV"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Borussia Mönchengladbach"
       },
       {
@@ -87,7 +87,7 @@
       },
       {
         "heim": "SV Werder Bremen",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "FC Schalke 04",
@@ -104,7 +104,7 @@
         "auswaerts": "SC Paderborn 07"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Hamburger SV"
       },
       {
@@ -147,7 +147,7 @@
       },
       {
         "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Eintracht Frankfurt",
@@ -180,7 +180,7 @@
         "auswaerts": "SV Werder Bremen"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Eintracht Frankfurt"
       },
       {
@@ -215,7 +215,7 @@
     [
       {
         "heim": "FC Bayern München",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Bayer 04 Leverkusen",
@@ -256,7 +256,7 @@
         "auswaerts": "Eintracht Frankfurt"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "SV Elversberg"
       },
       {
@@ -319,7 +319,7 @@
       },
       {
         "heim": "FC Schalke 04",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "SV Elversberg",
@@ -332,7 +332,7 @@
         "auswaerts": "SV Elversberg"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "FC Augsburg"
       },
       {
@@ -383,7 +383,7 @@
       },
       {
         "heim": "1. FC Union Berlin",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Borussia Mönchengladbach",
@@ -417,7 +417,7 @@
       },
       {
         "heim": "Sport-Club Freiburg",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "1. FSV Mainz 05",
@@ -446,7 +446,7 @@
         "auswaerts": "SC Paderborn 07"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "1. FSV Mainz 05"
       },
       {
@@ -505,7 +505,7 @@
       },
       {
         "heim": "1. FC Köln",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "SV Werder Bremen",
@@ -522,7 +522,7 @@
         "auswaerts": "SV Werder Bremen"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Borussia Dortmund"
       },
       {
@@ -589,7 +589,7 @@
       },
       {
         "heim": "SC Paderborn 07",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       }
     ],
     [
@@ -598,7 +598,7 @@
         "auswaerts": "Bayer 04 Leverkusen"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "VfB Stuttgart"
       },
       {
@@ -641,7 +641,7 @@
       },
       {
         "heim": "TSG Hoffenheim",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Bayer 04 Leverkusen",
@@ -687,7 +687,7 @@
       },
       {
         "heim": "Borussia Mönchengladbach",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Hamburger SV",
@@ -716,7 +716,7 @@
         "auswaerts": "TSG Hoffenheim"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "SV Werder Bremen"
       },
       {
@@ -767,7 +767,7 @@
       },
       {
         "heim": "Hamburger SV",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "SV Werder Bremen",
@@ -788,7 +788,7 @@
         "auswaerts": "VfB Stuttgart"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Bayer 04 Leverkusen"
       },
       {
@@ -835,7 +835,7 @@
       },
       {
         "heim": "Eintracht Frankfurt",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Borussia Mönchengladbach",
@@ -864,7 +864,7 @@
         "auswaerts": "1. FC Union Berlin"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "FC Bayern München"
       },
       {
@@ -931,7 +931,7 @@
       },
       {
         "heim": "SV Elversberg",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       }
     ],
     [
@@ -940,7 +940,7 @@
         "auswaerts": "FC Bayern München"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "FC Schalke 04"
       },
       {
@@ -987,7 +987,7 @@
       },
       {
         "heim": "FC Augsburg",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "1. FC Union Berlin",
@@ -1016,7 +1016,7 @@
         "auswaerts": "Borussia Mönchengladbach"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "1. FC Union Berlin"
       },
       {
@@ -1054,7 +1054,7 @@
         "auswaerts": "Hamburger SV"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "Sport-Club Freiburg"
       },
       {
@@ -1101,7 +1101,7 @@
       },
       {
         "heim": "1. FSV Mainz 05",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "Borussia Mönchengladbach",
@@ -1130,7 +1130,7 @@
         "auswaerts": "TSG Hoffenheim"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "1. FC Köln"
       },
       {
@@ -1165,7 +1165,7 @@
     [
       {
         "heim": "Borussia Dortmund",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "VfB Stuttgart",
@@ -1206,7 +1206,7 @@
         "auswaerts": "Borussia Mönchengladbach"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "SC Paderborn 07"
       },
       {
@@ -1245,7 +1245,7 @@
       },
       {
         "heim": "VfB Stuttgart",
-        "auswaerts": "RB Leipzig"
+        "auswaerts": "Arminia Bielefeld"
       },
       {
         "heim": "TSG Hoffenheim",
@@ -1282,7 +1282,7 @@
         "auswaerts": "Eintracht Frankfurt"
       },
       {
-        "heim": "RB Leipzig",
+        "heim": "Arminia Bielefeld",
         "auswaerts": "TSG Hoffenheim"
       },
       {
