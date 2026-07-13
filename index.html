@@ -1348,54 +1348,65 @@
     }
 
     // ============================
-    //  SPIEL-LISTE
+    //  SPIEL-LISTE – JETZT IMMER MIT SCOREBOARD-LAYOUT
     // ============================
     function createSpielItem(stIdx, spIdx, spiel, state) {
       const item = document.createElement('div');
       item.className = 'spiel-item';
-      if (!state) {
-        item.innerHTML = `<div class="spiel-header" style="opacity:0.5;cursor:default;"><span>${spiel.heim}</span><span>vs</span><span>${spiel.auswaerts}</span><span style="color:var(--steel);font-size:0.6rem;">nicht verfügbar</span></div>`;
-        return item;
-      }
-      const score = getGameScore(state);
-      const placed = state.assignments.filter(a => a.side && a.piece).length;
-      const complete = placed >= 10;
-      const homeLogo = getTeamLogo(spiel.heim) || state.teamLogos?.white || null;
-      const awayLogo = getTeamLogo(spiel.auswaerts) || state.teamLogos?.black || null;
+
+      const homeLogo = getTeamLogo(spiel.heim);
+      const awayLogo = getTeamLogo(spiel.auswaerts);
+
       const header = document.createElement('div');
       header.className = 'spiel-header';
-      
-      const chevronSVG = `
-        <svg viewBox="0 0 24 24">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      `;
+
+      const chevronSVG = `<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>`;
+
+      let scoreText = '- : -';
+      let statusText = 'keine Daten';
+      let statusClass = '';
+      let toggleBtn = '';
+
+      if (state) {
+        const score = getGameScore(state);
+        const placed = state.assignments.filter(a => a.side && a.piece).length;
+        const complete = placed >= 10;
+        scoreText = `${score.white} : ${score.black}`;
+        statusText = complete ? 'gespielt' : 'offen';
+        statusClass = complete ? 'done' : '';
+        toggleBtn = `<button class="toggle-btn" aria-label="Brett ein-/ausklappen">${chevronSVG}</button>`;
+      }
 
       header.innerHTML = `
         <div class="team-block heim">${homeLogo ? `<img class="team-logo-small" src="${homeLogo}" alt="" />` : ''}<span class="team-name">${spiel.heim}</span></div>
-        <span class="score-display">${score.white} : ${score.black}</span>
+        <span class="score-display">${scoreText}</span>
         <div class="team-block auswaerts"><span class="team-name">${spiel.auswaerts}</span>${awayLogo ? `<img class="team-logo-small" src="${awayLogo}" alt="" />` : ''}</div>
-        <button class="toggle-btn" aria-label="Brett ein-/ausklappen">${chevronSVG}</button>
+        ${toggleBtn}
       `;
       item.appendChild(header);
+
       const meta = document.createElement('div');
       meta.className = 'spiel-meta';
-      meta.innerHTML = `<span class="status ${complete ? 'done' : ''}">${complete ? 'gespielt' : 'offen'}</span>`;
+      meta.innerHTML = `<span class="status ${statusClass}">${statusText}</span>`;
       item.appendChild(meta);
-      const boardContainer = document.createElement('div');
-      boardContainer.className = 'spiel-board-container';
-      item.appendChild(boardContainer);
-      const toggleBtn = header.querySelector('.toggle-btn');
-      let isOpen = false;
-      toggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isOpen = !isOpen;
-        toggleBtn.classList.toggle('open', isOpen);
-        boardContainer.classList.toggle('open', isOpen);
-        if (isOpen && !boardContainer.hasChildNodes()) {
-          renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
-        }
-      });
+
+      if (state) {
+        const boardContainer = document.createElement('div');
+        boardContainer.className = 'spiel-board-container';
+        item.appendChild(boardContainer);
+        const toggleBtnEl = header.querySelector('.toggle-btn');
+        let isOpen = false;
+        toggleBtnEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isOpen = !isOpen;
+          toggleBtnEl.classList.toggle('open', isOpen);
+          boardContainer.classList.toggle('open', isOpen);
+          if (isOpen && !boardContainer.hasChildNodes()) {
+            renderBoard(boardContainer, stIdx, spIdx, spiel.heim, spiel.auswaerts, state);
+          }
+        });
+      }
+
       return item;
     }
 
