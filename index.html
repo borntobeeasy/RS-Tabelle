@@ -336,12 +336,23 @@
     .liga-table .num { text-align: center; color: var(--steel); font-weight: 700; }
 
     /* ============================
-       MOBILE OPTIMIERUNGEN NUR FÜR HOME-VIEW
+       MOBILE OPTIMIERUNGEN NUR FÜR HOME-VIEW (komprimiert)
        ============================ */
     @media (max-width: 700px) {
       #homeView .liga-table {
         min-width: auto;
+        font-size: 0.5rem;
+      }
+      #homeView .liga-table th,
+      #homeView .liga-table td {
+        padding: 3px 2px;
+      }
+      #homeView .liga-table .pts {
+        font-size: 0.7rem;
+      }
+      #homeView .liga-table .pos {
         font-size: 0.65rem;
+        width: 20px;
       }
       /* Spalten 3-7 (Sp, S, U, N, Tore) ausblenden */
       #homeView .liga-table th:nth-child(3),
@@ -361,8 +372,8 @@
         display: none;
       }
       #homeView .liga-table .team .team-logo-table {
-        width: 32px;
-        height: 32px;
+        width: 26px;
+        height: 26px;
         margin: 0 auto;
       }
       #homeView .liga-table .team {
@@ -370,14 +381,37 @@
         gap: 0;
       }
       /* Spaltenbreiten anpassen: #, Logo, Sp, Diff, Pkt */
-      #homeView .liga-table th:nth-child(1) { width: 12%; }
-      #homeView .liga-table th:nth-child(2) { width: 35%; }
+      #homeView .liga-table th:nth-child(1) { width: 10%; }
+      #homeView .liga-table th:nth-child(2) { width: 30%; }
       #homeView .liga-table th:nth-child(8) { width: 20%; }
       #homeView .liga-table th:nth-child(9) { width: 25%; }
-      /* Tabelle zentrieren, keine feste Breite */
       #homeView .table-wrap {
         overflow-x: hidden;
       }
+    }
+    @media (max-width: 500px) {
+      #homeView .liga-table {
+        font-size: 0.4rem;
+      }
+      #homeView .liga-table th,
+      #homeView .liga-table td {
+        padding: 2px 1px;
+      }
+      #homeView .liga-table .pts {
+        font-size: 0.6rem;
+      }
+      #homeView .liga-table .pos {
+        font-size: 0.55rem;
+        width: 16px;
+      }
+      #homeView .liga-table .team .team-logo-table {
+        width: 22px;
+        height: 22px;
+      }
+      #homeView .liga-table th:nth-child(1) { width: 8%; }
+      #homeView .liga-table th:nth-child(2) { width: 28%; }
+      #homeView .liga-table th:nth-child(8) { width: 22%; }
+      #homeView .liga-table th:nth-child(9) { width: 28%; }
     }
 
     /* ============================
@@ -905,21 +939,6 @@
       .stat-entry .player-img { width: 34px; height: 34px; }
       .stat-entry .value-chip .value-num { font-size: 1rem; padding: 1px 8px; }
       .stat-entry .team-badge-mini { width: 14px; height: 14px; right: -2px; bottom: -2px; }
-
-      /* Allgemeine Tabellen-Anpassungen für alle Views */
-      .liga-table {
-        font-size: 0.6rem;
-        min-width: 480px;
-      }
-      .liga-table th, .liga-table td {
-        padding: 4px 6px;
-      }
-      .liga-table .pts {
-        font-size: 1rem;
-      }
-      .liga-table .pos {
-        font-size: 0.9rem;
-      }
     }
     @media (max-width: 500px) {
       .spiel-header .team-name { font-size: 0.6rem; }
