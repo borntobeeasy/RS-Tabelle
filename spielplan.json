@@ -2,1316 +2,1316 @@
   "saison": "2026/27",
   "liga": "Bundesliga",
   "teams": [
-    "1. FC Köln",
-    "1. FC Union Berlin",
-    "1. FSV Mainz 05",
-    "Bayer 04 Leverkusen",
-    "Borussia Dortmund",
-    "Borussia Mönchengladbach",
-    "Eintracht Frankfurt",
-    "FC Augsburg",
-    "FC Bayern München",
-    "FC Schalke 04",
-    "Hamburger SV",
-    "Arminia Bielefeld",
-    "SC Paderborn 07",
-    "SV Elversberg",
-    "SV Werder Bremen",
-    "Sport-Club Freiburg",
-    "TSG Hoffenheim",
-    "VfB Stuttgart"
+    "1. FC Köln ",
+    "1. FC Union Berlin ",
+    "1. FSV Mainz 05 ",
+    "Bayer 04 Leverkusen ",
+    "Borussia Dortmund ",
+    "Borussia Mönchengladbach ",
+    "Eintracht Frankfurt ",
+    "FC Augsburg ",
+    "FC Bayern München ",
+    "FC Schalke 04 ",
+    "Hamburger SV ",
+    "Arminia Bielefeld ",
+    "SC Paderborn 07 ",
+    "SV Elversberg ",
+    "SV Werder Bremen ",
+    "Sport-Club Freiburg ",
+    "TSG Hoffenheim ",
+    "VfB Stuttgart "
   ],
   "spieltage": [
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "FC Bayern München ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Hamburger SV"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "FC Schalke 04"
+        "heim": "FC Augsburg ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "1. FC Köln ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Bayer 04 Leverkusen "
       }
     ],
     [
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "1. FC Köln"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "FC Augsburg"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "SV Elversberg"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Hamburger SV ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "FC Bayern München"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Sport-Club Freiburg "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Hamburger SV"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "FC Schalke 04"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "1. FC Köln ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "FC Bayern München"
+        "heim": "SV Elversberg ",
+        "auswaerts": "FC Bayern München "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "FC Bayern München ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "1. FC Köln"
+        "heim": "Hamburger SV ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "FC Augsburg"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "SV Elversberg"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "TSG Hoffenheim "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Hamburger SV"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "FC Bayern München"
+        "heim": "FC Augsburg ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "SV Elversberg"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "VfB Stuttgart "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "1. FC Köln"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Hamburger SV ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "FC Augsburg"
+        "heim": "SV Elversberg ",
+        "auswaerts": "FC Augsburg "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "SV Elversberg"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "FC Bayern München"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "FC Augsburg ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "FC Schalke 04"
+        "heim": "1. FC Köln ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Hamburger SV"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Hamburger SV "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Hamburger SV"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "1. FC Köln"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "SV Elversberg ",
+        "auswaerts": "1. FSV Mainz 05 "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "SV Elversberg"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "FC Augsburg"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "FC Schalke 04"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "FC Bayern München"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Eintracht Frankfurt "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "1. FC Köln"
+        "heim": "FC Bayern München ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "FC Augsburg ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Hamburger SV"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Sport-Club Freiburg "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "FC Augsburg"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "FC Bayern München"
+        "heim": "Hamburger SV ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "SV Elversberg"
+        "heim": "1. FC Köln ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "FC Schalke 04"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "FC Schalke 04 "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "FC Bayern München ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "1. FC Köln"
+        "heim": "FC Augsburg ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Hamburger SV"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "SV Elversberg ",
+        "auswaerts": "VfB Stuttgart "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "FC Augsburg"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "FC Bayern München"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Hamburger SV ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "SV Elversberg"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "SV Elversberg "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "FC Bayern München ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "FC Augsburg ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "1. FC Köln"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Hamburger SV"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Hamburger SV "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "FC Augsburg"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "SV Elversberg"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "FC Bayern München"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Arminia Bielefeld "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Hamburger SV"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Eintracht Frankfurt "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "FC Bayern München"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "FC Augsburg"
+        "heim": "Hamburger SV ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "SV Elversberg"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "1. FC Köln"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "1. FC Köln "
       }
     ],
     [
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "FC Bayern München"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "1. FC Köln"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "SV Elversberg"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "FC Augsburg"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "1. FSV Mainz 05 "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "FC Schalke 04"
+        "heim": "FC Bayern München ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Hamburger SV"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "1. FC Köln ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Borussia Mönchengladbach "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "SV Elversberg"
+        "heim": "FC Bayern München ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "FC Augsburg"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "1. FC Köln"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Borussia Dortmund "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "FC Augsburg ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "FC Bayern München"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Hamburger SV"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "FC Schalke 04"
+        "heim": "SV Elversberg ",
+        "auswaerts": "FC Schalke 04 "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "FC Augsburg"
+        "heim": "FC Bayern München ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "1. FC Köln"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Hamburger SV ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "SV Elversberg ",
+        "auswaerts": "1. FC Union Berlin "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "FC Bayern München"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Hamburger SV"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "SV Elversberg"
+        "heim": "FC Augsburg ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "FC Schalke 04"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "1. FC Köln ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "SV Werder Bremen "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "FC Augsburg"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Hamburger SV ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "1. FC Köln"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Arminia Bielefeld "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "FC Bayern München"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "FC Augsburg"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "SV Elversberg"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "1. FC Köln ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Borussia Mönchengladbach "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "FC Bayern München ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "1. FC Köln"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Hamburger SV"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "SV Elversberg ",
+        "auswaerts": "Borussia Dortmund "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "FC Schalke 04"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "SV Elversberg"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "FC Augsburg"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Hamburger SV ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "FC Bayern München"
+        "heim": "1. FC Köln ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "Bayer 04 Leverkusen "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Hamburger SV"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "FC Augsburg ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "1. FC Köln"
+        "heim": "SV Elversberg ",
+        "auswaerts": "1. FC Köln "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "SV Elversberg"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "Hamburger SV ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "FC Augsburg"
+        "heim": "1. FC Köln ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "FC Bayern München"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "FC Bayern München "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "FC Bayern München ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "1. FC Köln"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Hamburger SV"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "SV Elversberg ",
+        "auswaerts": "SC Paderborn 07 "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "1. FC Union Berlin "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "FC Schalke 04"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "SV Elversberg"
+        "heim": "Hamburger SV ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "1. FC Köln ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "FC Bayern München"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "FC Augsburg"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "FC Augsburg "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "Hamburger SV"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "1. FC Köln"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "FC Augsburg ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "SV Werder Bremen "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "SV Elversberg ",
+        "auswaerts": "TSG Hoffenheim "
       }
     ],
     [
       {
-        "heim": "Borussia Dortmund",
-        "auswaerts": "1. FC Köln"
+        "heim": "Borussia Dortmund ",
+        "auswaerts": "1. FC Köln "
       },
       {
-        "heim": "VfB Stuttgart",
-        "auswaerts": "Arminia Bielefeld"
+        "heim": "VfB Stuttgart ",
+        "auswaerts": "Arminia Bielefeld "
       },
       {
-        "heim": "TSG Hoffenheim",
-        "auswaerts": "1. FSV Mainz 05"
+        "heim": "TSG Hoffenheim ",
+        "auswaerts": "1. FSV Mainz 05 "
       },
       {
-        "heim": "Bayer 04 Leverkusen",
-        "auswaerts": "FC Bayern München"
+        "heim": "Bayer 04 Leverkusen ",
+        "auswaerts": "FC Bayern München "
       },
       {
-        "heim": "Eintracht Frankfurt",
-        "auswaerts": "SV Elversberg"
+        "heim": "Eintracht Frankfurt ",
+        "auswaerts": "SV Elversberg "
       },
       {
-        "heim": "Borussia Mönchengladbach",
-        "auswaerts": "FC Augsburg"
+        "heim": "Borussia Mönchengladbach ",
+        "auswaerts": "FC Augsburg "
       },
       {
-        "heim": "Hamburger SV",
-        "auswaerts": "Sport-Club Freiburg"
+        "heim": "Hamburger SV ",
+        "auswaerts": "Sport-Club Freiburg "
       },
       {
-        "heim": "SV Werder Bremen",
-        "auswaerts": "FC Schalke 04"
+        "heim": "SV Werder Bremen ",
+        "auswaerts": "FC Schalke 04 "
       },
       {
-        "heim": "SC Paderborn 07",
-        "auswaerts": "1. FC Union Berlin"
+        "heim": "SC Paderborn 07 ",
+        "auswaerts": "1. FC Union Berlin "
       }
     ],
     [
       {
-        "heim": "FC Bayern München",
-        "auswaerts": "Eintracht Frankfurt"
+        "heim": "FC Bayern München ",
+        "auswaerts": "Eintracht Frankfurt "
       },
       {
-        "heim": "Arminia Bielefeld",
-        "auswaerts": "TSG Hoffenheim"
+        "heim": "Arminia Bielefeld ",
+        "auswaerts": "TSG Hoffenheim "
       },
       {
-        "heim": "Sport-Club Freiburg",
-        "auswaerts": "Borussia Dortmund"
+        "heim": "Sport-Club Freiburg ",
+        "auswaerts": "Borussia Dortmund "
       },
       {
-        "heim": "FC Augsburg",
-        "auswaerts": "Hamburger SV"
+        "heim": "FC Augsburg ",
+        "auswaerts": "Hamburger SV "
       },
       {
-        "heim": "1. FSV Mainz 05",
-        "auswaerts": "VfB Stuttgart"
+        "heim": "1. FSV Mainz 05 ",
+        "auswaerts": "VfB Stuttgart "
       },
       {
-        "heim": "1. FC Union Berlin",
-        "auswaerts": "Borussia Mönchengladbach"
+        "heim": "1. FC Union Berlin ",
+        "auswaerts": "Borussia Mönchengladbach "
       },
       {
-        "heim": "1. FC Köln",
-        "auswaerts": "SC Paderborn 07"
+        "heim": "1. FC Köln ",
+        "auswaerts": "SC Paderborn 07 "
       },
       {
-        "heim": "FC Schalke 04",
-        "auswaerts": "Bayer 04 Leverkusen"
+        "heim": "FC Schalke 04 ",
+        "auswaerts": "Bayer 04 Leverkusen "
       },
       {
-        "heim": "SV Elversberg",
-        "auswaerts": "SV Werder Bremen"
+        "heim": "SV Elversberg ",
+        "auswaerts": "SV Werder Bremen "
       }
     ]
   ]
