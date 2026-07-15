@@ -1169,7 +1169,8 @@
       const piece = getPieceById(assignment.piece);
       if (!piece) return 0;
       const sign = assignment.polarity === 'positive' ? 1 : -1;
-      const base = { rook:3, bishop:1, knight:1, queen:1, king:3 }[assignment.piece] || 1;
+      // Basiswerte: Turm und König jetzt ±1.5 statt ±3
+      const base = { rook:1.5, bishop:1, knight:1, queen:1, king:1.5 }[assignment.piece] || 1;
       switch (assignment.piece) {
         case 'knight':
           const knightVal = state.questionValue ?? 1;
@@ -1318,13 +1319,13 @@
                 ? formatNumber(state.questionValue)
                 : '?';
             } else if (piece.id === 'rook') {
-              figureValue = '±3';
+              figureValue = '±1,5';   // geändert von ±3
             } else if (piece.id === 'bishop') {
               figureValue = '-1';
             } else if (piece.id === 'queen') {
               figureValue = '+1';
             } else if (piece.id === 'king') {
-              figureValue = '±3';
+              figureValue = '±1,5';   // geändert von ±3
             } else {
               figureValue = piece.label;
             }
