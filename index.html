@@ -326,6 +326,8 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      /* Fix für abgeschnittene kursive Buchstaben */
+      padding-right: 6px;
     }
     .liga-table .team .team-logo-table {
       width: 24px;
@@ -372,6 +374,7 @@
       #homeView .liga-table .team {
         justify-content: center;
         gap: 0;
+        padding-right: 0; /* damit das Logo nicht zu viel Platz wegnimmt */
       }
       /* Spaltenbreiten anpassen */
       #homeView .liga-table th:nth-child(1) { width: 12%; }
@@ -460,6 +463,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
       text-shadow: 0 0 4px rgba(0,0,0,0.8);
+      /* Fix für abgeschnittene kursive Buchstaben */
+      padding-right: 4px;
     }
     .spiel-header .score-display {
       font-family: var(--led-font);
@@ -843,6 +848,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
       text-shadow: 0 0 4px rgba(0,0,0,0.8);
+      /* Fix für abgeschnittene kursive Buchstaben */
+      padding-right: 4px;
     }
     .stat-entry .meta-col .meta-detail {
       font-size: 0.6rem;
