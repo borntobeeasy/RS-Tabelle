@@ -1206,6 +1206,13 @@
       return placed >= 10;
     }
 
+    // Prüft, ob mindestens eine These bereits ausgewertet wurde (polarity gesetzt).
+    // Solange ALLE Thesen noch unausgewertet sind, gilt das Brett nur als
+    // "Aufstellung" (wie vor dem Anpfiff) und darf nicht als 0:0 in die Tabelle einfließen.
+    function hasAnyEvaluatedThesis(state) {
+      return state.assignments.some(a => a.side && a.piece && a.polarity);
+    }
+
     function getGameScore(state) {
       let whiteTotal = 0, blackTotal = 0;
       PIECES.forEach(p => {
@@ -1234,6 +1241,7 @@
           const state = allGameData[key];
           if (!state) return;
           if (!isGameComplete(state)) return;
+          if (!hasAnyEvaluatedThesis(state)) return; // alle Thesen unausgewertet -> nur Aufstellung, zählt nicht als gespieltes Spiel
           const score = getGameScore(state);
           const home = spiel.heim, away = spiel.auswaerts;
           if (!home || !away) return;
